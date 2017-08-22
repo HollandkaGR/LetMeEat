@@ -12,8 +12,8 @@
       </q-tab>
     </div>
     <div v-else class="row">
-      <q-tab icon="shopping_basket" route="/rendeleseim" exact replace>
-        <div class="gt-md">Rendeléseim</div>
+      <q-tab icon="shopping_basket" :to="{name: 'rendeleseim'}" exact replace>
+        <div class="gt-md">Rendeléseim2</div>
       </q-tab>
       <q-tab icon="power_settings_new" @selected="tryLogout" exact replace>
       <div class="gt-md">Kilépés</div>

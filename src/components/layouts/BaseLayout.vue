@@ -9,6 +9,7 @@
       <q-btn
       flat
       @click="$refs.layout.toggleLeft()"
+      color="black"
       >
       <q-icon name="menu" />
     </q-btn>
@@ -20,27 +21,39 @@
 
     <q-tabs inverted color="white">
       <q-route-tab
-      icon="home"
-      :to="{ name: 'index'}"
-      exact
-      slot="title"
-      label="Főoldal"
-      />
-      <!-- Ha a user be van jelentkezve -->
+        icon="home"
+        label="Főoldal"
+        :to="{ name: 'index' }"
+        exact
+        slot="title"
+      >
+      </q-route-tab>
       <q-route-tab
-      icon="account_circle"
-      :to="{ name: 'login'}"
-      exact
-      slot="title"
-      label="Bejelenkezés"
-      />
+        icon="home"
+        label="Éttermek"
+        :to="{ name: 'restaurants' }"
+        exact
+        slot="title"
+      >
+      </q-route-tab>
       <q-route-tab
-      icon="account_circle"
-      :to="{ name: 'orders'}"
-      exact
-      slot="title"
-      label="Rendeléseim"
-      />
+        v-if="!user.authenticated"
+        icon="account_circle"
+        label="Bejelentkezés"
+        :to="{ name: 'login' }"
+        exact
+        slot="title"
+      >
+      </q-route-tab>
+      <q-route-tab
+        v-if="user.authenticated"
+        icon="shopping_cart"
+        label="Rendeléseim"
+        :to="{ name: 'orders' }"
+        exact
+        slot="title"
+      >
+      </q-route-tab>
     </q-tabs>
   </q-toolbar>
 
@@ -49,7 +62,7 @@
     <q-side-link tag="a" item :to="{ name: 'login' }" exact highlight>
       <q-item-main label="Bejelentkezés" />
     </q-side-link>
-    <q-side-link item :to="{ name: 'home' }">
+    <q-side-link item :to="{ name: 'restaurants' }">
       <q-item-main label="Éttermek" />
     </q-side-link>
   </div>
@@ -96,6 +109,10 @@
       QItemSide,
       QItemMain,
       QSideLink
+    },
+    data: function () {
+      return {
+      }
     },
     computed: {
       ...mapGetters({

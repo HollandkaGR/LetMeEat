@@ -5,18 +5,18 @@
       :error="errors.email !== undefined"
       :error-label="errors.email === undefined ? 'Ismeretlen hiba' : errors.email[0]"
     >
-      <q-input v-model="email" float-label="Regisztrált email cím" clearable/>
+      <q-input v-model="email" float-label="Regisztrált email cím" inverted color="brown" clearable/>
     </q-field>
     <q-field
-      helper="Regisztrált e-mail cím"
+      placeholder="Jelszó"
       :error="errors.password !== undefined"
       :error-label="errors.password === undefined ? 'Ismeretlen hiba' : errors.password[0]"
     >
-      <q-input v-model="password" />
+      <q-input v-model="password" float-label="Jelszó" inverted color="brown" clearable type="password"/>
     </q-field>
     <div class="item no-margin">
       <div class="item-content full-width">
-        <button @click.prevent="login" class="primary glossy full-width">Bejelentkezés</button>
+        <button @click.prevent="login" class="primary full-width">Bejelentkezés</button>
       </div>
     </div>
   </div>

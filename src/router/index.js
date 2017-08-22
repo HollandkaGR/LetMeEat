@@ -24,7 +24,7 @@ const router = new VueRouter({
   },
   {
     path: '/ettermek',
-    name: 'home',
+    name: 'restaurants',
     component: load('Home'),
     meta: {
       guest: true

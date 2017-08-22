@@ -18,10 +18,10 @@ export const login = ({ dispatch, state }, { payload, context }) => {
   return axios.post('/api/login', payload)
     .then(response => {
       dispatch('setToken', response.data.meta.token)
-      dispatch('fetchUser')
+      return dispatch('fetchUser')
         .then(() => {
           if (isEmpty(this.errors)) {
-            localforage.getItem('intended').then((name) => {
+            return localforage.getItem('intended').then((name) => {
               if (isEmpty(name)) {
                 router.replace({ name: 'index' })
               }
@@ -32,9 +32,9 @@ export const login = ({ dispatch, state }, { payload, context }) => {
             })
           }
         })
-      return Promise.resolve(response.data.data)
-    }).then((user) => {
-      return Promise.resolve(user)
+        .then(() => {
+          return Promise.resolve(response.data.data)
+        })
     }).catch((errors) => {
       console.log(errors.response.data.errors)
       context.errors = errors.response.data.errors
