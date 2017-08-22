@@ -41,9 +41,9 @@ export const login = ({ dispatch, state }, { payload, context }) => {
     })
 }
 
-export const logout = ({ dispatch, rootState }) => {
+export const logout = ({ dispatch }) => {
   return axios
-    .post(rootState.baseUrl + '/api/logout')
+    .post('/api/logout')
     .then(() => {
       dispatch('clearAuth')
     })
@@ -54,8 +54,8 @@ export const logout = ({ dispatch, rootState }) => {
     })
 }
 
-export const fetchUser = ({commit, dispatch, rootState}) => {
-  return axios.get(rootState.baseUrl + '/api/me').then((response) => {
+export const fetchUser = ({commit, dispatch}) => {
+  return axios.get('/api/me').then((response) => {
     commit('setAuthenticated', true)
     commit('setUserData', response.data.data)
     return Promise.resolve(response.data.data)
