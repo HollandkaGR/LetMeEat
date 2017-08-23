@@ -21,7 +21,7 @@ localforage.config({
 // require(`quasar/dist/quasar.ie.${__THEME}.css`)
 
 import Vue from 'vue'
-import Quasar from 'quasar'
+import Quasar, * as All from 'quasar'
 import router from './router'
 import store from './store'
 
@@ -35,7 +35,9 @@ store.dispatch('auth/setToken').then(() => {
 })
 
 Vue.config.productionTip = false
-Vue.use(Quasar) // Install Quasar Framework
+Vue.use(Quasar, {
+  components: All
+}) // Install Quasar Framework
 
 if (__THEME === 'mat') {
   require('quasar-extras/roboto-font')

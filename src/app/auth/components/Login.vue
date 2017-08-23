@@ -36,14 +36,14 @@
 <script>
   'use strict'
   import { mapActions, mapGetters } from 'vuex'
-  import { Loading, QField, QInput, QTransition, QBtn, QSpinnerFacebook, Events, Alert, QAlert } from 'quasar'
+  import { Loading, QField, QInput, QTransition, QBtn, QSpinnerFacebook, Alert, QAlert } from 'quasar'
   import { showPopup } from 'src/helpers'
   import 'quasar-extras/animate/slideInUp.css'
   import 'quasar-extras/animate/bounceOutDown.css'
   
   export default {
     components: {
-      QField, QInput, QTransition, QBtn, QSpinnerFacebook, Loading, Events, Alert, QAlert
+      QField, QInput, QTransition, QBtn, QSpinnerFacebook, Loading, Alert, QAlert
     },
     data () {
       return {

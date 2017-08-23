@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash'
-import { Loading } from 'quasar'
+import { Loading, QSpinnerFacebook } from 'quasar'
 import { Popup } from './toaster'
 
 export const setHttpToken = token => {
@@ -14,7 +14,7 @@ export const setHttpToken = token => {
 
 export const showLoadingScreen = () => {
   return Loading.show({
-    spinner: 'rings',
+    spinner: QSpinnerFacebook,
     spinnerSize: 250,
     spinnerColor: 'white'
   })

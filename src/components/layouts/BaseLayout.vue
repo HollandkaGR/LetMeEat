@@ -29,7 +29,7 @@
       >
       </q-route-tab>
       <q-route-tab
-        icon="home"
+        icon="search"
         label="Éttermek"
         :to="{ name: 'restaurants' }"
         exact
@@ -47,7 +47,7 @@
       </q-route-tab>
       <q-route-tab
         v-if="user.authenticated"
-        icon="shopping_cart"
+        icon="playlist_add_check"
         label="Rendeléseim"
         :to="{ name: 'orders' }"
         exact
@@ -56,7 +56,7 @@
       </q-route-tab>
       <q-tab
         v-if="user.authenticated"
-        icon="message"
+        icon="exit_to_app"
         slot="title"
         label="Kijelentkezés"
         @click="tryLogout"

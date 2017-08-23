@@ -51,10 +51,9 @@ export const logout = ({ dispatch }) => {
     .then(() => {
       dispatch('clearAuth')
     })
-    .catch((error) => {
+    .catch(() => {
       dispatch('clearAuth')
       router.replace({ name: 'index' })
-      console.log(error.response.data)
     })
 }
 

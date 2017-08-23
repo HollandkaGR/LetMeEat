@@ -1,57 +1,121 @@
 <template>
-  <div class="flex row gutter lt-md-column wrap justify-start">
-    <div v-for="etterem in ettermek" :key="etterem.id" class="width-1of4">
-      <div class="flex column justify-between card bg-brown-11 shadow-5 text-black" style="height:100%;">
-        <div class="flex column justify-center text-white text-center bg-brown-13">
-          <h5 class="no-margin uppercase thin-paragraph">{{ etterem.name }}</h5>  
-        </div>
-        <img class="item-primary" src="~assets/350x150.png">
-        <hr>
-        <div class="item-content flex row justify-between rest-ratings">
-          <div class="text-green-7">
-            <i>star</i> Elégedettség: 4.3
+  <div class="row wrap xs-gutter">
+    <div v-for="etterem in ettermek" :key="etterem.id" class="col-sm-12 col-lg-6 col-xl-4 flex">
+      <q-card class="column justify-between">
+        <q-card-media>
+        <img src="~assets/350x150.png">
+        </q-card-media>
+        <q-card-title>
+          <p class="no-margin">{{ etterem.name }}</p>
+          <div>
+            <q-rating v-model="stars" size="20px" color="green" :max="5" />
           </div>
-          <div class="text-primary">
-            8 Ítélet <i>mode_comment</i>
+          <div slot="right">
+            <q-icon name="place" /> 250 ft
           </div>
-        </div>
-        <hr>
-        <div class="card-content flex row wrap justify-center items-center auto">
-          <div v-for="category in categories" class="bg-brown-12 round-borders shadow-1 rest-cats">{{category}}</div>
-        </div>
-        <hr>
-        <div class="text-center rest-details-btn">
-          <button @click="showProducts(etterem.id)" class="bg-green-7 outline raised glossy">Rendelek</button>
-        </div>
-      </div>
+        </q-card-title>
+        <q-card-main class="row justify-around xs-gutter autoFill">
+          <div v-for="kategoria in etterem.categories" :key="kategoria" class="col">
+            <q-btn  color="brown-5" outline small >
+              {{ kategoria }}
+            </q-btn>
+          </div>
+        </q-card-main>
+        <q-card-separator />
+        <q-card-actions>
+          <q-btn flat round small><q-icon name="event" /></q-btn>
+          <q-btn flat>5:30PM</q-btn>
+          <q-btn flat>7:30PM</q-btn>
+          <q-btn flat>9:00PM</q-btn>
+          <q-btn flat color="primary">Reserve</q-btn>
+        </q-card-actions>
+      </q-card>
     </div>
-    <button @click="openModal">openModal</button>
-    <restaurantOrderModal v-bind="{ modalOpened: modalOpened}" v-on:modalClosed="closeModal"></restaurantOrderModal>
+    <!-- <restaurantOrderModal v-bind="{ modalOpened: modalOpened}" v-on:modalClosed="closeModal"></restaurantOrderModal> -->
   </div>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
   import RestaurantOrderModal from './RestaurantOrderModal'
   import { showLoadingScreen } from 'src/helpers'
-  import { Loading } from 'quasar'
+  import {
+    QCard,
+    QCardTitle,
+    QCardMedia,
+    QCardActions,
+    QCardSeparator,
+    QCardMain,
+    QList,
+    QItem,
+    QItemMain,
+    QItemSide,
+    QItemTile,
+    QRating,
+    QBtn,
+    QIcon,
+    Loading
+  } from 'quasar'
 
   export default {
+    components: {
+      RestaurantOrderModal,
+      QCard,
+      QCardTitle,
+      QCardMedia,
+      QCardActions,
+      QCardSeparator,
+      QCardMain,
+      QList,
+      QItem,
+      QItemMain,
+      QItemSide,
+      QItemTile,
+      QRating,
+      QBtn,
+      QIcon,
+      Loading
+    },
     data: function () {
       return {
         modalOpened: false,
+        stars: 3.5,
         categories: [
           'Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek'
         ],
-        errors: []
+        ettermek: [
+          {
+            id: 1,
+            name: 'Felekken',
+            categories: ['Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek']
+          },
+          {
+            id: 2,
+            name: 'Felekken1',
+            categories: ['Levesek', 'Előételek', 'Pizzák']
+          },
+          {
+            id: 3,
+            name: 'Felekken2',
+            categories: ['Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek']
+          },
+          {
+            id: 4,
+            name: 'Felekken3',
+            categories: ['Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek']
+          }
+        ],
+        errors: [],
+        categoriesToString (values) {
+          return values.join(', ')
+        }
       }
     },
     computed: {
-      ...mapGetters({
-        ettermek: 'restaurant/getEttermek'
-      })
+      // ...mapGetters({
+      //   ettermek: 'restaurant/getEttermek'
+      // })
     },
-    components: { RestaurantOrderModal },
     methods: {
       ...mapActions({
         fetchEttermek: 'restaurant/fetchEttermek',
@@ -66,17 +130,6 @@
       },
       showProducts: function (restId) {
         this.modalOpened = true
-        // console.log(restId)
-        // showLoadingScreen()
-        // this.fetchProducts({
-        //   restId
-        // }).then((response) => {
-        //   console.log(response)
-        //   Loading.hide()
-        // }).catch(error => {
-        //   this.errors.push(error.message)
-        //   Loading.hide()
-        // })
       }
     },
     beforeMount () {
@@ -95,13 +148,9 @@
 </script>
 
 <style lang="sass" scoped>
-  .rest-ratings
-    padding: 2px 16px
-  .rest-cats
-    padding: 2px 3px
-    margin: 2px
-  .rest-details-btn
-    margin-bottom: 10px
-  hr
-    margin: 5px 0
+  .autoFill
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
 </style>
