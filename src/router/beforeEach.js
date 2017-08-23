@@ -4,14 +4,14 @@ import { hasIn } from 'lodash'
 
 export const beforeEach = (to, from, next) => {
   if (hasIn(to.meta, 'needsAuth')) {
-    console.log('Authentication needed')
+    // console.log('Authentication needed')
     checkAuthenticated(to, next)
       .then((message) => {
-        console.log('Authentication successful')
+        // console.log('Authentication successful')
         next()
       })
       .catch(() => {
-        console.log('CheckAuthenticated failed')
+        // console.log('CheckAuthenticated failed')
         localforage.setItem('intended', to.name)
         next({name: 'login'})
       })
@@ -30,12 +30,9 @@ export const beforeEach = (to, from, next) => {
         })
     }
     else {
-      console.log('Nem loginra megyünk')
+      // console.log('Nem loginra megyünk')
       next()
     }
-  }
-  else if (to.name === 'kabbe') {
-    askLogin(to, next)
   }
   else {
     next()
@@ -59,9 +56,4 @@ function checkAuthenticated (to, next) {
     .catch((error) => {
       return Promise.reject(error)
     })
-}
-
-function askLogin (to, next) {
-  localforage.setItem('intended', to.name)
-  next({name: 'login'})
 }

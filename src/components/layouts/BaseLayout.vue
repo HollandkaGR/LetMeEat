@@ -54,6 +54,13 @@
         slot="title"
       >
       </q-route-tab>
+      <q-tab
+        v-if="user.authenticated"
+        icon="message"
+        slot="title"
+        label="Kijelentkezés"
+        @click="tryLogout"
+      />
     </q-tabs>
   </q-toolbar>
 

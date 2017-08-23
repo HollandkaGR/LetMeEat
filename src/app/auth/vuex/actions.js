@@ -36,8 +36,12 @@ export const login = ({ dispatch, state }, { payload, context }) => {
           return Promise.resolve(response.data.data)
         })
     }).catch((errors) => {
-      console.log(errors.response.data.errors)
-      context.errors = errors.response.data.errors
+      if (errors.response.data.errors !== null) {
+        context.errors = errors.response.data.errors
+      }
+      else {
+        return Promise.reject(new Error('Kapcsolódási hiba, próbálja később!'))
+      }
     })
 }
 
