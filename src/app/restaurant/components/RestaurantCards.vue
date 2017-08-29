@@ -1,14 +1,15 @@
 <template>
   <div class="row wrap xs-gutter">
-    <div v-for="etterem in ettermek" :key="etterem.id" class="col-sm-12 col-lg-6 col-xl-4 flex">
-      <q-card class="column justify-between">
-        <q-card-media>
-        <img src="~assets/350x150.png">
+    <div v-for="etterem in ettermek" :key="etterem.id" class="col-sm-12 col-lg-6 col-xl-4 row">
+      <q-card class="col-12 column justify-between">
+        <q-card-media overlay-position="full">
+        <img :src="'statics/' + etterem.img">
         </q-card-media>
-        <q-card-title>
+        <q-card-title slot="overlay">
           <p class="no-margin">{{ etterem.name }}</p>
           <div>
-            <q-rating v-model="stars" size="20px" color="green" :max="5" />
+            <q-rating v-model="etterem.rating" size="20px" color="green" :max="5" />
+            <q-chip small color="green" class="text-black">{{ getStar(etterem.rating) }}</q-chip>
           </div>
           <div slot="right">
             <q-icon name="place" /> 250 ft
@@ -16,7 +17,7 @@
         </q-card-title>
         <q-card-main class="row justify-around xs-gutter autoFill">
           <div v-for="kategoria in etterem.categories" :key="kategoria" class="col">
-            <q-btn  color="brown-5" outline small >
+            <q-btn  color="brown-5 full-width" outline small>
               {{ kategoria }}
             </q-btn>
           </div>
@@ -79,32 +80,10 @@
     data: function () {
       return {
         modalOpened: false,
-        stars: 3.5,
         categories: [
           'Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek'
         ],
-        ettermek: [
-          {
-            id: 1,
-            name: 'Felekken',
-            categories: ['Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek']
-          },
-          {
-            id: 2,
-            name: 'Felekken1',
-            categories: ['Levesek', 'Előételek', 'Pizzák']
-          },
-          {
-            id: 3,
-            name: 'Felekken2',
-            categories: ['Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek']
-          },
-          {
-            id: 4,
-            name: 'Felekken3',
-            categories: ['Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek']
-          }
-        ],
+        ettermek: [],
         errors: [],
         categoriesToString (values) {
           return values.join(', ')
@@ -112,9 +91,9 @@
       }
     },
     computed: {
-      // ...mapGetters({
-      //   ettermek: 'restaurant/getEttermek'
-      // })
+      getStar (value) {
+        return Math.round(value)
+      }
     },
     methods: {
       ...mapActions({
@@ -130,6 +109,13 @@
       },
       showProducts: function (restId) {
         this.modalOpened = true
+      },
+      randomPlaceholder () {
+        let min = 0
+        let max = 3
+        let imgNumber = Math.floor(Math.random() * (max - min)) + min
+        console.log(imgNumber)
+        return this.placeholders[imgNumber]
       }
     },
     beforeMount () {
@@ -143,6 +129,36 @@
         this.errors.push(error.message)
         Loading.hide()
       })
+      this.ettermek = [
+        {
+          id: 1,
+          name: 'Felekken',
+          categories: ['Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek'],
+          img: '1600x900.png',
+          rating: 4
+        },
+        {
+          id: 2,
+          name: 'Felekken1',
+          categories: ['Levesek', 'Előételek', 'Pizzák'],
+          img: '1600x900.png',
+          rating: 4
+        },
+        {
+          id: 3,
+          name: 'Felekken2',
+          categories: ['Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek'],
+          img: '1600x900.png',
+          rating: 4
+        },
+        {
+          id: 4,
+          name: 'Felekken3',
+          categories: ['Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek'],
+          img: '1600x900.png',
+          rating: 4
+        }
+      ]
     }
   }
 </script>
