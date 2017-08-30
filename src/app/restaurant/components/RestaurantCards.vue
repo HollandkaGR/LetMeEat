@@ -1,7 +1,7 @@
 <template>
-  <div class="row wrap xs-gutter">
+  <div class="row wrap md-gutter">
     <div v-for="etterem in ettermek" :key="etterem.id" class="col-sm-12 col-lg-6 col-xl-4 row">
-      <q-card class="col-12 column justify-between">
+      <q-card class="col-12 column justify-between shadow-10">
         <q-card-media overlay-position="full">
         <img :src="'statics/' + etterem.img">
         </q-card-media>
@@ -15,6 +15,7 @@
             <q-icon name="place" /> 250 ft
           </div>
         </q-card-title>
+        <q-card-separator />
         <q-card-main class="row justify-around xs-gutter autoFill">
           <div v-for="kategoria in etterem.categories" :key="kategoria" class="col">
             <q-btn  color="brown-5 full-width" outline small>
@@ -23,12 +24,11 @@
           </div>
         </q-card-main>
         <q-card-separator />
-        <q-card-actions>
-          <q-btn flat round small><q-icon name="event" /></q-btn>
+        <q-card-actions class="row justify-around">
+          <q-btn round class="bg-brown-4" small><q-icon color="white" name="alarm" /></q-btn>
           <q-btn flat>5:30PM</q-btn>
           <q-btn flat>7:30PM</q-btn>
-          <q-btn flat>9:00PM</q-btn>
-          <q-btn flat color="primary">Reserve</q-btn>
+          <q-btn flat v-bind:class="[ etterem.isOpen ? 'bg-green' : 'bg-red' ]">Rendelés</q-btn>
         </q-card-actions>
       </q-card>
     </div>
@@ -57,6 +57,7 @@
     QIcon,
     Loading
   } from 'quasar'
+  import moment from 'moment'
 
   export default {
     components: {
@@ -90,11 +91,6 @@
         }
       }
     },
-    computed: {
-      getStar (value) {
-        return Math.round(value)
-      }
-    },
     methods: {
       ...mapActions({
         fetchEttermek: 'restaurant/fetchEttermek',
@@ -116,6 +112,19 @@
         let imgNumber = Math.floor(Math.random() * (max - min)) + min
         console.log(imgNumber)
         return this.placeholders[imgNumber]
+      },
+      getStar (value) {
+        return Math.round(value)
+      },
+      isOpen (open, close) {
+        let format = 'HH:mm'
+        let now = moment()
+        return now.isBetween(moment(open, format), moment(close, format))
+      },
+      checkIsOpen () {
+        this.ettermek.forEach(etterem => {
+          etterem.isOpen = this.isOpen(etterem.open, etterem.close)
+        })
       }
     },
     beforeMount () {
@@ -135,30 +144,46 @@
           name: 'Felekken',
           categories: ['Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek'],
           img: '1600x900.png',
-          rating: 4
+          rating: 1,
+          open: '12:29',
+          close: '12:39',
+          isOpen: false
         },
         {
           id: 2,
           name: 'Felekken1',
           categories: ['Levesek', 'Előételek', 'Pizzák'],
           img: '1600x900.png',
-          rating: 4
+          rating: 2,
+          open: '9:30',
+          close: '21:30',
+          isOpen: false
         },
         {
           id: 3,
           name: 'Felekken2',
           categories: ['Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek'],
           img: '1600x900.png',
-          rating: 4
+          rating: 4,
+          open: '9:30',
+          close: '22:30',
+          isOpen: false
         },
         {
           id: 4,
           name: 'Felekken3',
           categories: ['Levesek', 'Szárnyasok', 'Előételek', 'Desszertek', 'Pizzák', 'Marhaételek'],
           img: '1600x900.png',
-          rating: 4
+          rating: 3,
+          open: '9:30',
+          close: '22:00',
+          isOpen: false
         }
       ]
+      this.checkIsOpen()
+      setInterval(function () {
+        this.checkIsOpen()
+      }.bind(this), 10000)
     }
   }
 </script>
