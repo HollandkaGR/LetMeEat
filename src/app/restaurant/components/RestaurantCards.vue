@@ -16,7 +16,7 @@
           </div>
         </q-card-title>
         <q-card-separator />
-        <q-card-main class="row justify-around xs-gutter autoFill">
+        <q-card-main class="row justify-around md-gutter autoFill">
           <div v-for="kategoria in etterem.categories" :key="kategoria" class="col">
             <q-btn  color="brown-5 full-width" outline small>
               {{ kategoria }}
@@ -24,11 +24,10 @@
           </div>
         </q-card-main>
         <q-card-separator />
-        <q-card-actions class="row justify-around">
-          <q-btn round class="bg-brown-4" small><q-icon color="white" name="alarm" /></q-btn>
-          <q-btn flat>5:30PM</q-btn>
-          <q-btn flat>7:30PM</q-btn>
-          <q-btn flat v-bind:class="[ etterem.isOpen ? 'bg-green' : 'bg-red' ]">Rendelés</q-btn>
+        <q-card-actions class="row justify-between bg-light">
+          <div class="col-12 text-center text-bold uppercase">Nyitvatartás</div>
+          <q-btn class="col" color="amber-14 text-black">{{etterem.open}} - {{etterem.close}}</q-btn>
+          <q-btn flat :disabled="!etterem.isOpen" v-bind:class="[ etterem.isOpen ? 'bg-green' : 'bg-red' ]">Rendelés</q-btn>
         </q-card-actions>
       </q-card>
     </div>
@@ -146,7 +145,7 @@
           img: '1600x900.png',
           rating: 1,
           open: '12:29',
-          close: '12:39',
+          close: '16:17',
           isOpen: false
         },
         {
