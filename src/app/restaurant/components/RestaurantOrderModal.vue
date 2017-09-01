@@ -1,54 +1,58 @@
 <template>
-  <q-modal
-  ref="orderModal"
-  noBackdropDismiss
-  :content-css="{minWidth: '80vw', minHeight: '80vh'}"
-  >
-  <q-layout>
-    <div slot="header" class="toolbar bg-brown-13 text-black">
-      <button @click="closeModal">
-        <i>keyboard_arrow_left</i>
-      </button>
-      <q-toolbar-title :padding="1">
-        Flekken étterem kínálata
-      </q-toolbar-title>
-    </div>
-    <div slot="header" class="toolbar bg-brown-11">
-      <q-search class="bg-white"></q-search>
-    </div>
-    <div slot="footer" class="toolbar bg-brown-11 text-black">
-      <div class="width-1of2 flex row justify-between offset-1of4">
-        <div class="text-green-9">
-          <i>star</i> Elégedettség: 4.3
-        </div>
-        <div class="text-primary">
-          8 Ítélet <i>mode_comment</i>
-        </div>
-      </div>
-    </div>
-    <div class="layout-view">
+  <q-modal ref="orderModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal-layout>
+      <q-toolbar slot="header" color="dark">
+        <q-btn flat @click="closeModal">
+          <q-icon name="keyboard_arrow_left" />
+        </q-btn>
+        <q-toolbar-title>
+          {{ etterem.name }}
+        </q-toolbar-title>
+      </q-toolbar>
+
+      <q-toolbar slot="header" color="light">
+        <q-search inverted v-model="search" color="brown-4" placeholder="Írja be!" float-label="Tudja mit keres?"></q-search>
+      </q-toolbar>
+
+      <q-toolbar slot="footer">
+        <q-toolbar-title>
+          Footer
+        </q-toolbar-title>
+      </q-toolbar>
+
       <div class="layout-padding">
         <h1>Modal</h1>
-        <button class="primary" @click="closeModal">Close</button>
+
+        <q-btn color="primary" @click="closeModal">Close</q-btn>
         <p class="caption" v-for="n in 15">This is a Modal presenting a Layout.</p>
       </div>
-    </div>
-  </q-layout>
-</q-modal>
+    </q-modal-layout>
+  </q-modal>
 </template>
 
 <script>
+  import { QSearch } from 'quasar'
   export default {
-    props: ['modalOpened'],
+    components: {
+      QSearch
+    },
+    data: function () {
+      return {
+        search: ''
+      }
+    },
+    props: [ 'modalOpened', 'etterem' ],
     watch: {
       modalOpened: function (value) {
-        console.log(value)
         if (value) {
           this.$refs.orderModal.open()
         }
         else {
           this.$refs.orderModal.close()
         }
+      },
+      restaurant: function (value) {
+        console.log(value)
       }
     },
     methods: {

@@ -1,11 +1,9 @@
 <template>
   <div>
-    <div class="layout-padding">
-      <h2>Éttermeink</h2>
+      <h2 class="no-margin">Éttermeink</h2>
       <div>
           <cards></cards>
       </div>
-    </div>
   </div>
 </template>
 
