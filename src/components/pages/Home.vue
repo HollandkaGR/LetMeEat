@@ -10,21 +10,18 @@
         class="col-lg-6"
       >
       <q-autocomplete
-        :static-data="{field: 'name', list: parsedEttermek }"
-        :filter="myFilter"
-        @selected="selected"
+        @search="search"
         :min-characters="3"
       />
     </q-search>
   </div>
-  <div>
+  <div class="scroll">
     <cards :searchingFor="etteremSearch"></cards>
   </div>
 </div>
 </template>
 
 <script>
-  import fuzzysearch from 'fuzzysearch'
   import Cards from '../../app/restaurant/components/RestaurantCards'
   import { mapGetters } from 'vuex'
   import {
@@ -52,7 +49,7 @@
       return {
         label: etterem.name,
         stamp: 'Nyitva: ' + etterem.open + ' - ' + etterem.close,
-        value: etterem
+        value: etterem.name
       }
     })
   }
@@ -90,12 +87,12 @@
       })
     },
     methods: {
-      myFilter ({ field, list }) {
-        const token = this.etteremSearch.toLowerCase()
-        return this.parsedEttermek.filter(item => fuzzysearch(token, item['label'].toLowerCase()))
-      },
-      selected (value) {
-        console.log(value)
+      search (terms, done) {
+        let resultArray = []
+        resultArray = this.parsedEttermek.filter(etterem => {
+          return etterem.label.toUpperCase().trim().includes(terms.toUpperCase())
+        })
+        done(resultArray)
       }
     },
     mounted: function () {
@@ -104,15 +101,30 @@
   }
 </script>
 
-<style lang="sass" scoped>
+<style lang="stylus">
+  @import '~variables'
+
   h2
     display: block
     font-size: 40px
     letter-spacing: 2px
+  
+  .q-item-side-right
+    position: absolute
+    right: 0
+    top: 0
+    bottom: 0
+    padding: 0 5px
+    background-color: $brown-4
+    display: flex
+    justify-content: center
+    flex-direction: row
+    align-items: center
+    min-width: 150px
 
   .q-item-stamp
-    padding: 2px 5px
-    background-color: black
+    margin: 0
     color: white
     font-weight: bold
+
 </style>
