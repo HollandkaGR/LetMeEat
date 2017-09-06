@@ -1,43 +1,79 @@
 <template>
-  <q-card class="bg-light">
-    <q-card-title>
-      <span class="text-bold">
-        {{ product.name }}
-      </span>
-      <span slot="subtitle">
-        {{ product.description }}
-      </span>
-      <div slot="right" class="column items-center xs-gutter">
-        <div>
-          Mennyiség
-          <q-select
-          v-model="select"
-          :options="productCounter"
-          class="no-margin"
-          />
+  <div class="productCard row justify-between bg-light shadow-4">
+    <div class="prodNamePrice col-12 bg-light text-dark row justify-between items-center">
+        <div class="prodName col-8">
+          {{ product.name }}  
         </div>
-        <q-btn color="brown-4" small icon="add_shopping_cart">
-          Kosárba
-        </q-btn>
+        <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3">1280,-</div>
+    </div>
+    <div class="prodBody colum col-md-12 col-lg-9">
+      <div class="prodDetails">
+        {{ product.description }}
       </div>
-    </q-card-title>
-  </q-card>
+    </div>
+    <div class="cartWrapper row justify-end col-md-12 col-lg-3">
+      <div class="row items-center justify-end">
+        <q-btn rounded color="red" class="changeValueBtn no-padding" :disable="prodCounter === 1" @click="subCounter">-</q-btn>
+        <q-input v-model="prodCounter" type="number" suffix=" db" disable class="col-2 text-center"/>
+        <q-btn rounded color="green" class="changeValueBtn no-padding" :disable="prodCounter === 5" @click="addCounter">+</q-btn>
+      </div>
+      <q-btn color="brown-4" small icon="add_shopping_cart">
+        Kosárba
+      </q-btn>
+    </div>
+  </div>
 </template>
 
 <script>
-  import { QSelect } from 'quasar'
-  import { productCounter } from 'src/helpers'
-
   export default {
     components: {
-      QSelect
     },
     data: function () {
       return {
-        select: '1',
-        productCounter: productCounter()
+        prodCounter: 1
       }
     },
-    props: [ 'product' ]
+    props: [ 'product' ],
+    methods: {
+      subCounter: function () {
+        this.prodCounter--
+      },
+      addCounter: function () {
+        this.prodCounter++
+      }
+    }
   }
 </script>
+
+<style lang="stylus" scoped>
+  @import '~variables'
+
+  .productCard
+    margin 10px 0
+
+  .prodNamePrice
+    border-bottom 1px solid $brown-2
+
+  .prodName
+    padding 5px
+    font-size 20px
+    line-height 30px
+
+  .changeValueBtn
+    width 25px
+    height 25px
+    min-height 25px
+    line-height 25px
+    margin 0 10px
+
+  .prodPrice
+    padding 5px
+    letter-spacing 2px
+
+  .prodBody
+    padding 10px
+
+  .cartWrapper
+    padding 10px
+
+</style>

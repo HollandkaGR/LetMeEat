@@ -16,7 +16,7 @@
 
       <div class="layout-padding">
         <h1 class="no-margin">{{ etterem.name }} kínálata</h1>
-        <q-list separator v-for="kategoria in etterem.categories" :key="kategoria" class="bg-brown-2 text-bold br-5">
+        <q-list separator v-for="kategoria in etterem.categories" :key="kategoria" class="bg-brown-2 br-5">
           <q-collapsible :label="kategoria.name">
             <product v-for="product in kategoria.products" v-bind="{ product }" :key="product"></product>
           </q-collapsible>
