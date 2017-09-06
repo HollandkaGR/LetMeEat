@@ -14,27 +14,36 @@
         <q-search inverted v-model="search" color="brown-4" placeholder="Írja be!" float-label="Tudja mit keres?"></q-search>
       </q-toolbar>
 
-      <q-toolbar slot="footer">
+      <div class="layout-padding">
+        <h1 class="no-margin">{{ etterem.name }} kínálata</h1>
+        <q-list separator v-for="kategoria in etterem.categories" :key="kategoria" class="bg-brown-2 text-bold br-5">
+          <q-collapsible :label="kategoria.name">
+            <product v-for="product in kategoria.products" v-bind="{ product }" :key="product"></product>
+          </q-collapsible>
+        </q-list>
+      </div>
+
+      
+      <q-toolbar slot="footer" color="dark">
+        <q-btn flat @click="closeModal">
+          <q-icon name="keyboard_arrow_left" />
+        </q-btn>
         <q-toolbar-title>
-          Footer
+          Vissza az éttermekhez
         </q-toolbar-title>
       </q-toolbar>
 
-      <div class="layout-padding">
-        <h1>Modal</h1>
-
-        <q-btn color="primary" @click="closeModal">Close</q-btn>
-        <p class="caption" v-for="n in 15">This is a Modal presenting a Layout.</p>
-      </div>
     </q-modal-layout>
   </q-modal>
 </template>
 
 <script>
   import { QSearch } from 'quasar'
+  import Product from './RestaurantProductCard'
+
   export default {
     components: {
-      QSearch
+      QSearch, Product
     },
     data: function () {
       return {
@@ -62,3 +71,13 @@
     }
   }
 </script>
+
+<style lang="stylus" scoped>
+  br(n)
+    -webkit-border-radius n
+    -moz-border-radius n
+    border-radius n
+    
+  .br-5
+    br(5px)
+</style>

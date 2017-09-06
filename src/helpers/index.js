@@ -23,3 +23,14 @@ export const showLoadingScreen = () => {
 export const showPopup = (message, type) => {
   return new Popup(message, type)
 }
+
+export const productCounter = () => {
+  let resultArray = []
+  for (var i = 1; i <= 5; i++) {
+    resultArray.push({
+      label: i + '',
+      value: i + ''
+    })
+  }
+  return resultArray
+}

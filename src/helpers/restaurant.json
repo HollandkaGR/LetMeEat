@@ -1,0 +1,187 @@
+[
+	{
+		"id": 1,
+		"name": "Pizzaboy",
+		"categories": [
+			{
+				"name": "Levesek",
+				"products": [
+					{
+						"name": "Vőlegény leves",
+						"description": "Lé, vőlegény"
+					},
+					{
+						"name": "Húsleves",
+						"description": "Lé, hús"
+					}
+				]
+			},
+			{
+				"name": "Előételek",
+				"products": [
+					{
+						"name": "Rántott sajt",
+						"description": "Lé, vőlegény"
+					},
+					{
+						"name": "Valami",
+						"description": "Lé, hús"
+					}
+				]
+			}
+		],
+		"img": "1600x900.png",
+		"rating": 1,
+		"open": "16:00",
+		"close": "16:17",
+		"isOpen": false
+	},
+	{
+		"id": 2,
+		"name": "Flekken",
+		"categories": [
+			{
+				"name": "Levesek",
+				"products": [
+					{
+						"name": "Vőlegény leves",
+						"description": "Lé, vőlegény"
+					},
+					{
+						"name": "Húsleves",
+						"description": "Lé, hús"
+					}
+				]
+			},
+			{
+				"name": "Előételek",
+				"products": [
+					{
+						"name": "Rántott sajt",
+						"description": "Lé, vőlegény"
+					},
+					{
+						"name": "Valami",
+						"description": "Lé, hús"
+					}
+				]
+			}
+		],
+		"img": "1600x900.png",
+		"rating": 2,
+		"open": "9:30",
+		"close": "21:30",
+		"isOpen": false
+	},
+	{
+		"id": 3,
+		"name": "Aranygaluska",
+		"categories": [
+			{
+				"name": "Levesek",
+				"products": [
+					{
+						"name": "Vőlegény leves",
+						"description": "Lé, vőlegény"
+					},
+					{
+						"name": "Húsleves",
+						"description": "Lé, hús"
+					}
+				]
+			},
+			{
+				"name": "Előételek",
+				"products": [
+					{
+						"name": "Rántott sajt",
+						"description": "Lé, vőlegény"
+					},
+					{
+						"name": "Valami",
+						"description": "Lé, hús"
+					}
+				]
+			}
+		],
+		"img": "1600x900.png",
+		"rating": 4,
+		"open": "9:30",
+		"close": "22:30",
+		"isOpen": false
+	},
+	{
+		"id": 4,
+		"name": "Apolló étterem",
+		"categories": [
+			{
+				"name": "Levesek",
+				"products": [
+					{
+						"name": "Vőlegény leves",
+						"description": "Lé, vőlegény"
+					},
+					{
+						"name": "Húsleves",
+						"description": "Lé, hús"
+					}
+				]
+			},
+			{
+				"name": "Előételek",
+				"products": [
+					{
+						"name": "Rántott sajt",
+						"description": "Lé, vőlegény"
+					},
+					{
+						"name": "Valami",
+						"description": "Lé, hús"
+					}
+				]
+			}
+		],
+		"img": "1600x900.png",
+		"rating": 3,
+		"open": "9:30",
+		"close": "22:00",
+		"isOpen": false
+	},
+	{
+		"id": 5,
+		"name": "Főnix pizzéria",
+		"categories": [
+			{
+				"name": "Levesek",
+				"products": [
+					{
+						"name": "Vőlegény leves",
+						"description": "Lé, vőlegény"
+					},
+					{
+						"name": "Húsleves",
+						"description": "Lé, hús"
+					}
+				]
+			},
+			{
+				"name": "Előételek",
+				"products": [
+					{
+						"name": "Rántott sajt",
+						"description": "Lé, vőlegény"
+					},
+					{
+						"name": "Valami",
+						"description": "Lé, hús"
+					}
+				]
+			}
+		],
+		"img": "1600x900.png",
+		"rating": 3,
+		"open": "9:30",
+		"close": "22:00",
+		"isOpen": false
+	}
+]

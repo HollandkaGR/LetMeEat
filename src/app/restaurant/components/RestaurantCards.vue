@@ -26,7 +26,7 @@
             <q-card-main class="row justify-around xs-gutter autoFill">
               <div v-for="kategoria in etterem.categories" :key="kategoria" class="col">
                 <q-btn  color="brown-5 full-width" outline small>
-                  {{ kategoria }}
+                  {{ kategoria.name }}
                 </q-btn>
               </div>
             </q-card-main>
