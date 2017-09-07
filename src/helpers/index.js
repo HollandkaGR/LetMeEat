@@ -34,3 +34,21 @@ export const productCounter = () => {
   }
   return resultArray
 }
+
+export const sampleFromArray = (array, numberOfSample = 1) => {
+  let size = array.length
+  let sampleNumber = size < numberOfSample ? size : numberOfSample
+  let returnArray = []
+
+  if (size === sampleNumber) {
+    console.log('Visszaadva')
+    return array
+  }
+
+  for (var i = 0; i < sampleNumber; i++) {
+    let index = Math.floor(Math.random() * (array.length - 1))
+    returnArray.push(array[index])
+    array.splice(index, 1)
+  }
+  console.log(returnArray)
+}

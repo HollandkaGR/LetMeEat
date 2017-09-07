@@ -6,18 +6,19 @@
         </div>
         <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3">1280,-</div>
     </div>
-    <div class="prodBody colum col-md-12 col-lg-9">
+    <div class="prodBody row col-md-12 col-lg-9">
       <div class="prodDetails">
         {{ product.description }}
       </div>
     </div>
-    <div class="cartWrapper row justify-end col-md-12 col-lg-3">
-      <div class="row items-center justify-end">
-        <q-btn rounded color="red" class="changeValueBtn no-padding" :disable="prodCounter === 1" @click="subCounter">-</q-btn>
-        <q-input v-model="prodCounter" type="number" suffix=" db" disable class="col-2 text-center"/>
-        <q-btn rounded color="green" class="changeValueBtn no-padding" :disable="prodCounter === 5" @click="addCounter">+</q-btn>
+    <div class="cartWrapper row justify-center items-center col-lg-2">
+      <div class="row justify-around items-center counterWrapper col-xs-6 col-lg-12 bg-dark text-white">
+        <q-btn rounded color="red" class="changeValueBtn" :disable="prodCounter === 1" @click="subCounter">-</q-btn>
+        <!-- <input v-model="prodCounter" type="number" disabled class="col-auto" /> -->
+        <div class="prodCounterDisplay">{{ prodCounter }} db</div>
+        <q-btn rounded color="green" class="changeValueBtn" :disable="prodCounter === 5" @click="addCounter">+</q-btn>
       </div>
-      <q-btn color="brown-4" small icon="add_shopping_cart">
+      <q-btn color="brown-4" small icon="add_shopping_cart" class="toCartBtn col-xs-6 col-lg-12 self-stretch">
         Kosárba
       </q-btn>
     </div>
@@ -64,7 +65,8 @@
     height 25px
     min-height 25px
     line-height 25px
-    margin 0 10px
+    font-weight bold
+    padding 0
 
   .prodPrice
     padding 5px
@@ -75,5 +77,14 @@
 
   .cartWrapper
     padding 10px
-
+    
+  .counterWrapper
+    padding 5px 0
+    
+  .prodCounterDisplay
+    min-width 30px
+    text-align center
+    
+  .toCartBtn
+    padding 5px 0
 </style>

@@ -22,7 +22,6 @@
           </q-collapsible>
         </q-list>
       </div>
-
       
       <q-toolbar slot="footer" color="dark">
         <q-btn flat @click="closeModal">

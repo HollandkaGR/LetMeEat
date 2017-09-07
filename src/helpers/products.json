@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Rántott sajt",
+    "description": "Sajt és krumpli",
+    "price": 1585
+  },
+  {
+    "id": 2,
+    "name": "Rántott Hús",
+    "description": "Hús és krumpli",
+    "price": 15000
+  },
+  {
+    "id": 3,
+    "name": "Húsleves",
+    "description": "Lé és hús",
+    "price": 600
+  },
+  {
+    "id": 4,
+    "name": "Songoku",
+    "description": "Sonka gomba kukorica",
+    "price": 1600
+  }
+]

@@ -1,3 +1,4 @@
 export default {
-  ettermek: []
+  ettermek: [],
+  selectedEtterem: {}
 }

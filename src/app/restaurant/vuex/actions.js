@@ -26,6 +26,10 @@ export const resetEttermek = ({commit}) => {
   return commit('resetEttermek')
 }
 
+export const setSelectedEtterem = ({commit}, etterem) => {
+  return commit('setSelectedEtterem', etterem)
+}
+
 export const searchForEtterem = ({commit, state}, searchString) => {
   let filteredEttermek = state.ettermek.filter(etterem => {
     return etterem.name.toUpperCase().includes(searchString.toUpperCase())
