@@ -16,10 +16,8 @@
 
       <div class="layout-padding">
         <div class="restName text-brown-8 thin-paragraph shadow-3 bg-brown-2">{{ etterem.name }} kínálata</div>
-        <q-list separator v-for="kategoria in etterem.categories" :key="kategoria" class="bg-brown-2 br-5 no-padding">
-          <q-collapsible :label="kategoria.name">
-            <product v-for="product in kategoria.products" v-bind="{ product }" :key="product"></product>
-          </q-collapsible>
+        <q-list separator v-for="kategoria in etterem.categories" :key="kategoria" class="br-5 no-padding categoryList">
+          <collapsible :kategoria="kategoria"></collapsible>
         </q-list>
       </div>
       
@@ -38,11 +36,11 @@
 
 <script>
   import { QSearch } from 'quasar'
-  import Product from './RestaurantProductCard'
+  import Collapsible from './RestaurantCategoryCollapsible'
 
   export default {
     components: {
-      QSearch, Product
+      QSearch, Collapsible
     },
     data: function () {
       return {
@@ -83,19 +81,10 @@
     font-size 3rem
     margin 0 -10px 10px
     padding 5px 10px
-  
-  .q-collapsible
-    transition background .5s ease-out
-
-  .q-collapsible-opened
-    transition background .5s ease-out
-
-  .q-collapsible-opened
-    background $brown-4
-
-  .q-item-label
-    font-size 30px!important
-
+    
+  .categoryList
+    margin 10px 0
+    
   .br-5
     br(5px)
 </style>

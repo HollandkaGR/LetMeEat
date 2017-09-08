@@ -1,6 +1,6 @@
 <template>
-  <div class="productCard row justify-between bg-light shadow-4">
-    <div class="prodNamePrice col-12 bg-light text-dark row justify-between items-center">
+  <div class="productCard row justify-between bg-white shadow-10">
+    <div class="prodNamePrice col-12 text-dark row justify-between items-center">
         <div class="prodName col-8">
           {{ product.name }}  
         </div>
