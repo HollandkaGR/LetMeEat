@@ -1,5 +1,5 @@
 <template>
-  <q-modal ref="orderModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+  <q-modal ref="orderModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}" @close="modalClosed">
     <q-modal-layout>
       <q-toolbar slot="header" color="dark">
         <q-btn flat @click="closeModal">
@@ -8,26 +8,38 @@
         <q-toolbar-title>
           {{ etterem.name }}
         </q-toolbar-title>
+        <mini-cart></mini-cart>
       </q-toolbar>
 
       <q-toolbar slot="header" color="light">
-        <q-search inverted v-model="search" color="brown-4" placeholder="Írja be!" float-label="Tudja mit keres?"></q-search>
+        <q-search inverted v-model="productSearch" color="brown-4" placeholder="Írj be legalább 3 karaktert!" float-label="Tudod mit keresel?"></q-search>
       </q-toolbar>
 
       <div class="layout-padding">
         <div class="restName text-brown-8 thin-paragraph shadow-3 bg-brown-2">{{ etterem.name }} kínálata</div>
-        <q-list separator v-for="kategoria in etterem.categories" :key="kategoria" class="br-5 no-padding categoryList">
-          <collapsible :kategoria="kategoria"></collapsible>
-        </q-list>
+        <!-- Ha nincs keresés 3 karakter hosszan, megjelenítjük a kategóriákat -->
+        <div v-if="productSearch.length < 3">
+          <q-list separator v-for="kategoria in etterem.categories" :key="kategoria" class="br-5 no-padding categoryList">
+            <collapsible :kategoria="kategoria"></collapsible>
+          </q-list>
+        </div>
+        <!-- Ha keresünk megnézzük, hogy van-e találat. Ha nincs, üzenetet jelenítünk meg. -->
+        <div v-else>
+          <q-list v-if="filteredProducts.length > 0" class="no-border">
+            <product v-for="product in filteredProducts" v-bind="{ product }" :key="product"></product>
+          </q-list>
+          <div v-else>
+            A keresés "{{ productSearch }}" nem hoz eredményt!
+          </div>
+        </div>
+        
       </div>
       
       <q-toolbar slot="footer" color="dark">
         <q-btn flat @click="closeModal">
           <q-icon name="keyboard_arrow_left" />
-        </q-btn>
-        <q-toolbar-title>
           Vissza az éttermekhez
-        </q-toolbar-title>
+        </q-btn>
       </q-toolbar>
 
     </q-modal-layout>
@@ -36,20 +48,29 @@
 
 <script>
   import { QSearch } from 'quasar'
+  import { mapGetters, mapActions } from 'vuex'
   import Collapsible from './RestaurantCategoryCollapsible'
+  import Product from './RestaurantProductCard'
+  import MiniCart from 'src/app/cart/components/MiniCart'
 
   export default {
     components: {
-      QSearch, Collapsible
+      QSearch, Collapsible, Product, MiniCart
     },
     data: function () {
       return {
-        search: ''
+        productSearch: '',
+        filteredProducts: []
       }
     },
     props: [ 'modalOpened', 'etterem' ],
+    computed: {
+      ...mapGetters({
+        isModalOpened: 'restaurant/isModalOpened'
+      })
+    },
     watch: {
-      modalOpened: function (value) {
+      isModalOpened: function (value) {
         if (value) {
           this.$refs.orderModal.open()
         }
@@ -57,13 +78,30 @@
           this.$refs.orderModal.close()
         }
       },
-      restaurant: function (value) {
-        console.log(value)
+      productSearch: function (value) {
+        if (value.trim().length > 2) {
+          let self = this
+          this.filteredProducts = this.etterem.categories.reduce(function (a, b) {
+            return a.products.concat(b.products)
+          })
+            .filter(function (obj) {
+              return obj.name.toUpperCase().includes(self.productSearch.toUpperCase())
+            })
+        }
       }
     },
     methods: {
+      ...mapActions({
+        modalToggle: 'restaurant/modalToggle',
+        setSelectedEtterem: 'restaurant/setSelectedEtterem'
+      }),
       closeModal: function () {
-        this.$emit('modalClosed')
+        this.productSearch = ''
+        this.filteredProducts = []
+        this.modalToggle()
+      },
+      modalClosed: function () {
+        this.setSelectedEtterem({})
       }
     }
   }
@@ -81,10 +119,10 @@
     font-size 3rem
     margin 0 -10px 10px
     padding 5px 10px
-    
+
   .categoryList
     margin 10px 0
-    
+
   .br-5
     br(5px)
 </style>

@@ -1,3 +1,5 @@
+import { SessionStorage } from 'quasar'
+
 export const setProducts = (state, products) => {
   state.products = products
 }
@@ -12,7 +14,7 @@ export const addToCart = (state, {product, quantity}) => {
   })
 
   if (exists) {
-    exists.quantity++
+    exists.quantity += quantity
   }
   else {
     state.cart.push({
@@ -20,21 +22,23 @@ export const addToCart = (state, {product, quantity}) => {
       quantity
     })
   }
+  SessionStorage.set('cart', state.cart)
 }
 
-export const removeProductFromCart = (state, productId) => {
+export const removeProductFromCart = (state, {productId, quantity}) => {
   const exists = state.cart.find((item) => {
     return item.product.id === productId
   })
 
-  if (exists.quantity > 1) {
-    exists.quantity--
+  if (exists.quantity > quantity) {
+    exists.quantity -= quantity
   }
   else {
     state.cart = state.cart.filter((item) => {
       return item.product.id !== productId
     })
   }
+  SessionStorage.set('cart', state.cart)
 }
 
 export const clearCartMutation = (state) => {

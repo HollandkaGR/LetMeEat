@@ -41,7 +41,6 @@ export const sampleFromArray = (array, numberOfSample = 1) => {
   let returnArray = []
 
   if (size === sampleNumber) {
-    console.log('Visszaadva')
     return array
   }
 

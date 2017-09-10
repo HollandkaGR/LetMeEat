@@ -2,7 +2,7 @@ export const products = (state) => {
   return state.products
 }
 
-export const cart = (state) => {
+export const getCart = (state) => {
   return state.cart
 }
 

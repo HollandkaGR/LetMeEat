@@ -49,3 +49,7 @@ export const fetchProducts = ({commit}, payload) => {
     return Promise.reject(new Error('Csatlakozási hiba'))
   })
 }
+
+export const modalToggle = ({commit}) => {
+  commit('modalToggle')
+}

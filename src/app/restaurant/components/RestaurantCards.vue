@@ -33,23 +33,23 @@
         <q-card-separator />
         <div class="row justify-between bg-dark text-bold text-black p10">
           <div class="col-12 text-center uppercase text-light openText">Nyitvatartás</div>
-          <q-btn big class="col-md-12 col-lg-6 text-bold inset-shadow bg-white p10">{{etterem.open}} - {{etterem.close}}</q-btn>
+          <q-btn big class="col-md-12 col-lg-6 text-bold inset-shadow bg-white p10" v-bind:class="{ 'bg-red-7': !etterem.isOpen }">
+            {{etterem.open}} - {{etterem.close}}
+          </q-btn>
           <q-btn
           flat
-          v-if="etterem.isOpen"
           big
           glossy
           class="bg-green-6 col-md-12 col-lg-6"
-          @click="openModal(etterem)"
+          @click="checkRestIsOpen(etterem)"
           style="padding: 5px 0;">
-          Rendelés
+          Kínálat
         </q-btn>
-        <q-btn flat v-else disabled big class="bg-negative text-light col">Zárva</q-btn>
       </div>
     </q-card>
   </div>
 </q-transition>
-<restaurantOrderModal v-bind="{ 'modalOpened' : modalOpened, 'etterem' : selectedRestaurant }" v-on:modalClosed="closeModal"></restaurantOrderModal>
+<restaurantOrderModal v-bind="{ 'etterem' : selectedRestaurant }"></restaurantOrderModal>
 </div>
 </template>
 
@@ -57,25 +57,21 @@
   import { mapGetters, mapActions } from 'vuex'
   import RestaurantOrderModal from './RestaurantOrderModal'
   import { showLoadingScreen } from 'src/helpers'
-  import { Loading } from 'quasar'
+  import { Loading, Dialog } from 'quasar'
   import 'quasar-extras/animate/fadeIn.css'
   import 'quasar-extras/animate/fadeOut.css'
-
-  // Product generators
-  import products from 'src/helpers/products.json'
-  import { sampleFromArray } from 'src/helpers/index'
   
   import moment from 'moment'
 
   export default {
     components: {
       RestaurantOrderModal,
-      Loading
+      Loading,
+      Dialog
     },
     props: ['searchingFor'],
     data: function () {
       return {
-        modalOpened: false,
         ettermek: [],
         filteredEttermek: [],
         errors: []
@@ -96,7 +92,8 @@
       ...mapActions({
         fetchEttermek: 'restaurant/fetchEttermek',
         resetEttermek: 'restaurant/resetEttermek',
-        setSelectedEtterem: 'restaurant/setSelectedEtterem'
+        setSelectedEtterem: 'restaurant/setSelectedEtterem',
+        modalToggle: 'restaurant/modalToggle'
       }),
       checkSearching () {
         if (this.searchingFor.trim().length > 2) {
@@ -111,13 +108,36 @@
           this.filteredEttermek = this.ettermek
         }
       },
-      openModal: function (restaurant) {
-        this.setSelectedEtterem(restaurant)
-        this.modalOpened = true
+      createConfirm () {
+        Dialog.create({
+          title: 'Az étterem zárva!',
+          message: 'Az étterem jelenleg nincs nyitva, így csak a kínálatot tudod megtekinteni, <strong>rendelésre nincs lehetőség</strong>!',
+          buttons: [
+            {
+              label: 'Vissza',
+              color: 'negative',
+              outline: true,
+              handler () {}
+            },
+            {
+              label: 'Rendben',
+              color: 'positive',
+              outline: true,
+              handler: () => {
+                this.modalToggle()
+              }
+            }
+          ]
+        })
       },
-      closeModal: function () {
-        this.modalOpened = false
-        this.setSelectedEtterem({})
+      checkRestIsOpen: function (restaurant) {
+        this.setSelectedEtterem(restaurant)
+        if (!restaurant.isOpen) {
+          this.createConfirm()
+        }
+        else {
+          this.modalToggle()
+        }
       },
       getStar (value) {
         return Math.round(value)
@@ -158,10 +178,22 @@
         this.errors.push(error.message)
         Loading.hide()
       })
-      sampleFromArray(products, 4)
     }
   }
 </script>
+
+<style lang="stylus">
+  @import '~variables'
+  
+  .modal-header
+    background $red-4
+    padding 10px
+    text-align center
+  
+  .modal-body
+    text-align justify
+
+</style>
 
 <style lang="sass" scoped>
   .autoFill
@@ -177,5 +209,4 @@
 
   .p10
     padding: 10px
-
 </style>

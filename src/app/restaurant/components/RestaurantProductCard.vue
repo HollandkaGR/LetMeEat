@@ -4,28 +4,33 @@
         <div class="prodName col-8">
           {{ product.name }}  
         </div>
-        <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3">1280,-</div>
+        <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3">{{ product.price }},-</div>
     </div>
     <div class="prodBody row col-md-12 col-lg-9">
       <div class="prodDetails">
         {{ product.description }}
       </div>
     </div>
-    <div class="cartWrapper row justify-center items-center col-lg-2">
+    <div v-if="getSelectedEtterem.isOpen" class="cartWrapper row justify-center items-center col-lg-2">
       <div class="row justify-around items-center counterWrapper col-xs-6 col-lg-12 bg-dark text-white shadow-2">
-        <q-btn rounded color="red" class="changeValueBtn" :disable="prodCounter === 1" @click="subCounter">-</q-btn>
-        <!-- <input v-model="prodCounter" type="number" disabled class="col-auto" /> -->
+        <q-btn rounded color="red" class="changeValueBtn" :disable="prodCounter === 1" @click="changeCounter(-1)">-</q-btn>
         <div class="prodCounterDisplay">{{ prodCounter }} db</div>
-        <q-btn rounded color="green" class="changeValueBtn" :disable="prodCounter === 5" @click="addCounter">+</q-btn>
+        <q-btn rounded color="green" class="changeValueBtn" :disable="prodCounter === 5" @click="changeCounter(1)">+</q-btn>
       </div>
-      <q-btn color="brown-4" small icon="add_shopping_cart" class="toCartBtn col-xs-6 col-lg-12 self-stretch shadow-2">
+      <q-btn color="brown-4" small icon="add_shopping_cart" class="toCartBtn col-xs-6 col-lg-12 self-stretch shadow-2" @click="addToCart">
         Kosárba
+      </q-btn>
+    </div>
+    <div v-else class="col-lg-2">
+      <q-btn glossy class="text-bold bg-red-10 text-white fit">
+        Nyitás: {{getSelectedEtterem.open}}
       </q-btn>
     </div>
   </div>
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex'
   export default {
     components: {
     },
@@ -35,12 +40,23 @@
       }
     },
     props: [ 'product' ],
+    computed: {
+      ...mapGetters({
+        getSelectedEtterem: 'restaurant/getSelectedEtterem'
+      })
+    },
     methods: {
-      subCounter: function () {
-        this.prodCounter--
+      ...mapActions({
+        addProductToCart: 'cart/addProductToCart'
+      }),
+      addToCart: function () {
+        this.addProductToCart({
+          product: this.product,
+          quantity: this.prodCounter
+        })
       },
-      addCounter: function () {
-        this.prodCounter++
+      changeCounter: function (value) {
+        this.prodCounter = this.prodCounter + value
       }
     }
   }

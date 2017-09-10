@@ -39,6 +39,14 @@ const router = new VueRouter({
     }
   },
   {
+    path: '/kosaram',
+    name: 'cart',
+    component: load('Cart'),
+    meta: {
+      needsAuth: true
+    }
+  },
+  {
     path: '/test',
     name: 'test',
     component: load('Test')

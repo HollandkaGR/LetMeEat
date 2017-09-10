@@ -7,12 +7,16 @@
 				"name": "Levesek",
 				"products": [
 					{
+						"id": 1,
 						"name": "Vőlegény leves",
-						"description": "Lé, vőlegény"
+						"description": "Lé, vőlegény",
+						"price": 1520
 					},
 					{
+						"id": 2,
 						"name": "Húsleves",
-						"description": "Lé, hús"
+						"description": "Lé, hús",
+						"price": 1320
 					}
 				]
 			},
@@ -20,12 +24,16 @@
 				"name": "Előételek",
 				"products": [
 					{
+						"id": 3,
 						"name": "Rántott sajt",
-						"description": "Lé, vőlegény"
+						"description": "Lé, vőlegény",
+						"price": 1420
 					},
 					{
+						"id": 4,
 						"name": "Valami",
-						"description": "Lé, hús"
+						"description": "Lé, hús",
+						"price": 1120
 					}
 				]
 			}
@@ -44,12 +52,16 @@
 				"name": "Levesek",
 				"products": [
 					{
+						"id": 5,
 						"name": "Vőlegény leves",
-						"description": "Lé, vőlegény"
+						"description": "Lé, vőlegény",
+						"price": 1520
 					},
 					{
+						"id": 6,
 						"name": "Húsleves",
-						"description": "Lé, hús"
+						"description": "Lé, hús",
+						"price": 1320
 					}
 				]
 			},
@@ -57,12 +69,16 @@
 				"name": "Előételek",
 				"products": [
 					{
+						"id": 7,
 						"name": "Rántott sajt",
-						"description": "Lé, vőlegény"
+						"description": "Lé, vőlegény",
+						"price": 1420
 					},
 					{
+						"id": 8,
 						"name": "Valami",
-						"description": "Lé, hús"
+						"description": "Lé, hús",
+						"price": 1120
 					}
 				]
 			}
@@ -81,12 +97,16 @@
 				"name": "Levesek",
 				"products": [
 					{
+						"id": 9,
 						"name": "Vőlegény leves",
-						"description": "Lé, vőlegény"
+						"description": "Lé, vőlegény",
+						"price": 1520
 					},
 					{
+						"id": 10,
 						"name": "Húsleves",
-						"description": "Lé, hús"
+						"description": "Lé, hús",
+						"price": 1320
 					}
 				]
 			},
@@ -94,12 +114,16 @@
 				"name": "Előételek",
 				"products": [
 					{
+						"id": 11,
 						"name": "Rántott sajt",
-						"description": "Lé, vőlegény"
+						"description": "Lé, vőlegény",
+						"price": 1420
 					},
 					{
+						"id": 12,
 						"name": "Valami",
-						"description": "Lé, hús"
+						"description": "Lé, hús",
+						"price": 1120
 					}
 				]
 			}
@@ -118,12 +142,16 @@
 				"name": "Levesek",
 				"products": [
 					{
+						"id": 13,
 						"name": "Vőlegény leves",
-						"description": "Lé, vőlegény"
+						"description": "Lé, vőlegény",
+						"price": 1520
 					},
 					{
+						"id": 14,
 						"name": "Húsleves",
-						"description": "Lé, hús"
+						"description": "Lé, hús",
+						"price": 1320
 					}
 				]
 			},
@@ -131,12 +159,16 @@
 				"name": "Előételek",
 				"products": [
 					{
+						"id": 15,
 						"name": "Rántott sajt",
-						"description": "Lé, vőlegény"
+						"description": "Lé, vőlegény",
+						"price": 1420
 					},
 					{
+						"id": 16,
 						"name": "Valami",
-						"description": "Lé, hús"
+						"description": "Lé, hús",
+						"price": 1120
 					}
 				]
 			}
@@ -155,12 +187,16 @@
 				"name": "Levesek",
 				"products": [
 					{
+						"id": 17,
 						"name": "Vőlegény leves",
-						"description": "Lé, vőlegény"
+						"description": "Lé, vőlegény",
+						"price": 1520
 					},
 					{
+						"id": 18,
 						"name": "Húsleves",
-						"description": "Lé, hús"
+						"description": "Lé, hús",
+						"price": 1320
 					}
 				]
 			},
@@ -168,12 +204,16 @@
 				"name": "Előételek",
 				"products": [
 					{
+						"id": 19,
 						"name": "Rántott sajt",
-						"description": "Lé, vőlegény"
+						"description": "Lé, vőlegény",
+						"price": 1420
 					},
 					{
+						"id": 20,
 						"name": "Valami",
-						"description": "Lé, hús"
+						"description": "Lé, hús",
+						"price": 1120
 					}
 				]
 			}

@@ -5,3 +5,7 @@ export const getEttermek = (state) => {
 export const getSelectedEtterem = (state) => {
   return state.selectedEtterem
 }
+
+export const isModalOpened = (state) => {
+  return state.modalOpened
+}

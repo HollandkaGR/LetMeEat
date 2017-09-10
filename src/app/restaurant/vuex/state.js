@@ -1,4 +1,5 @@
 export default {
   ettermek: [],
-  selectedEtterem: {}
+  selectedEtterem: {},
+  modalOpened: false
 }
