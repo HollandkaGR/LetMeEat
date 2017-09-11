@@ -20,8 +20,8 @@ export const fetchCart = ({ commit }) => {
   // })
 }
 
-export const addProductToCart = ({ commit, dispatch }, {product, quantity}) => {
-  commit('addToCart', {product, quantity})
+export const addProductToCart = ({ commit, dispatch }, {restaurant, product, quantity}) => {
+  commit('addToCart', { restaurant, product, quantity })
   // return axios.post('/cart', {
   //   product_id: product.id,
   //   quantity

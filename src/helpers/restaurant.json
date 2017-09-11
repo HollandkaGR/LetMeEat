@@ -1,227 +1,227 @@
 [
-	{
-		"id": 1,
-		"name": "Pizzaboy",
-		"categories": [
-			{
-				"name": "Levesek",
-				"products": [
-					{
-						"id": 1,
-						"name": "Vőlegény leves",
-						"description": "Lé, vőlegény",
-						"price": 1520
-					},
-					{
-						"id": 2,
-						"name": "Húsleves",
-						"description": "Lé, hús",
-						"price": 1320
-					}
-				]
-			},
-			{
-				"name": "Előételek",
-				"products": [
-					{
-						"id": 3,
-						"name": "Rántott sajt",
-						"description": "Lé, vőlegény",
-						"price": 1420
-					},
-					{
-						"id": 4,
-						"name": "Valami",
-						"description": "Lé, hús",
-						"price": 1120
-					}
-				]
-			}
-		],
-		"img": "1600x900.png",
-		"rating": 1,
-		"open": "16:00",
-		"close": "16:17",
-		"isOpen": false
-	},
-	{
-		"id": 2,
-		"name": "Flekken",
-		"categories": [
-			{
-				"name": "Levesek",
-				"products": [
-					{
-						"id": 5,
-						"name": "Vőlegény leves",
-						"description": "Lé, vőlegény",
-						"price": 1520
-					},
-					{
-						"id": 6,
-						"name": "Húsleves",
-						"description": "Lé, hús",
-						"price": 1320
-					}
-				]
-			},
-			{
-				"name": "Előételek",
-				"products": [
-					{
-						"id": 7,
-						"name": "Rántott sajt",
-						"description": "Lé, vőlegény",
-						"price": 1420
-					},
-					{
-						"id": 8,
-						"name": "Valami",
-						"description": "Lé, hús",
-						"price": 1120
-					}
-				]
-			}
-		],
-		"img": "1600x900.png",
-		"rating": 2,
-		"open": "9:30",
-		"close": "21:30",
-		"isOpen": false
-	},
-	{
-		"id": 3,
-		"name": "Aranygaluska",
-		"categories": [
-			{
-				"name": "Levesek",
-				"products": [
-					{
-						"id": 9,
-						"name": "Vőlegény leves",
-						"description": "Lé, vőlegény",
-						"price": 1520
-					},
-					{
-						"id": 10,
-						"name": "Húsleves",
-						"description": "Lé, hús",
-						"price": 1320
-					}
-				]
-			},
-			{
-				"name": "Előételek",
-				"products": [
-					{
-						"id": 11,
-						"name": "Rántott sajt",
-						"description": "Lé, vőlegény",
-						"price": 1420
-					},
-					{
-						"id": 12,
-						"name": "Valami",
-						"description": "Lé, hús",
-						"price": 1120
-					}
-				]
-			}
-		],
-		"img": "1600x900.png",
-		"rating": 4,
-		"open": "9:30",
-		"close": "22:30",
-		"isOpen": false
-	},
-	{
-		"id": 4,
-		"name": "Apolló étterem",
-		"categories": [
-			{
-				"name": "Levesek",
-				"products": [
-					{
-						"id": 13,
-						"name": "Vőlegény leves",
-						"description": "Lé, vőlegény",
-						"price": 1520
-					},
-					{
-						"id": 14,
-						"name": "Húsleves",
-						"description": "Lé, hús",
-						"price": 1320
-					}
-				]
-			},
-			{
-				"name": "Előételek",
-				"products": [
-					{
-						"id": 15,
-						"name": "Rántott sajt",
-						"description": "Lé, vőlegény",
-						"price": 1420
-					},
-					{
-						"id": 16,
-						"name": "Valami",
-						"description": "Lé, hús",
-						"price": 1120
-					}
-				]
-			}
-		],
-		"img": "1600x900.png",
-		"rating": 3,
-		"open": "9:30",
-		"close": "22:00",
-		"isOpen": false
-	},
-	{
-		"id": 5,
-		"name": "Főnix pizzéria",
-		"categories": [
-			{
-				"name": "Levesek",
-				"products": [
-					{
-						"id": 17,
-						"name": "Vőlegény leves",
-						"description": "Lé, vőlegény",
-						"price": 1520
-					},
-					{
-						"id": 18,
-						"name": "Húsleves",
-						"description": "Lé, hús",
-						"price": 1320
-					}
-				]
-			},
-			{
-				"name": "Előételek",
-				"products": [
-					{
-						"id": 19,
-						"name": "Rántott sajt",
-						"description": "Lé, vőlegény",
-						"price": 1420
-					},
-					{
-						"id": 20,
-						"name": "Valami",
-						"description": "Lé, hús",
-						"price": 1120
-					}
-				]
-			}
-		],
-		"img": "1600x900.png",
-		"rating": 3,
-		"open": "9:30",
-		"close": "22:00",
-		"isOpen": false
-	}
+  {
+    "id": 1,
+    "name": "Pizzaboy",
+    "categories": [
+      {
+        "name": "Levesek",
+        "products": [
+          {
+            "id": 1,
+            "name": "Vőlegény leves",
+            "description": "Lé, vőlegény",
+            "price": 1520
+          },
+          {
+            "id": 2,
+            "name": "Húsleves",
+            "description": "Lé, hús",
+            "price": 1320
+          }
+        ]
+      },
+      {
+        "name": "Előételek",
+        "products": [
+          {
+            "id": 3,
+            "name": "Rántott sajt",
+            "description": "Lé, vőlegény",
+            "price": 1420
+          },
+          {
+            "id": 4,
+            "name": "Valami",
+            "description": "Lé, hús",
+            "price": 1120
+          }
+        ]
+      }
+    ],
+    "img": "1600x900.png",
+    "rating": 1,
+    "open": "16:00",
+    "close": "16:17",
+    "isOpen": false
+  },
+  {
+    "id": 2,
+    "name": "Flekken",
+    "categories": [
+      {
+        "name": "Levesek",
+        "products": [
+          {
+            "id": 5,
+            "name": "Vőlegény leves",
+            "description": "Lé, vőlegény",
+            "price": 1520
+          },
+          {
+            "id": 6,
+            "name": "Húsleves",
+            "description": "Lé, hús",
+            "price": 1320
+          }
+        ]
+      },
+      {
+        "name": "Előételek",
+        "products": [
+          {
+            "id": 7,
+            "name": "Rántott sajt",
+            "description": "Lé, vőlegény",
+            "price": 1420
+          },
+          {
+            "id": 8,
+            "name": "Valami",
+            "description": "Lé, hús",
+            "price": 1120
+          }
+        ]
+      }
+    ],
+    "img": "1600x900.png",
+    "rating": 2,
+    "open": "7:30",
+    "close": "21:30",
+    "isOpen": false
+  },
+  {
+    "id": 3,
+    "name": "Aranygaluska",
+    "categories": [
+      {
+        "name": "Levesek",
+        "products": [
+          {
+            "id": 9,
+            "name": "Vőlegény leves",
+            "description": "Lé, vőlegény",
+            "price": 1520
+          },
+          {
+            "id": 10,
+            "name": "Húsleves",
+            "description": "Lé, hús",
+            "price": 1320
+          }
+        ]
+      },
+      {
+        "name": "Előételek",
+        "products": [
+          {
+            "id": 11,
+            "name": "Rántott sajt",
+            "description": "Lé, vőlegény",
+            "price": 1420
+          },
+          {
+            "id": 12,
+            "name": "Valami",
+            "description": "Lé, hús",
+            "price": 1120
+          }
+        ]
+      }
+    ],
+    "img": "1600x900.png",
+    "rating": 4,
+    "open": "8:30",
+    "close": "22:30",
+    "isOpen": false
+  },
+  {
+    "id": 4,
+    "name": "Apolló étterem",
+    "categories": [
+      {
+        "name": "Levesek",
+        "products": [
+          {
+            "id": 13,
+            "name": "Vőlegény leves",
+            "description": "Lé, vőlegény",
+            "price": 1520
+          },
+          {
+            "id": 14,
+            "name": "Húsleves",
+            "description": "Lé, hús",
+            "price": 1320
+          }
+        ]
+      },
+      {
+        "name": "Előételek",
+        "products": [
+          {
+            "id": 15,
+            "name": "Rántott sajt",
+            "description": "Lé, vőlegény",
+            "price": 1420
+          },
+          {
+            "id": 16,
+            "name": "Valami",
+            "description": "Lé, hús",
+            "price": 1120
+          }
+        ]
+      }
+    ],
+    "img": "1600x900.png",
+    "rating": 3,
+    "open": "9:30",
+    "close": "22:00",
+    "isOpen": false
+  },
+  {
+    "id": 5,
+    "name": "Főnix pizzéria",
+    "categories": [
+      {
+        "name": "Levesek",
+        "products": [
+          {
+            "id": 17,
+            "name": "Vőlegény leves",
+            "description": "Lé, vőlegény",
+            "price": 1520
+          },
+          {
+            "id": 18,
+            "name": "Húsleves",
+            "description": "Lé, hús",
+            "price": 1320
+          }
+        ]
+      },
+      {
+        "name": "Előételek",
+        "products": [
+          {
+            "id": 19,
+            "name": "Rántott sajt",
+            "description": "Lé, vőlegény",
+            "price": 1420
+          },
+          {
+            "id": 20,
+            "name": "Valami",
+            "description": "Lé, hús",
+            "price": 1120
+          }
+        ]
+      }
+    ],
+    "img": "1600x900.png",
+    "rating": 3,
+    "open": "9:30",
+    "close": "22:00",
+    "isOpen": false
+  }
 ]

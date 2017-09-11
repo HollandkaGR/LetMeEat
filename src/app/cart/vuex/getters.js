@@ -1,9 +1,23 @@
+// import { groupBy } from 'lodash'
+
 export const products = (state) => {
   return state.products
 }
 
 export const getCart = (state) => {
   return state.cart
+}
+
+export const getCartGroupByRestaurant = (state) => {
+  let returnObj = {}
+  state.cart.map(item => {
+    let restName = item.restaurant
+    returnObj = Object.assign({
+      restaurant: restName,
+      products: returnObj.products.push(item.product)
+    })
+  })
+  console.log(returnObj)
 }
 
 export const cartItemCount = (state) => {

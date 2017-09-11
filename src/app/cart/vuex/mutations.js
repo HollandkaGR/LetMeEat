@@ -8,7 +8,7 @@ export const setCart = (state, items) => {
   state.cart = items
 }
 
-export const addToCart = (state, {product, quantity}) => {
+export const addToCart = (state, {restaurant, product, quantity}) => {
   const exists = state.cart.find((item) => {
     return item.product.id === product.id
   })
@@ -18,6 +18,7 @@ export const addToCart = (state, {product, quantity}) => {
   }
   else {
     state.cart.push({
+      restaurant,
       product,
       quantity
     })

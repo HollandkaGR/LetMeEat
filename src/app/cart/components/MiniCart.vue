@@ -4,18 +4,21 @@
       <q-icon name="shopping_cart"/>
         {{ cartItemCount }}
       <q-tooltip :delay="500">Kosár tartalma {{ cartItemCount }} termék</q-tooltip>
-      <q-popover ref="miniCartPopover" anchor="bottom right" self="top right">
-        <q-list v-if="getCart.length > 0" style="min-width: 350px">
+      <q-popover ref="miniCartPopover" anchor="bottom right" self="top right" max-height="500px">
+        <q-list v-if="Object.keys(getCartGroupByRestaurant).length > 0" style="min-width: 350px">
           <q-list-header>A kosár tartalma:</q-list-header>
-          <q-item multiline inset-separator
-            v-for="item in getCart"
+          <q-list v-for="restaurant in getCartGroupByRestaurant" :key="restaurant" class="bg-light-green-1 no-padding">
+            <div class="restName text-white bg-green">{{ restaurant[0].restaurant }}</div>
+            <q-item multiline inset-separator
+            v-for="item in restaurant"
             :key="item"
             class="row items-center justify-between"
-          >
+            >
             <q-item-main class="col-9">
               <q-item-tile label>{{item.product.name}}</q-item-tile>
               <q-item-tile sublabel lines="2">
-                {{ item.quantity }} adag
+                {{ item.quantity }} adag<br>
+                Egységár: {{ item.product.price }},-
               </q-item-tile>
             </q-item-main>
             <div class="rightSide row justify-center col-3">
@@ -28,15 +31,23 @@
               <q-btn flat small color="green-8" class="changeQuantity no-padding col-4" @click="incQuantity(item.product)">
                 <q-icon name="add" size="20px"/>
               </q-btn>
-              <div class="productTotal fit text-center bg-brown-4 strong text-white">{{ item.product.price }},-</div>
+              <div class="productTotal fit text-center bg-brown-4 strong text-white">{{ item.product.price * item.quantity }},-</div>
             </div>
-          </q-item>
-          <q-item-separator/>
+            </q-item>
+             <q-item class="col justify-between">
+                <q-item-side>
+                  Részösszeg
+                </q-item-side>
+                <q-item-main class="text-center col-3 bg-green-8 strong text-white">
+                  {{ cartTotal }},-
+                </q-item-main>
+              </q-item>
+          </q-list>
           <q-item class="col justify-between">
             <q-item-side>
               Összesen
             </q-item-side>
-            <q-item-main class="text-center col-3 bg-">
+            <q-item-main class="text-center col-3 bg-green-8 strong text-white">
               {{ cartTotal }},-
             </q-item-main>
           </q-item>
@@ -56,7 +67,7 @@
     computed: {
       ...mapGetters({
         cartItemCount: 'cart/cartItemCount',
-        getCart: 'cart/getCart',
+        getCartGroupByRestaurant: 'cart/getCartGroupByRestaurant',
         cartTotal: 'cart/cartTotal'
       })
     },
@@ -93,6 +104,9 @@
 <style lang="stylus" scoped>
   @import '~variables'
   
+  .restName
+    padding: 8px 16px
+
   .changeQuantity
     font-size 22px
 
