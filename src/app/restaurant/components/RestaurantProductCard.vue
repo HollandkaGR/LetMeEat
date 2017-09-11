@@ -4,7 +4,7 @@
         <div class="prodName col-8">
           {{ product.name }}  
         </div>
-        <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3">{{ product.price }},-</div>
+        <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3">{{ convertCurrency(product.price) }},-</div>
     </div>
     <div class="prodBody row col-md-12 col-lg-9">
       <div class="prodDetails">
@@ -30,7 +30,9 @@
 </template>
 
 <script>
+  import { currencyFormat } from 'src/helpers'
   import { mapGetters, mapActions } from 'vuex'
+
   export default {
     components: {
     },
@@ -58,6 +60,9 @@
       },
       changeCounter: function (value) {
         this.prodCounter = this.prodCounter + value
+      },
+      convertCurrency: function (value) {
+        return currencyFormat(value)
       }
     }
   }

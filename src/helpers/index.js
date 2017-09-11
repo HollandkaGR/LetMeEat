@@ -24,6 +24,11 @@ export const showPopup = (message, type) => {
   return new Popup(message, type)
 }
 
+// Az értékeket jelenítjük meg - 'de-DE' = . szeparátor
+export const currencyFormat = value => {
+  return new Intl.NumberFormat('de-DE').format(value).replace('.', ' ')
+}
+
 export const productCounter = () => {
   let resultArray = []
   for (var i = 1; i <= 5; i++) {

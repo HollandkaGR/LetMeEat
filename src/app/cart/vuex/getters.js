@@ -1,5 +1,3 @@
-// import { groupBy } from 'lodash'
-
 export const products = (state) => {
   return state.products
 }
@@ -12,12 +10,23 @@ export const getCartGroupByRestaurant = (state) => {
   let returnObj = {}
   state.cart.map(item => {
     let restName = item.restaurant
-    returnObj = Object.assign({
-      restaurant: restName,
-      products: returnObj.products.push(item.product)
-    })
+    let newObj = {
+      name: restName,
+      products: [{
+        product: item.product,
+        quantity: item.quantity
+      }],
+      subTotal: item.product.price * item.quantity
+    }
+    if (!returnObj.hasOwnProperty(restName)) {
+      returnObj[restName] = newObj
+    }
+    else {
+      returnObj[restName].products.push(newObj.products[0])
+      returnObj[restName].subTotal += newObj.subTotal
+    }
   })
-  console.log(returnObj)
+  return returnObj
 }
 
 export const cartItemCount = (state) => {
