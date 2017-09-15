@@ -4,17 +4,23 @@
       <q-icon name="shopping_cart"/>
         {{ cartItemCount }}
       <q-tooltip :delay="500">Kosár tartalma {{ cartItemCount }} termék</q-tooltip>
-      <!-- Popover a MiniCartra kattintva -->
-      <q-popover ref="miniCartPopover" anchor="bottom right" self="top right" max-height="500px">
-        <!-- Csak akkor van tartalom, ha van valami a kosárban -->
-        <q-list v-if="Object.keys(getCartGroupByRestaurant).length > 0" style="min-width: 350px">
 
-          <q-list-header style="font-size: 20px;" class="text-dark text-center">A kosár tartalma</q-list-header>
+      <!-- Popover a MiniCartra kattintva -->
+      <q-popover ref="miniCartPopover" anchor="bottom right" self="top right" max-height="550px" class="bg-light">
+
+        <!-- Csak akkor van tartalom, ha van valami a kosárban -->
+        <q-list v-if="oneRestInCart" style="min-width: 350px" class="no-border relative-position no-padding">
+
+          <q-list-header style="font-size: 20px;" class="text-black bg-brown-2 text-center no-padding borderBottom">
+            A kosár tartalma
+          </q-list-header>
+
+          <q-scroll-area style="width: 100%; height: 400px;" class="restScrollArea">
 
           <!-- A kosárban éttermenként jelenik meg a rendelés -->
           <q-list v-for="restaurant in getCartGroupByRestaurant" :key="restaurant" class="bg-light-green-1 no-padding">
             
-            <div class="restName text-white bg-green">{{ restaurant.name }}</div>
+            <div class="restName text-black bg-green strong">{{ restaurant.name }}</div>
 
             <q-item 
               multiline inset-separator
@@ -29,38 +35,45 @@
                   Egységár: {{ convertCurrency(item.product.price) }},-
                 </q-item-tile>
               </q-item-main>
+
+              <!-- A termékkel kapcsolatos műveletek és összegek -->
               <div class="rightSide row justify-center col-3">
                 <q-btn flat small color="red-8" :disable="item.quantity === 1" class="changeQuantity no-padding col-4" @click="subQuantity(item.product.id)">
                   <q-icon name="remove" size="20px"/>
                 </q-btn>
                 <q-btn flat small color="dark" class="no-padding col-4" @click="subQuantity(item.product.id, item.quantity)">
-                  <q-icon name="not_interested" size="20px"/>
+                  <q-icon name="remove_shopping_cart" size="20px"/>
                 </q-btn>
                 <q-btn flat small color="green-8" class="changeQuantity no-padding col-4" @click="incQuantity(item.product)">
                   <q-icon name="add" size="20px"/>
                 </q-btn>
-                <div class="productTotal fit text-center bg-brown-4 strong text-white">
+                <div class="productTotal fit text-center bg-brown-4 strong text-white shadow-3">
                   {{ convertCurrency(item.product.price * item.quantity) }},-
                 </div>
               </div>
+
             </q-item>
-            <q-item v-if="Object.keys(getCartGroupByRestaurant).length > 1" class="col justify-between bg-dark">
-              <q-item-side class="text-light strong">
+            <q-item v-if="Object.keys(getCartGroupByRestaurant).length > 1" class="col justify-between bg-grey-4">
+              <q-item-side class="text-dark strong">
                 Részösszeg
               </q-item-side>
-              <q-item-main class="text-center col-3 bg-light strong text-dark">
+              <q-item-main class="text-center col-3 bg-light strong text-dark shadow-4">
                 {{ convertCurrency(restaurant.subTotal) }},-
               </q-item-main>
             </q-item>
           </q-list>
-          <q-item class="col justify-between">
-            <q-item-side>
+          </q-scroll-area>
+          <q-item class="totalPrice col justify-between bg-brown-2 borderTop borderBottom">
+            <q-item-side class="text-dark strong">
               Összesen
             </q-item-side>
-            <q-item-main class="text-center col-3 bg-dark strong text-white">
+            <q-item-main class="text-center col-3 bg-light strong text-dark shadow-3">
               {{ convertCurrency(cartTotal) }},-
             </q-item-main>
           </q-item>
+          <div class="row orderBtn">
+            <q-btn color="green" class="col-6 offset-3 text-black strong glossy">Rendelés</q-btn>
+          </div>
         </q-list>
         <!-- Ha a kosár üres -->
         <div v-else class="emptyCartMsg">
@@ -82,7 +95,10 @@
         cartItemCount: 'cart/cartItemCount',
         getCartGroupByRestaurant: 'cart/getCartGroupByRestaurant',
         cartTotal: 'cart/cartTotal'
-      })
+      }),
+      oneRestInCart: function () {
+        return Object.keys(this.getCartGroupByRestaurant).length > 1
+      }
     },
     methods: {
       ...mapActions({
@@ -120,6 +136,12 @@
 <style lang="stylus" scoped>
   @import '~variables'
   
+  .restScrollArea
+    padding 5px
+
+  .restWrapper
+    border 1px solid black
+
   .restName
     padding: 8px 16px
 
@@ -134,4 +156,17 @@
     padding 10px
     background $red-8
     color white
+    
+  .borderBottom
+    border-bottom 2px solid $red
+  .borderTop
+    border-top 2px solid $red
+    
+  .totalPrice
+    height 40px
+    
+  .orderBtn
+    margin: 5px 0
+    height 40px
+
 </style>
