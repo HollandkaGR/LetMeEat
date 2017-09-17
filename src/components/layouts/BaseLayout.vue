@@ -5,86 +5,133 @@
     view="lHr Lpr lFr"
     :left-class="{'bg-light': true}"
     >
-    <q-toolbar slot="header" color="transparent" class="glossy">
-      <q-btn
-      flat
-      @click="$refs.layout.toggleLeft()"
-      color="black"
-      >
-      <q-icon name="menu" />
-    </q-btn>
-    <q-toolbar-title>
-      Let Me Eat
-      <div slot="subtitle">Ha nem akarod a véletlenre bízni</div>
-    </q-toolbar-title>
-    <!-- Qtabot használunk -->
-
-    <q-tabs inverted color="white">
-      <q-route-tab
-        icon="home"
-        label="Főoldal"
-        :to="{ name: 'index' }"
-        exact
-        slot="title"
-      >
-      </q-route-tab>
-      <q-route-tab
-        icon="search"
-        label="Éttermek"
-        :to="{ name: 'restaurants' }"
-        exact
-        slot="title"
-      >
-      </q-route-tab>
-      <q-route-tab
-        v-if="!user.authenticated"
-        icon="account_circle"
-        label="Bejelentkezés"
-        :to="{ name: 'login' }"
-        exact
-        slot="title"
-      >
-      </q-route-tab>
-      <q-route-tab
+      <q-toolbar slot="header" color="brown-2" class="row justify-between fixed-top">
+        <q-btn
         v-if="user.authenticated"
-        icon="playlist_add_check"
-        label="Rendeléseim"
-        :to="{ name: 'orders' }"
-        exact
-        slot="title"
-      >
-      </q-route-tab>
-      <q-route-tab
-        v-if="user.authenticated"
-        icon="shopping_cart"
-        label="Kosár"
-        :to="{ name: 'cart' }"
-        exact
-        slot="title"
-      >
-      </q-route-tab>
-      <q-tab
-        v-if="user.authenticated"
-        icon="exit_to_app"
-        slot="title"
-        label="Kijelentkezés"
-        @click="tryLogout"
-      />
-    </q-tabs>
-  </q-toolbar>
+        flat
+        @click="$refs.layout.toggleLeft()"
+        color="black"
+        >
+          <q-icon name="menu"/>
+        </q-btn>
+        <q-toolbar-title class="gt-sm text-brown-8">
+          Let Me Eat
+          <div slot="subtitle" class="strong">Az éhség nagy úr</div>
+        </q-toolbar-title>
+        <!-- Qtabot használunk -->
 
+        <q-tabs inverted color="brown-8" class="gt-sm">
+          <q-route-tab
+            icon="home"
+            label="Főoldal"
+            :to="{ name: 'index' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
+          <q-route-tab
+            icon="search"
+            label="Éttermek"
+            :to="{ name: 'restaurants' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
+          <q-route-tab
+            v-if="!user.authenticated"
+            icon="account_circle"
+            label="Bejelentkezés"
+            :to="{ name: 'login' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
+          <q-route-tab
+            v-if="user.authenticated"
+            icon="playlist_add_check"
+            label="Rendeléseim"
+            :to="{ name: 'orders' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
+          <q-route-tab
+            v-if="user.authenticated"
+            icon="shopping_cart"
+            label="Kosár"
+            :to="{ name: 'cart' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
+          <q-tab
+            v-if="user.authenticated"
+            icon="exit_to_app"
+            slot="title"
+            label="Kijelentkezés"
+            @click="tryLogout"
+          />
+        </q-tabs>
 
-  <div slot="left">
-    <q-side-link tag="a" item :to="{ name: 'login' }" exact highlight>
-      <q-item-main label="Bejelentkezés" />
-    </q-side-link>
-    <q-side-link item :to="{ name: 'restaurants' }">
-      <q-item-main label="Éttermek" />
-    </q-side-link>
+        <q-tabs inverted color="white" class="lt-md mobileMenu col">
+          <q-route-tab
+            icon="home"
+            :to="{ name: 'index' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
+          <q-route-tab
+            icon="search"
+            :to="{ name: 'restaurants' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
+          <q-route-tab
+            v-if="!user.authenticated"
+            icon="account_circle"
+            :to="{ name: 'login' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
+          <q-route-tab
+            v-if="user.authenticated"
+            icon="playlist_add_check"
+            :to="{ name: 'orders' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
+          <q-route-tab
+            v-if="user.authenticated"
+            icon="shopping_cart"
+            :to="{ name: 'cart' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
+          <q-tab
+            v-if="user.authenticated"
+            icon="exit_to_app"
+            slot="title"
+            @click="tryLogout"
+          />
+        </q-tabs>
+      </q-toolbar>
+
+      <div v-if="user.authenticated" slot="left">
+        <q-side-link tag="a" item :to="{ name: 'login' }" exact highlight>
+          <q-item-main label="Bejelentkezés" />
+        </q-side-link>
+        <q-side-link item :to="{ name: 'restaurants' }">
+          <q-item-main label="Éttermek" />
+        </q-side-link>
+      </div>
+      <router-view class="layout-padding baseMargin"/>
+    </q-layout>
   </div>
-  <router-view class="layout-padding"/>
-</q-layout>
-</div>
 </template>
 
 <script>
@@ -149,3 +196,8 @@
     }
   }
 </script>
+
+<style lang="stylus" scoped>
+  .baseMargin
+    margin-top 80px
+</style>

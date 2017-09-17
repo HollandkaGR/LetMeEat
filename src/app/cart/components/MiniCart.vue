@@ -9,7 +9,7 @@
       <q-popover ref="miniCartPopover" anchor="bottom right" self="top right" max-height="550px" class="bg-light">
 
         <!-- Csak akkor van tartalom, ha van valami a kosárban -->
-        <q-list v-if="oneRestInCart" style="min-width: 350px" class="no-border relative-position no-padding">
+        <q-list v-if="isRestInCart" style="min-width: 350px" class="no-border relative-position no-padding">
 
           <q-list-header style="font-size: 20px;" class="text-black bg-brown-2 text-center no-padding borderBottom">
             A kosár tartalma
@@ -53,7 +53,7 @@
               </div>
 
             </q-item>
-            <q-item v-if="Object.keys(getCartGroupByRestaurant).length > 1" class="col justify-between bg-grey-4">
+            <q-item v-if="moreRestInCart" class="col justify-between bg-grey-4">
               <q-item-side class="text-dark strong">
                 Részösszeg
               </q-item-side>
@@ -96,8 +96,14 @@
         getCartGroupByRestaurant: 'cart/getCartGroupByRestaurant',
         cartTotal: 'cart/cartTotal'
       }),
-      oneRestInCart: function () {
+      moreRestInCart: function () {
         return Object.keys(this.getCartGroupByRestaurant).length > 1
+      },
+      oneRestInCart: function () {
+        return Object.keys(this.getCartGroupByRestaurant).length === 1
+      },
+      isRestInCart: function () {
+        return Object.keys(this.getCartGroupByRestaurant).length > 0
       }
     },
     methods: {
@@ -158,9 +164,9 @@
     color white
     
   .borderBottom
-    border-bottom 2px solid $red
+    border-bottom 2px solid $dark
   .borderTop
-    border-top 2px solid $red
+    border-top 2px solid $dark
     
   .totalPrice
     height 40px
