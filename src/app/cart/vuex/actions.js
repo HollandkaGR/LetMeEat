@@ -30,8 +30,8 @@ export const addProductToCart = ({ commit, dispatch }, {restaurant, product, qua
   // })
 }
 
-export const removeProductFromCart = ({ commit, dispatch }, {productId, quantity}) => {
-  return commit('removeProductFromCart', {productId, quantity})
+export const removeProductFromCart = ({ commit, dispatch }, {restaurant, productId, quantity}) => {
+  return commit('removeProductFromCart', {restaurant, productId, quantity})
 
   // return axios.delete('/cart/' + productId).catch(() => {
   //   dispatch('getCart')

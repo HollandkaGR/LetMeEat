@@ -48,7 +48,7 @@
       }),
       addToCart: function () {
         this.addProductToCart({
-          restaurant: this.getSelectedEtterem.name,
+          restaurant: this.getSelectedEtterem,
           product: this.product,
           quantity: this.prodCounter
         })
