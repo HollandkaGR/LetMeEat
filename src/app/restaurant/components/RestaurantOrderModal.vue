@@ -1,5 +1,5 @@
 <template>
-  <q-modal ref="orderModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}" @close="modalClosed">
+  <q-modal ref="orderModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}" @close="modalClosed" noBackdropDismiss>
     <q-modal-layout>
       <q-toolbar slot="header" color="dark">
         <q-btn flat @click="closeModal">
@@ -16,8 +16,13 @@
       </q-toolbar>
 
       <div class="layout-padding">
-        <div class="restName text-brown-8 thin-paragraph shadow-3 bg-brown-2">{{ etterem.name }} kínálata</div>
+        <div class="restName text-brown-8 thin-paragraph shadow-3 bg-brown-2 text-center">
+          {{ etterem.name }} kínálata
+        </div>
         <!-- Ha nincs keresés 3 karakter hosszan, megjelenítjük a kategóriákat -->
+        <div v-if="!etterem.isOpen" class="text-center bg-red-10 text-white strong restIsClosed">
+          NYITÁS: {{etterem.open}}
+        </div>
         <div v-if="productSearch.length < 3">
           <q-list separator v-for="kategoria in etterem.categories" :key="kategoria" class="br-5 no-padding categoryList">
             <collapsible :kategoria="kategoria"></collapsible>
@@ -102,6 +107,12 @@
       },
       modalClosed: function () {
         this.setSelectedEtterem({})
+        this.resetModal()
+      },
+      resetModal () {
+        if (this.isModalOpened) {
+          this.modalToggle()
+        }
       }
     }
   }
@@ -117,8 +128,13 @@
   
   .restName
     font-size 3rem
-    margin 0 -10px 10px
+    margin 0 -8px 8px
     padding 5px 10px
+
+  .restIsClosed
+    height 40px
+    line-height 40px
+    font-size 25px
 
   .categoryList
     margin 10px 0

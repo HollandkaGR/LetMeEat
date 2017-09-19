@@ -8,49 +8,49 @@
     class="row wrap no-gutter"
     duration="250"
     >
-    <div v-for="etterem in filteredEttermek" :key="etterem.id" class="col-sm-12 col-lg-6 col-xl-4 row" style="padding:15px;">
-      <q-card class="col-12 column justify-between shadow-15 no-margin">
-        <q-card-media overlay-position="full">
-          <img :src="'statics/' + etterem.img">
-        </q-card-media>
-        <q-card-title slot="overlay">
-          <span class="text-bold block" style="font-size: 22px; letter-spacing:1.5px;margin-bottom: 10px;">{{ etterem.name }}</span>
-          <div slot="subtitle">
-            <div>
-              <q-rating v-model="etterem.rating" size="14px" color="green" :max="5" @change="rateChanged(etterem.id)" />
-              <q-chip small color="green" class="text-black">{{ getStar(etterem.rating) }}</q-chip>
+      <div v-for="etterem in filteredEttermek" :key="etterem.id" class="col-sm-12 col-lg-6 col-xl-4 row" style="padding:15px;">
+        <q-card class="col-12 column justify-between shadow-15 no-margin">
+          <q-card-media overlay-position="full">
+            <img :src="'statics/' + etterem.img">
+          </q-card-media>
+          <q-card-title slot="overlay">
+            <span class="text-bold block" style="font-size: 22px; letter-spacing:1.5px;margin-bottom: 10px;">{{ etterem.name }}</span>
+            <div slot="subtitle">
+              <div>
+                <q-rating v-model="etterem.rating" size="14px" color="green" :max="5" @change="rateChanged(etterem.id)" />
+                <q-chip small color="green" class="text-black">{{ getStar(etterem.rating) }}</q-chip>
+              </div>
             </div>
-          </div>
-        </q-card-title>
-        <q-card-separator />
-        <q-card-main class="row justify-around xs-gutter autoFill">
-          <div v-for="kategoria in etterem.categories" :key="kategoria" class="col">
-            <q-btn  color="brown-5 full-width" outline small>
-              {{ kategoria.name }}
+          </q-card-title>
+          <q-card-separator />
+          <q-card-main class="row justify-around xs-gutter autoFill">
+            <div v-for="kategoria in etterem.categories" :key="kategoria" class="col">
+              <q-btn  color="brown-5 full-width" outline small>
+                {{ kategoria.name }}
+              </q-btn>
+            </div>
+          </q-card-main>
+          <q-card-separator />
+          <div class="row justify-between bg-dark text-bold text-black p10">
+            <div class="col-12 text-center uppercase text-light openText">Nyitvatartás</div>
+            <q-btn big class="col-md-12 col-lg-6 text-bold inset-shadow bg-white p10" v-bind:class="{ 'bg-red-7': !etterem.isOpen }">
+              {{etterem.open}} - {{etterem.close}}
+            </q-btn>
+            <q-btn
+            flat
+            big
+            glossy
+            class="bg-green-6 col-md-12 col-lg-6"
+            @click="checkRestIsOpen(etterem)"
+            style="padding: 5px 0;">
+            Kínálat
             </q-btn>
           </div>
-        </q-card-main>
-        <q-card-separator />
-        <div class="row justify-between bg-dark text-bold text-black p10">
-          <div class="col-12 text-center uppercase text-light openText">Nyitvatartás</div>
-          <q-btn big class="col-md-12 col-lg-6 text-bold inset-shadow bg-white p10" v-bind:class="{ 'bg-red-7': !etterem.isOpen }">
-            {{etterem.open}} - {{etterem.close}}
-          </q-btn>
-          <q-btn
-          flat
-          big
-          glossy
-          class="bg-green-6 col-md-12 col-lg-6"
-          @click="checkRestIsOpen(etterem)"
-          style="padding: 5px 0;">
-          Kínálat
-        </q-btn>
+        </q-card>
       </div>
-    </q-card>
+    </q-transition>
+    <restaurantOrderModal v-bind="{ 'etterem' : selectedRestaurant }"></restaurantOrderModal>
   </div>
-</q-transition>
-<restaurantOrderModal v-bind="{ 'etterem' : selectedRestaurant }"></restaurantOrderModal>
-</div>
 </template>
 
 <script>
@@ -80,7 +80,8 @@
     computed: {
       ...mapGetters({
         getEttermek: 'restaurant/getEttermek',
-        selectedRestaurant: 'restaurant/getSelectedEtterem'
+        selectedRestaurant: 'restaurant/getSelectedEtterem',
+        isModalOpened: 'restaurant/isModalOpened'
       })
     },
     watch: {
@@ -95,6 +96,11 @@
         setSelectedEtterem: 'restaurant/setSelectedEtterem',
         modalToggle: 'restaurant/modalToggle'
       }),
+      resetModal () {
+        if (this.isModalOpened) {
+          this.modalToggle()
+        }
+      },
       checkSearching () {
         if (this.searchingFor.trim().length > 2) {
           let filteredEttermek = this.ettermek.filter(etterem => {
@@ -167,17 +173,18 @@
     mounted () {
       showLoadingScreen()
       this.fetchEttermek().then(() => {
-        Loading.hide()
         this.ettermek = this.getEttermek
         this.checkSearching()
         this.checkIsOpen()
         setInterval(function () {
           this.checkIsOpen()
         }.bind(this), 10000)
+        Loading.hide()
       }).catch(error => {
         this.errors.push(error.message)
         Loading.hide()
       })
+      this.resetModal()
     }
   }
 </script>

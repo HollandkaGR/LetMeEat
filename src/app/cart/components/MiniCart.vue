@@ -9,7 +9,7 @@
       <q-popover ref="miniCartPopover" anchor="bottom right" self="top right" max-height="550px" class="bg-light">
 
         <!-- Csak akkor van tartalom, ha van valami a kosárban -->
-        <q-list v-if="oneRestInCart" style="min-width: 350px" class="no-border relative-position no-padding">
+        <q-list v-if="getRestNumber > 0" style="min-width: 350px" class="no-border relative-position no-padding">
 
           <q-list-header style="font-size: 20px;" class="text-black bg-brown-2 text-center no-padding borderBottom">
             A kosár tartalma
@@ -18,9 +18,9 @@
           <q-scroll-area style="width: 100%; height: 400px;" class="restScrollArea">
 
           <!-- A kosárban éttermenként jelenik meg a rendelés -->
-          <q-list v-for="restaurant in getCartGroupByRestaurant" :key="restaurant" class="bg-light-green-1 no-padding">
+          <q-list v-for="restaurant in getCart" :key="restaurant" class="bg-light-green-1 no-padding">
             
-            <div class="restName text-black bg-green strong">{{ restaurant.name }}</div>
+            <div class="restName text-black bg-green strong">{{ restaurant.restaurant.name }}</div>
 
             <q-item 
               multiline inset-separator
@@ -38,22 +38,25 @@
 
               <!-- A termékkel kapcsolatos műveletek és összegek -->
               <div class="rightSide row justify-center col-3">
-                <q-btn flat small color="red-8" :disable="item.quantity === 1" class="changeQuantity no-padding col-4" @click="subQuantity(item.product.id)">
+                <q-btn flat small color="red-8" :disable="item.quantity === 1" class="changeQuantity no-padding col-4" @click="subQuantity(restaurant.restaurant, item.product.id)">
                   <q-icon name="remove" size="20px"/>
                 </q-btn>
-                <q-btn flat small color="dark" class="no-padding col-4" @click="subQuantity(item.product.id, item.quantity)">
+
+                <q-btn flat small color="dark" class="no-padding col-4" @click="subQuantity(restaurant.restaurant, item.product.id, item.quantity)">
                   <q-icon name="remove_shopping_cart" size="20px"/>
                 </q-btn>
-                <q-btn flat small color="green-8" class="changeQuantity no-padding col-4" @click="incQuantity(item.product)">
+
+                <q-btn flat small color="green-8" class="changeQuantity no-padding col-4" @click="incQuantity(restaurant.restaurant, item.product)">
                   <q-icon name="add" size="20px"/>
                 </q-btn>
+
                 <div class="productTotal fit text-center bg-brown-4 strong text-white shadow-3">
                   {{ convertCurrency(item.product.price * item.quantity) }},-
                 </div>
               </div>
 
             </q-item>
-            <q-item v-if="Object.keys(getCartGroupByRestaurant).length > 1" class="col justify-between bg-grey-4">
+            <q-item v-if="getRestNumber > 1" class="col justify-between bg-grey-4">
               <q-item-side class="text-dark strong">
                 Részösszeg
               </q-item-side>
@@ -93,12 +96,10 @@
     computed: {
       ...mapGetters({
         cartItemCount: 'cart/cartItemCount',
-        getCartGroupByRestaurant: 'cart/getCartGroupByRestaurant',
-        cartTotal: 'cart/cartTotal'
-      }),
-      oneRestInCart: function () {
-        return Object.keys(this.getCartGroupByRestaurant).length > 1
-      }
+        getCart: 'cart/getCart',
+        cartTotal: 'cart/cartTotal',
+        getRestNumber: 'cart/getRestNumber'
+      })
     },
     methods: {
       ...mapActions({
@@ -106,19 +107,22 @@
         addProductToCart: 'cart/addProductToCart',
         removeProductFromCart: 'cart/removeProductFromCart'
       }),
-      incQuantity: function (product) {
+      incQuantity: function (restaurant, product) {
         this.addProductToCart({
+          restaurant,
           product: product,
           quantity: 1
         })
       },
-      subQuantity: function (id, quantity = 1) {
+      subQuantity: function (restaurant, productId, quantity = 1) {
         this.removeProductFromCart({
-          productId: id,
+          restaurant,
+          productId,
           quantity: quantity
         })
+          // Ha nem marad termék a kosárban bezárjuk a popovert
           .then(() => {
-            if (this.cartItemCount === 0) {
+            if (this.getRestNumber === 0) {
               this.$refs.miniCartPopover.close()
             }
           })
@@ -158,9 +162,9 @@
     color white
     
   .borderBottom
-    border-bottom 2px solid $red
+    border-bottom 2px solid $dark
   .borderTop
-    border-top 2px solid $red
+    border-top 2px solid $dark
     
   .totalPrice
     height 40px

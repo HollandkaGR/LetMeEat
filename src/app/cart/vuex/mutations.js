@@ -8,38 +8,14 @@ export const setCart = (state, items) => {
   state.cart = items
 }
 
-export const addToCart = (state, {restaurant, product, quantity}) => {
-  const exists = state.cart.find((item) => {
-    return item.product.id === product.id
-  })
-
-  if (exists) {
-    exists.quantity += quantity
-  }
-  else {
-    state.cart.push({
-      restaurant,
-      product,
-      quantity
-    })
-  }
-  SessionStorage.set('cart', state.cart)
+export const addToCart = (state, {cart}) => {
+  state.cart = Object.assign({}, state.cart, cart)
+  SessionStorage.set('cart', cart)
 }
 
-export const removeProductFromCart = (state, {productId, quantity}) => {
-  const exists = state.cart.find((item) => {
-    return item.product.id === productId
-  })
-
-  if (exists.quantity > quantity) {
-    exists.quantity -= quantity
-  }
-  else {
-    state.cart = state.cart.filter((item) => {
-      return item.product.id !== productId
-    })
-  }
-  SessionStorage.set('cart', state.cart)
+export const removeProductFromCart = (state, { cart }) => {
+  state.cart = Object.assign({}, cart)
+  SessionStorage.set('cart', cart)
 }
 
 export const clearCartMutation = (state) => {

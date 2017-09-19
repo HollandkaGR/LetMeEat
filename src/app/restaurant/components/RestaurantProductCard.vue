@@ -21,11 +21,6 @@
         Kosárba
       </q-btn>
     </div>
-    <div v-else class="col-lg-2">
-      <q-btn glossy class="text-bold bg-red-10 text-white fit">
-        Nyitás: {{getSelectedEtterem.open}}
-      </q-btn>
-    </div>
   </div>
 </template>
 
@@ -53,7 +48,7 @@
       }),
       addToCart: function () {
         this.addProductToCart({
-          restaurant: this.getSelectedEtterem.name,
+          restaurant: this.getSelectedEtterem,
           product: this.product,
           quantity: this.prodCounter
         })
