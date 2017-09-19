@@ -6,8 +6,16 @@ export const getCart = (state) => {
   return state.cart
 }
 
+export const getRestNumber = (state) => {
+  return Object.keys(state.cart).length
+}
+
 export const cartItemCount = (state) => {
-  return state.cart.length
+  let itemCount = 0
+  for (let etterem in state.cart) {
+    itemCount += state.cart[etterem].products.length
+  }
+  return itemCount
 }
 
 export const cartTotal = (state) => {

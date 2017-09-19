@@ -9,7 +9,7 @@
       <q-popover ref="miniCartPopover" anchor="bottom right" self="top right" max-height="550px" class="bg-light">
 
         <!-- Csak akkor van tartalom, ha van valami a kosárban -->
-        <q-list v-if="Object.keys(this.getCart).length > 0" style="min-width: 350px" class="no-border relative-position no-padding">
+        <q-list v-if="getRestNumber > 0" style="min-width: 350px" class="no-border relative-position no-padding">
 
           <q-list-header style="font-size: 20px;" class="text-black bg-brown-2 text-center no-padding borderBottom">
             A kosár tartalma
@@ -56,7 +56,7 @@
               </div>
 
             </q-item>
-            <q-item v-if="moreRestInCart" class="col justify-between bg-grey-4">
+            <q-item v-if="getRestNumber > 1" class="col justify-between bg-grey-4">
               <q-item-side class="text-dark strong">
                 Részösszeg
               </q-item-side>
@@ -97,28 +97,9 @@
       ...mapGetters({
         cartItemCount: 'cart/cartItemCount',
         getCart: 'cart/getCart',
-        cartTotal: 'cart/cartTotal'
-      }),
-      moreRestInCart: function () {
-        return Object.keys(this.getCart).length > 1
-      },
-      oneRestInCart: function () {
-        return Object.keys(this.getCart).length === 1
-      },
-      isRestInCart: function () {
-        console.log(Object.keys(this.getCart).length > 0)
-        if (Object.keys(this.getCart).length > 0) {
-          console.log('Van termék')
-          return true
-        }
-        else if (this.$refs.miniCartPopover) {
-          this.$refs.miniCartPopover.close()
-          return false
-        }
-        else {
-          return false
-        }
-      }
+        cartTotal: 'cart/cartTotal',
+        getRestNumber: 'cart/getRestNumber'
+      })
     },
     methods: {
       ...mapActions({
@@ -139,8 +120,9 @@
           productId,
           quantity: quantity
         })
+          // Ha nem marad termék a kosárban bezárjuk a popovert
           .then(() => {
-            if (this.cartItemCount === 0) {
+            if (this.getRestNumber === 0) {
               this.$refs.miniCartPopover.close()
             }
           })
