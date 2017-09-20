@@ -12,8 +12,10 @@ export const beforeEach = (to, from, next) => {
       })
       .catch(() => {
         // console.log('CheckAuthenticated failed')
-        localforage.setItem('intended', to.name)
-        next({name: 'login'})
+        if (!to.name === 'logout') {
+          localforage.setItem('intended', to.name)
+          next({name: 'login'})
+        }
       })
   }
   else if (hasIn(to.meta, 'guest') && to.meta.guest) {

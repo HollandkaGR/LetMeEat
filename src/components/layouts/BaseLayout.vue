@@ -122,12 +122,7 @@
       </q-toolbar>
 
       <div v-if="user.authenticated" slot="left">
-        <q-side-link tag="a" item :to="{ name: 'login' }" exact highlight>
-          <q-item-main label="Bejelentkezés" />
-        </q-side-link>
-        <q-side-link item :to="{ name: 'restaurants' }">
-          <q-item-main label="Éttermek" />
-        </q-side-link>
+        <left-drawer></left-drawer>
       </div>
       <router-view class="layout-padding baseMargin"/>
     </q-layout>
@@ -152,8 +147,8 @@
     QItemMain,
     QSideLink
   } from 'quasar'
-  import Cart from 'src/app/cart/components/MiniCart'
   import { mapGetters, mapActions } from 'vuex'
+  import LeftDrawer from './../partials/LeftDrawer'
   
   export default {
     name: 'index',
@@ -173,7 +168,7 @@
       QItemSide,
       QItemMain,
       QSideLink,
-      Cart
+      LeftDrawer
     },
     data: function () {
       return {

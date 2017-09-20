@@ -12,13 +12,20 @@ const router = new VueRouter({
   routes: [{
     path: '/',
     name: 'index',
-    component: load('Index')
+    component: load('Index'),
+    meta: {
+      label: 'Főoldal',
+      icon: 'home'
+    },
+    props: {default: true, logoutSuccess: false}
   },
   {
     path: '/bejelentkezes',
     name: 'login',
     component: load('Login'),
     meta: {
+      label: 'Bejelentkezés',
+      icon: 'account_circle',
       guest: true
     }
   },
@@ -27,6 +34,8 @@ const router = new VueRouter({
     name: 'restaurants',
     component: load('Home'),
     meta: {
+      label: 'Éttermek',
+      icon: 'search',
       guest: true
     }
   },
@@ -35,6 +44,8 @@ const router = new VueRouter({
     name: 'orders',
     component: load('Orders'),
     meta: {
+      label: 'Rendelések',
+      icon: 'playlist_add_check',
       needsAuth: true
     }
   },
@@ -43,6 +54,18 @@ const router = new VueRouter({
     name: 'cart',
     component: load('Cart'),
     meta: {
+      label: 'Kosár',
+      icon: 'shopping_cart',
+      needsAuth: true
+    }
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: load('Logout'),
+    meta: {
+      label: 'Kijelentkezés',
+      icon: 'exit_to_app',
       needsAuth: true
     }
   },
