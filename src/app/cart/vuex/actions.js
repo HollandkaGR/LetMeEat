@@ -57,9 +57,7 @@ export const addProductToCart = ({ commit, state }, {restaurant, product, quanti
         quantity
       })
     }
-
     etterem.subTotal += product.price * quantity
-    console.log('ok')
   }
   cart[identifyBy] = etterem
   return commit('addToCart', { cart })

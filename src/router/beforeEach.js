@@ -12,9 +12,12 @@ export const beforeEach = (to, from, next) => {
       })
       .catch(() => {
         // console.log('CheckAuthenticated failed')
-        if (!to.name === 'logout') {
+        if (to.name !== 'logout') {
           localforage.setItem('intended', to.name)
           next({name: 'login'})
+        }
+        else {
+          next({ name: 'index', params: { message: 'Ne is próbálkozz!' } })
         }
       })
   }

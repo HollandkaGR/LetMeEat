@@ -50,11 +50,9 @@ export const logout = ({ dispatch }) => {
     .post('/api/logout')
     .then(() => {
       dispatch('clearAuth')
-      router.replace({name: 'index', params: { logoutSuccess: true }})
     })
     .catch(() => {
       dispatch('clearAuth')
-      router.replace({name: 'index', params: { logoutSuccess: false }})
     })
 }
 

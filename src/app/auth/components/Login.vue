@@ -75,7 +75,7 @@
           },
           context: this
         }).then((user) => {
-          showPopup('Üdvözlünk ' + user.first_name + '!', 'info')
+          showPopup('Üdvözlünk ' + user.first_name + '!', 'success')
           Loading.hide()
         }).catch(() => {
           Loading.hide()

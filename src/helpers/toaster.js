@@ -4,7 +4,7 @@ export class Popup {
   constructor (message, type) {
     this.options = {
       html: 'Nincs lekezelve',
-      icon: 'alarm_add',
+      icon: 'feedback',
       timeout: 2500,
       color: 'white',
       bgColor: 'black',
@@ -19,13 +19,19 @@ export class Popup {
 
   createPopup () {
     switch (this.type) {
-      case 'info': {
+      case 'success':
         this.options.icon = 'done'
         this.options.bgColor = '#388e3c'
         this.options.color = 'white'
         this.options.button.color = 'white'
         break
-      }
+
+      case 'warning':
+        this.options.icon = 'done'
+        this.options.bgColor = '#388e3c'
+        this.options.color = 'white'
+        this.options.button.color = 'white'
+        break
     }
 
     return Toast.create(this.options)
