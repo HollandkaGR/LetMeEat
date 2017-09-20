@@ -9,6 +9,9 @@
     data () {
       return {
       }
+    },
+    mounted: function () {
+      console.log(this.$route.params)
     }
   }
 </script>
