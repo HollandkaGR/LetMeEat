@@ -1,9 +1,10 @@
 <template>
   <div>
     <q-btn color="white" class="relative-position text-dark">
-      <q-icon name="shopping_cart"/>
-        {{ cartItemCount }}
-      <q-tooltip :delay="500">Kosár tartalma {{ cartItemCount }} termék</q-tooltip>
+      <q-icon name="shopping_cart" size="24px" style="line-height: 36px;"/>
+      <span v-if="getRestNumber === 0">Üres</span>
+      <span v-else class="strong text-green-8">{{ convertCurrency(cartTotal) }},-</span>
+      <q-tooltip :delay="500">Kosárban lévő termékek értéke: {{ convertCurrency(cartTotal) }},-</q-tooltip>
 
       <!-- Popover a MiniCartra kattintva -->
       <q-popover ref="miniCartPopover" anchor="bottom right" self="top right" max-height="550px" class="bg-light">
@@ -21,41 +22,8 @@
           <q-list v-for="restaurant in getCart" :key="restaurant" class="bg-light-green-1 no-padding">
             
             <div class="restName text-black bg-green strong">{{ restaurant.restaurant.name }}</div>
+            <product :restaurant="restaurant"></product>
 
-            <q-item 
-              multiline inset-separator
-              v-for="item in restaurant.products"
-              :key="item"
-              class="row items-center justify-between"
-            >
-              <q-item-main class="col-9">
-                <q-item-tile label>{{item.product.name}}</q-item-tile>
-                <q-item-tile sublabel lines="2">
-                  {{ item.quantity }} adag<br>
-                  Egységár: {{ convertCurrency(item.product.price) }},-
-                </q-item-tile>
-              </q-item-main>
-
-              <!-- A termékkel kapcsolatos műveletek és összegek -->
-              <div class="rightSide row justify-center col-3">
-                <q-btn flat small color="red-8" :disable="item.quantity === 1" class="changeQuantity no-padding col-4" @click="subQuantity(restaurant.restaurant, item.product.id)">
-                  <q-icon name="remove" size="20px"/>
-                </q-btn>
-
-                <q-btn flat small color="dark" class="no-padding col-4" @click="subQuantity(restaurant.restaurant, item.product.id, item.quantity)">
-                  <q-icon name="remove_shopping_cart" size="20px"/>
-                </q-btn>
-
-                <q-btn flat small color="green-8" class="changeQuantity no-padding col-4" @click="incQuantity(restaurant.restaurant, item.product)">
-                  <q-icon name="add" size="20px"/>
-                </q-btn>
-
-                <div class="productTotal fit text-center bg-brown-4 strong text-white shadow-3">
-                  {{ convertCurrency(item.product.price * item.quantity) }},-
-                </div>
-              </div>
-
-            </q-item>
             <q-item v-if="getRestNumber > 1" class="col justify-between bg-grey-4">
               <q-item-side class="text-dark strong">
                 Részösszeg
@@ -75,7 +43,7 @@
             </q-item-main>
           </q-item>
           <div class="row orderBtn">
-            <q-btn color="green" class="col-6 offset-3 text-black strong glossy">Rendelés</q-btn>
+            <q-btn color="green" class="col-6 offset-3 text-black strong glossy" @click="goToOrders">Rendelés</q-btn>
           </div>
         </q-list>
         <!-- Ha a kosár üres -->
@@ -91,8 +59,12 @@
   import { currencyFormat } from 'src/helpers'
   import { mapGetters, mapActions } from 'vuex'
   import 'quasar-extras/animate/slideOutLeft.css'
+  import Product from 'src/app/cart/components/Product'
 
   export default {
+    components: {
+      Product
+    },
     computed: {
       ...mapGetters({
         cartItemCount: 'cart/cartItemCount',
@@ -103,32 +75,21 @@
     },
     methods: {
       ...mapActions({
-        fetchCart: 'cart/fetchCart',
-        addProductToCart: 'cart/addProductToCart',
-        removeProductFromCart: 'cart/removeProductFromCart'
+        fetchCart: 'cart/fetchCart'
       }),
-      incQuantity: function (restaurant, product) {
-        this.addProductToCart({
-          restaurant,
-          product: product,
-          quantity: 1
-        })
-      },
-      subQuantity: function (restaurant, productId, quantity = 1) {
-        this.removeProductFromCart({
-          restaurant,
-          productId,
-          quantity: quantity
-        })
-          // Ha nem marad termék a kosárban bezárjuk a popovert
-          .then(() => {
-            if (this.getRestNumber === 0) {
-              this.$refs.miniCartPopover.close()
-            }
-          })
+      goToOrders: function () {
+        this.$refs.miniCartPopover.close()
+        this.$router.replace({ name: 'cart' })
       },
       convertCurrency: function (value) {
         return currencyFormat(value)
+      }
+    },
+    watch: {
+      getRestNumber: function () {
+        if (this.getRestNumber === 0) {
+          this.$refs.miniCartPopover.close()
+        }
       }
     },
     mounted: function () {
