@@ -27,8 +27,8 @@ export class Popup {
         break
 
       case 'warning':
-        this.options.icon = 'done'
-        this.options.bgColor = '#388e3c'
+        this.options.icon = 'feedback'
+        this.options.bgColor = '#f4511e'
         this.options.color = 'white'
         this.options.button.color = 'white'
         break

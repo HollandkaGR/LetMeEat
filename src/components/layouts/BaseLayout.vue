@@ -124,7 +124,15 @@
       <div v-if="user.authenticated" slot="left">
         <left-drawer></left-drawer>
       </div>
-      <router-view class="layout-padding baseMargin"/>
+      <transition
+              name="transitions"
+              enter-active-class="animated fadeIn"
+              leave-active-class="animated fadeOut"
+              mode="out-in"
+              duration="200"
+      >
+        <router-view class="layout-padding baseMargin"/>
+      </transition>
     </q-layout>
   </div>
 </template>
@@ -149,6 +157,8 @@
   } from 'quasar'
   import { mapGetters, mapActions } from 'vuex'
   import LeftDrawer from './../partials/LeftDrawer'
+  import 'quasar-extras/animate/fadeIn.css'
+  import 'quasar-extras/animate/fadeOut.css'
   
   export default {
     name: 'index',

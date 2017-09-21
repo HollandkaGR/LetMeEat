@@ -17,7 +17,15 @@ export const beforeEach = (to, from, next) => {
           next({name: 'login'})
         }
         else {
-          next({ name: 'index', params: { message: 'Ne is próbálkozz!' } })
+          next({
+            name: 'index',
+            params: {
+              message: {
+                text: 'Be sem vagy jelentkezve!',
+                type: 'warning'
+              }
+            }
+          })
         }
       })
   }

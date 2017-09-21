@@ -12,12 +12,17 @@ export const setHttpToken = token => {
   window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
 }
 
-export const showLoadingScreen = () => {
-  return Loading.show({
+export const showLoadingScreen = (text) => {
+  Loading.show({
     spinner: QSpinnerFacebook,
     spinnerSize: 250,
-    spinnerColor: 'white'
+    spinnerColor: 'white',
+    message: text
   })
+}
+
+export const hideLoadingScreen = () => {
+  Loading.hide()
 }
 
 export const showPopup = (message, type) => {

@@ -36,14 +36,14 @@
 <script>
   'use strict'
   import { mapActions, mapGetters } from 'vuex'
-  import { Loading, QField, QInput, QTransition, QBtn, QSpinnerFacebook, Alert, QAlert } from 'quasar'
-  import { showPopup } from 'src/helpers'
+  import { QField, QInput, QTransition, QBtn } from 'quasar'
+  import { showPopup, showLoadingScreen, hideLoadingScreen } from 'src/helpers'
   import 'quasar-extras/animate/slideInUp.css'
   import 'quasar-extras/animate/bounceOutDown.css'
   
   export default {
     components: {
-      QField, QInput, QTransition, QBtn, QSpinnerFacebook, Loading, Alert, QAlert
+      QField, QInput, QTransition, QBtn
     },
     data () {
       return {
@@ -62,12 +62,7 @@
         tryLogin: 'auth/login'
       }),
       login: function () {
-        Loading.show({
-          spinner: QSpinnerFacebook,
-          spinnerSize: 250,
-          spinnerColor: 'white',
-          message: 'Bejelentkezés folyamatban'
-        })
+        showLoadingScreen('Bejelentkezés folyamatban...')
         this.tryLogin({
           payload: {
             email: this.email,
@@ -76,9 +71,9 @@
           context: this
         }).then((user) => {
           showPopup('Üdvözlünk ' + user.first_name + '!', 'success')
-          Loading.hide()
+          hideLoadingScreen()
         }).catch(() => {
-          Loading.hide()
+          hideLoadingScreen()
         })
       }
     }

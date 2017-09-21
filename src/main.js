@@ -16,6 +16,8 @@ localforage.config({
   storeName: 'quasar'
 })
 
+import 'src/helpers/axios'
+
 // Uncomment the following lines if you need IE11/Edge support
 // require(`quasar/dist/quasar.ie`)
 // require(`quasar/dist/quasar.ie.${__THEME}.css`)

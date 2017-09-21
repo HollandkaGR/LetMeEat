@@ -1,7 +1,6 @@
 <template>
   <div>
-    <div v-if="!logoutSuccess" class="bg-orange">Kijelentkezés...</div>
-    <div v-else class="bg-green">Kijelentkezés megtörtént.</div>
+    <div>Kijelentkezés...</div>
   </div>
 </template>
 
