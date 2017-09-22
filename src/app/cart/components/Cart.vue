@@ -17,6 +17,9 @@
               {{ convertCurrency(restaurant.subTotal) }},-
             </q-item-main>
           </q-item>
+          <q-item class="col bg-grey-4">
+            <order-desc :restId="restaurant.restaurant.id"></order-desc>
+          </q-item>
         </q-list>
         <q-item class="totalPrice col justify-between bg-brown-2 borderTop borderBottom">
           <q-item-side class="text-dark strong">
@@ -38,10 +41,14 @@
   import { currencyFormat } from 'src/helpers'
   import { mapGetters, mapActions } from 'vuex'
   import Product from 'src/app/cart/components/Product'
+  import OrderDesc from 'src/app/cart/components/OrderDesc'
 
   export default {
     components: {
-      Product
+      Product, OrderDesc
+    },
+    data () {
+      return {}
     },
     computed: {
       ...mapGetters({
@@ -66,7 +73,17 @@
 </script>
 
 <style lang="stylus" scoped>
+  @import '~variables'
   .restName
     padding: 8px 16px
+    
+  .borderBottom
+    border-bottom 2px solid $dark
+  .borderTop
+    border-top 2px solid $dark
+
+  .totalPrice
+    margin-top 30px
+    height 40px
 
 </style>

@@ -34,7 +34,8 @@ export const addProductToCart = ({ commit, state }, {restaurant, product, quanti
         product,
         quantity
       }],
-      subTotal: product.price * quantity
+      subTotal: product.price * quantity,
+      orderDesc: ''
     }
   // Ha van, akkor a productsoknál vizsgáljuk, hogy az adott termék már a kosárban van-e
   }
@@ -94,6 +95,12 @@ export const removeProductFromCart = ({ commit, state }, {restaurant, productId,
     }
   }
   return commit('removeProductFromCart', { cart })
+}
+
+export const setOrderDesc = ({commit, state}, {restId, orderDesc}) => {
+  let cart = state.cart
+  cart[restId].orderDesc = orderDesc
+  return commit('setOrderDesc', {cart})
 }
 
 export const clearCartAction = ({commit}) => {

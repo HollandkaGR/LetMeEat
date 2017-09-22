@@ -27,3 +27,11 @@ export const cartTotal = (state) => {
   }
   return total
 }
+
+export const getRestOrderDesc = (state) => {
+  let orderDescs = {}
+  for (let [k, v] of Object.entries(state.cart)) {
+    orderDescs[k] = v.orderDesc
+  }
+  return orderDescs
+}

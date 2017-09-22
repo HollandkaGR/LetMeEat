@@ -18,6 +18,11 @@ export const removeProductFromCart = (state, { cart }) => {
   SessionStorage.set('cart', cart)
 }
 
+export const setOrderDesc = (state, { cart }) => {
+  state.cart = Object.assign({}, cart)
+  SessionStorage.set('cart', cart)
+}
+
 export const clearCartMutation = (state) => {
   state.cart = []
 }

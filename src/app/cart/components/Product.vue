@@ -76,3 +76,8 @@
     }
   }
 </script>
+
+<style lang="stylus" scoped>
+  .rightSide
+    max-width 130px
+</style>
