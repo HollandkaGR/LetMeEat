@@ -4,11 +4,10 @@
     <q-field
         :count="maxChar"
         helper="Rendelkezésre álló karakterek"
-        class=""
-      >
-        <q-input v-model.lazy="currentDesc" @blur="descBlur" color="brown-8" placeholder="A rendeléssel kapcsolatos megjegyzés" :max-length="maxChar" type="textarea" class="orderDesc">
-        </q-input>
-      </q-field>
+    >
+      <q-input v-model.lazy="currentDesc" @blur="descBlur" color="brown-8" placeholder="A rendeléssel kapcsolatos megjegyzés" :max-length="maxChar" type="textarea" class="orderDesc">
+      </q-input>
+    </q-field>
   </div>
 </template>
 

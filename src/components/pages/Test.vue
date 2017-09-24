@@ -1,123 +1,39 @@
 <template>
-  <div class="layout-padding row justify-center">
-    <div style="width: 500px; max-width: 90vw;">
-      <p class="caption" style="margin-bottom: 40px">
-        These examples feature countries autocomplete.<br>
-        On desktop, Escape key closes the suggestions popover and you can navigate with keyboard arrow keys. Selection is made with either mouse/finger tap or by Enter key.
-      </p>
-
-      <q-search v-model="terms" placeholder="Start typing a country name">
-        <q-autocomplete @search="search" @selected="selected" />
-      </q-search>
-
-      <q-search inverted v-model="terms" placeholder="Start typing a country name">
-        <q-autocomplete @search="search" @selected="selected"  />
-      </q-search>
-
-      <p class="caption">Maximum of 2 results at a time</p>
-      <q-search inverted color="amber" v-model="terms">
-        <q-autocomplete
-        @search="search"
-        :max-results="2"
-        @selected="selected"
-        />
-      </q-search>
-
-      <p class="caption">Minimum 3 characters to trigger search</p>
-      <q-input color="amber" v-model="terms" placeholder="Type 'fre'">
-        <q-autocomplete
-        @search="search"
-        :min-characters="3"
-        @selected="selected"
-        />
-      </q-input>
-
-      <p class="caption">Custom debounce before triggering search</p>
-      <q-input color="amber" v-model="terms" placeholder="One second debounce">
-        <q-autocomplete
-        @search="search"
-        :debounce="1000"
-        @selected="selected"
-        />
-      </q-input>
-
-      <p class="caption">Static List</p>
-      <q-search inverted color="secondary" v-model="terms" placeholder="Featuring static data">
-        <q-autocomplete
-        :static-data="{field: 'value', list: countries}"
-        @selected="selected"
-        />
-      </q-search>
-
-      <p class="caption">Separator between results</p>
-      <q-search v-model="terms">
-        <q-autocomplete
-        separator
-        @search="search"
-        @selected="selected"
-        />
-      </q-search>
-    </div>
+  <div>
+    <div class="form-group" v-bind:class="{ 'form-group--error': $v.password.$error }">
+      <label class="form__label">Password</label>
+      <input class="form__input" v-model.trim="password" @input="$v.password.$touch()">
+    </div><span class="form-group__message" v-if="!$v.password.required">Password is required.</span><span class="form-group__message" v-if="!$v.password.minLength">Password must have at least {{ $v.password.$params.minLength.min }} letters.</span>
+    <div class="form-group" v-bind:class="{ 'form-group--error': $v.repeatPassword.$error }">
+      <label class="form__label">Repeat password</label>
+      <input class="form__input" v-model.trim="repeatPassword" @input="$v.repeatPassword.$touch()">
+    </div><span class="form-group__message" v-if="!$v.repeatPassword.sameAsPassword">Passwords must be identical.</span>
+    <pre>
+      password: {{ $v.password }}
+      repeatPassword: {{ $v.repeatPassword }}
+    </pre>
   </div>
 </template>
 
 <script>
-  import countries from 'src/statics/autocomplete.json'
+  import { validationMixin } from 'vuelidate'
+  import { required, sameAs, minLength } from 'vuelidate/lib/validators'
 
-  import {
-    QAutocomplete,
-    QSearch,
-    QInput,
-    uid,
-    filter,
-    Toast
-  } from 'quasar'
-
-  const icons = ['alarm', 'email', 'search', 'build', 'card_giftcard', 'perm_identity', 'receipt', 'schedule', 'speaker_phone', 'archive', 'weekend', 'battery_charging_full']
-  function getRandomIcon () {
-    return icons[Math.floor(Math.random() * icons.length)]
-  }
-  function getRandomStamp () {
-    if (Math.floor(Math.random() * 50) % 3 === 0) {
-      return `${Math.floor(Math.random() * 10)} min`
-    }
-  }
-  function getRandomSecondLabel () {
-    if (Math.floor(Math.random() * 50) % 4 === 0) {
-      return `UID: ${uid().substring(0, 8)}`
-    }
-  }
-  function parseCountries () {
-    return countries.map(country => {
-      return {
-        label: country,
-        sublabel: getRandomSecondLabel(),
-        icon: getRandomIcon(),
-        stamp: getRandomStamp(),
-        value: country
-      }
-    })
-  }
   export default {
-    components: {
-      QAutocomplete,
-      QSearch,
-      QInput
-    },
     data () {
       return {
-        terms: '',
-        countries: parseCountries()
+        password: '',
+        repeatPassword: ''
       }
     },
-    methods: {
-      search (terms, done) {
-        setTimeout(() => {
-          done(filter(terms, {field: 'value', list: parseCountries()}))
-        }, 1000)
+    mixins: [validationMixin],
+    validations: {
+      password: {
+        required,
+        minLength: minLength(6)
       },
-      selected (item) {
-        Toast.create(`Selected suggestion "${item.label}"`)
+      repeatPassword: {
+        sameAsPassword: sameAs('password')
       }
     }
   }

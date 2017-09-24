@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Csak akkor van tartalom, ha van valami a kosárban -->
-    <q-list v-if="getRestNumber > 0" style="min-width: 350px" class="no-border relative-position no-padding">
+    <q-list v-if="getRestNumber > 0" class="no-border relative-position no-padding">
 
       <!-- A kosárban éttermenként jelenik meg a rendelés -->
       <div v-for="restaurant in getCart" :key="restaurant" >
@@ -36,10 +36,9 @@
         </q-item-main>
       </q-item>
     </q-list>
-    <!-- Ha a kosár üres -->
-    <div v-else class="emptyCartMsg">
-      A kosár üres!
-    </div>
+    <q-stepper-navigation class="row justify-center">
+      <q-btn color="green-8" push @click="$emit('nextStep')">Cím megadása</q-btn>
+    </q-stepper-navigation>
   </div>
 </template>
 

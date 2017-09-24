@@ -4,19 +4,17 @@
     <div class="row">
       <div class="col-6">
         <q-stepper v-if="getRestNumber > 0" color="green-8" ref="orderStepper" vertical class="no-padding" selectedIcon="check">
+          
+          <!-- Az utolsó lehetőség a kosár módosítására -->
           <q-step default name="orderDescStep" :disable="orderSubmitted" title="Rendelés véglegesítése" subtitle="Megjegyzések rögzítése">
-            <cart class="col-6"></cart>
-            <q-stepper-navigation class="row justify-center">
-              <q-btn color="green-8" push @click="$refs.orderStepper.next()">Cím megadása</q-btn>
-            </q-stepper-navigation>
+            <cart @nextStep="nextStep"></cart>
           </q-step>
+
+          <!-- A szállítás címére vonatkozó komponens -->
           <q-step name="adressStep" :disable="orderSubmitted" title="Szállítási cím megadása" subtitle="Megjegyzés rögzítése">
-            <div v-for="n in 10">Step 2</div>
-            <q-stepper-navigation class="row justify-between">
-              <q-btn color="red-8" outline @click="$refs.orderStepper.previous()">Vissza</q-btn>
-              <q-btn color="green-8" push @click="$refs.orderStepper.next()">Cím rögzítése</q-btn>
-            </q-stepper-navigation>
+            <order-address @prevStep="prevStep" @nextStep="nextStep"></order-address>
           </q-step>
+          
           <q-step name="submitOrder" :disable="orderSubmitted" title="Rendelés küldése" subtitle="Áttekintés">
             <div v-for="n in 3">Step 3</div>
             <q-stepper-navigation class="row justify-between">
@@ -46,10 +44,12 @@
     QStepperNavigation
   } from 'quasar'
   import Cart from 'src/app/cart/components/Cart.vue'
+  import OrderAddress from 'src/app/cart/components/Address.vue'
 
   export default {
     components: {
       Cart,
+      OrderAddress,
       QStepper,
       QStep,
       QStepperNavigation
@@ -76,6 +76,12 @@
           this.orderSubmitted = true
           this.$refs.orderStepper.goToStep('orderSent')
         }, 2000)
+      },
+      prevStep: function () {
+        this.$refs.orderStepper.previous()
+      },
+      nextStep: function () {
+        this.$refs.orderStepper.next()
       }
     },
     mounted: function () {
