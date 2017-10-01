@@ -7,7 +7,7 @@
     >
       <q-toolbar slot="header" color="brown-2" class="row justify-between fixed-top">
         <q-btn
-        v-if="user.authenticated"
+        v-if="userIsOwner"
         flat
         @click="$refs.layout.toggleLeft()"
         color="black"
@@ -20,7 +20,8 @@
         </q-toolbar-title>
         <!-- Qtabot használunk -->
 
-        <q-tabs inverted color="brown-8" class="gt-sm">
+        <!-- Desktop menü -->
+        <q-tabs slot="navigation" inverted color="brown-8" class="gt-sm">
           <q-route-tab
             icon="home"
             label="Főoldal"
@@ -47,6 +48,15 @@
           >
           </q-route-tab>
           <q-route-tab
+            v-if="!user.authenticated"
+            icon="add"
+            label="Regisztráció"
+            :to="{ name: 'registration' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
+          <q-route-tab
             v-if="user.authenticated"
             icon="playlist_add_check"
             label="Rendeléseim"
@@ -64,6 +74,15 @@
             slot="title"
           >
           </q-route-tab>
+          <q-route-tab
+            v-if="user.authenticated"
+            icon="account_circle"
+            label="Adataim"
+            :to="{ name: 'userDetails' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
           <q-tab
             v-if="user.authenticated"
             icon="exit_to_app"
@@ -71,8 +90,10 @@
             label="Kijelentkezés"
             @click="tryLogout"
           />
-        </q-tabs>
 
+        </q-tabs>
+        
+        <!-- MOBILMENÜ -->
         <q-tabs inverted color="white" class="lt-md mobileMenu col">
           <q-route-tab
             icon="home"
@@ -97,6 +118,14 @@
           >
           </q-route-tab>
           <q-route-tab
+            v-if="!user.authenticated"
+            icon="add"
+            :to="{ name: 'registration' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
+          <q-route-tab
             v-if="user.authenticated"
             icon="playlist_add_check"
             :to="{ name: 'orders' }"
@@ -112,6 +141,14 @@
             slot="title"
           >
           </q-route-tab>
+          <q-route-tab
+            v-if="user.authenticated"
+            icon="account_circle"
+            :to="{ name: 'userDetails' }"
+            exact
+            slot="title"
+          >
+          </q-route-tab>
           <q-tab
             v-if="user.authenticated"
             icon="exit_to_app"
@@ -121,7 +158,7 @@
         </q-tabs>
       </q-toolbar>
 
-      <div v-if="user.authenticated" slot="left">
+      <div v-if="userIsOwner" slot="left">
         <left-drawer></left-drawer>
       </div>
       <transition
@@ -138,6 +175,8 @@
 </template>
 
 <script>
+  import NavItem from './../partials/DesktopMenuItem'
+
   import {
     QLayout,
     QTabs,
@@ -178,15 +217,18 @@
       QItemSide,
       QItemMain,
       QSideLink,
-      LeftDrawer
+      LeftDrawer,
+      NavItem
     },
     data: function () {
       return {
+        routes: []
       }
     },
     computed: {
       ...mapGetters({
-        user: 'auth/getUser'
+        user: 'auth/getUser',
+        userIsOwner: 'auth/userIsOwner'
       })
     },
     methods: {
@@ -198,9 +240,32 @@
           this.$router.replace('/')
         })
       }
+    },
+    mounted: function () {
+      for (let route of Object.values(this.$router.options.routes)) {
+        this.routes.push(route)
+      }
     }
   }
 </script>
+
+<style lang="stylus">
+  @import '~variables'
+  
+  .price
+    opacity .8
+    & > .currencyFormat
+      font-size .6em
+      
+  .totalDisplay
+    background $brown-2
+    border-bottom 2px solid $dark
+    border-top 2px solid $dark
+    margin-top 15px!important
+    height 40px
+    
+</style>
+
 
 <style lang="stylus" scoped>
   .baseMargin

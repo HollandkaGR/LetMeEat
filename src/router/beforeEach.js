@@ -30,7 +30,7 @@ export const beforeEach = (to, from, next) => {
       })
   }
   else if (hasIn(to.meta, 'guest') && to.meta.guest) {
-    if (to.name === 'login') {
+    if (to.name === 'login' || to.name === 'registration') {
       // console.log('Login jönne')
       checkAuthenticated(to, next)
         .then(() => {

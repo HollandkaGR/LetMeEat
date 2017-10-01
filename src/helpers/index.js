@@ -30,8 +30,9 @@ export const showPopup = (message, type) => {
 }
 
 // Az értékeket jelenítjük meg - 'de-DE' = . szeparátor
+// A stylust a BaseLayoutban állítjuk
 export const currencyFormat = value => {
-  return new Intl.NumberFormat('de-DE').format(value).replace('.', ' ')
+  return '<span class="price">' + new Intl.NumberFormat('de-DE').format(value).replace('.', ' ') + '<span class="currencyFormat"> Ft</span></span>'
 }
 
 export const productCounter = () => {

@@ -2,9 +2,15 @@
   <div>
     <h2 class="no-margin">A kosár tartalma</h2>
     <div class="row">
-      <div class="col-6">
-        <q-stepper v-if="getRestNumber > 0" color="green-8" ref="orderStepper" vertical class="no-padding" selectedIcon="check">
-          
+      <div class="col-lg-12 col-xl-6">
+        <q-stepper
+          v-if="getRestNumber > 0"
+          selectedIcon="check"
+          color="green-8"
+          ref="orderStepper"
+          vertical
+          class="no-padding"
+        >
           <!-- Az utolsó lehetőség a kosár módosítására -->
           <q-step default name="orderDescStep" :disable="orderSubmitted" title="Rendelés véglegesítése" subtitle="Megjegyzések rögzítése">
             <cart @nextStep="nextStep"></cart>
@@ -12,16 +18,14 @@
 
           <!-- A szállítás címére vonatkozó komponens -->
           <q-step name="adressStep" :disable="orderSubmitted" title="Szállítási cím megadása" subtitle="Megjegyzés rögzítése">
-            <order-address @prevStep="prevStep" @nextStep="nextStep"></order-address>
+            <order @prevStep="prevStep" @nextStep="nextStep"></order>
           </q-step>
           
+          <!-- A rendelés átnézése -->
           <q-step name="submitOrder" :disable="orderSubmitted" title="Rendelés küldése" subtitle="Áttekintés">
-            <div v-for="n in 3">Step 3</div>
-            <q-stepper-navigation class="row justify-between">
-              <q-btn color="red-8" outline @click="$refs.orderStepper.previous()">Vissza</q-btn>
-              <q-btn color="green-8" push @click="submitOrder">Rendelés véglegesítése</q-btn>
-            </q-stepper-navigation>
+            <order-overview @prevStep="prevStep" @submitOrder="submitOrder"></order-overview>
           </q-step>
+
           <q-step name="orderSent" :disable="!orderSubmitted" title="Rendelés elküldve" >
             <div>A rendelés feladva</div>
           </q-step>
@@ -44,12 +48,14 @@
     QStepperNavigation
   } from 'quasar'
   import Cart from 'src/app/cart/components/Cart.vue'
-  import OrderAddress from 'src/app/cart/components/Address.vue'
+  import Order from 'src/app/order/components/Order.vue'
+  import OrderOverview from 'src/app/order/components/OrderOverview.vue'
 
   export default {
     components: {
       Cart,
-      OrderAddress,
+      Order,
+      OrderOverview,
       QStepper,
       QStep,
       QStepperNavigation
@@ -67,7 +73,8 @@
     },
     methods: {
       ...mapActions({
-        fetchCart: 'cart/fetchCart'
+        fetchCart: 'cart/fetchCart',
+        fetchOrder: 'order/fetchOrder'
       }),
       submitOrder: function () {
         this.progress = true
@@ -86,6 +93,7 @@
     },
     mounted: function () {
       this.fetchCart()
+      this.fetchOrder()
     }
   }
 </script>

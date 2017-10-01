@@ -1,5 +1,5 @@
 <template>
-  <q-collapsible :label="kategoria.name" group="kategoriak" @open="open" @close="close" v-bind:class="{ 'collapsible-opened': kinyitva }" class="bg-brown-2 round-borders collapsible">
+  <q-collapsible ref="colRef" :label="kategoria.name" v-bind:class="{ 'collapsible-opened': kinyitva }" class="bg-brown-2 round-borders collapsible">
     <product v-for="product in kategoria.products" v-bind="{ product }" :key="product"></product>
   </q-collapsible>
 </template>
@@ -15,7 +15,17 @@
         kinyitva: false
       }
     },
-    props: [ 'kategoria' ],
+    watch: {
+      openColl () {
+        if (this.openColl) {
+          this.$refs.colRef.open()
+        }
+        else {
+          this.$refs.colRef.close()
+        }
+      }
+    },
+    props: [ 'kategoria', 'openColl' ],
     methods: {
       open: function () {
         this.kinyitva = true

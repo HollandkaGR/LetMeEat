@@ -102,29 +102,5 @@
 </script>
 
 <style lang="stylus">
-  @import '~variables'
-
-  h2
-    display: block
-    font-size: 40px
-    letter-spacing: 2px
-  
-  .q-item-side-right
-    position: absolute
-    right: 0
-    top: 0
-    bottom: 0
-    padding: 0 5px
-    background-color: $brown-4
-    display: flex
-    justify-content: center
-    flex-direction: row
-    align-items: center
-    min-width: 150px
-
-  .q-item-stamp
-    margin: 0
-    color: white
-    font-weight: bold
 
 </style>

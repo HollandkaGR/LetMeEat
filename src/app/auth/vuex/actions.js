@@ -5,12 +5,15 @@ import localforage from 'localforage'
 import axios from 'axios'
 
 export const register = ({ dispatch }, { payload, context }) => {
-  return axios.post('/api/register', payload).then(response => {
-    dispatch('setToken', response.data.meta.token).then(() => {
+  return axios.post('/register', payload).then(response => {
+    return dispatch('setToken', response.data.meta.token).then(() => {
       dispatch('fetchUser')
+    }).then(() => {
+      return Promise.resolve(response.data.data.first_name)
     })
   }).catch((errors) => {
     context.errors = errors.response.data.errors
+    return Promise.reject(new Error('Regisztrációs hiba!'))
   })
 }
 
@@ -42,6 +45,17 @@ export const login = ({ dispatch, state }, { payload, context }) => {
       else {
         return Promise.reject(new Error('Kapcsolódási hiba, próbálja később!'))
       }
+    })
+}
+
+export const updateUser = ({ commit }, { payload, context }) => {
+  return axios.post('/user/update', payload)
+    .then((response) => {
+      commit('setUserData', response.data.data)
+      return Promise.resolve()
+    }).catch((errors) => {
+      context.errors = errors.response.data.errors
+      return Promise.reject(new Error('Módosítási hiba!'))
     })
 }
 

@@ -3,8 +3,10 @@
     <q-btn color="white" class="relative-position text-dark">
       <q-icon name="shopping_cart" size="24px" style="line-height: 36px;"/>
       <span v-if="getRestNumber === 0">Üres</span>
-      <span v-else class="strong text-green-8">{{ convertCurrency(cartTotal) }},-</span>
-      <q-tooltip :delay="500">Kosárban lévő termékek értéke: {{ convertCurrency(cartTotal) }},-</q-tooltip>
+      <span v-else class="strong text-green-8">
+        <span v-html="convertCurrency(cartTotal)"/>
+      </span>
+      <q-tooltip :delay="500">Kosárban lévő termékek értéke: <span v-html="convertCurrency(cartTotal)"/></q-tooltip>
 
       <!-- Popover a MiniCartra kattintva -->
       <q-popover ref="miniCartPopover" anchor="bottom right" self="top right" max-height="550px" class="bg-light">
@@ -29,7 +31,7 @@
                 Részösszeg
               </q-item-side>
               <q-item-main class="text-center col-3 bg-light strong text-dark shadow-4">
-                {{ convertCurrency(restaurant.subTotal) }},-
+                <span v-html="convertCurrency(restaurant.subTotal)"/>
               </q-item-main>
             </q-item>
           </q-list>
@@ -39,7 +41,7 @@
               Összesen
             </q-item-side>
             <q-item-main class="text-center col-3 bg-light strong text-dark shadow-3">
-              {{ convertCurrency(cartTotal) }},-
+              <span v-html="convertCurrency(cartTotal)"/>
             </q-item-main>
           </q-item>
           <div class="row orderBtn">

@@ -15,7 +15,7 @@
               Részösszeg
             </q-item-side>
             <q-item-main class="text-center col-3 bg-light strong text-dark shadow-4">
-              {{ convertCurrency(restaurant.subTotal) }},-
+              <span v-html="convertCurrency(restaurant.subTotal)"/>
             </q-item-main>
           </q-item>
         </q-list>
@@ -27,12 +27,12 @@
           <order-desc :restId="restaurant.restaurant.id" class="col" style="padding: .5em 1em;"></order-desc>
         </div>
       </div>
-      <q-item class="totalPrice col justify-between bg-brown-2 borderTop borderBottom">
+      <q-item class="col justify-between totalDisplay">
         <q-item-side class="text-dark strong">
           Összesen
         </q-item-side>
         <q-item-main class="text-center col-3 bg-light strong text-dark shadow-3">
-          {{ convertCurrency(cartTotal) }},-
+          <span v-html="convertCurrency(cartTotal)"/>
         </q-item-main>
       </q-item>
     </q-list>
@@ -82,17 +82,7 @@
   .restName
     padding: 8px 16px
 
-  .borderBottom
-    border-bottom 2px solid $dark
-
-  .borderTop
-    border-top 2px solid $dark
-
   .orderDescWrapper
     margin 20px 0
-
-  .totalPrice
-    margin-top 30px
-    height 40px
 
 </style>

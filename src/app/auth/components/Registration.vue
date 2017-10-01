@@ -8,7 +8,7 @@
       <q-input
         type="text"
         inverted
-        v-model="user.last_name"
+        v-model="last_name"
         float-label="Vezetéknév"
         :color="fieldColor"
         :class="fieldShadow"
@@ -24,7 +24,7 @@
       <q-input
         type="text"
         inverted
-        v-model="user.first_name"
+        v-model="first_name"
         float-label="Keresztnév"
         :color="fieldColor"
         :class="fieldShadow"
@@ -40,7 +40,7 @@
       <q-input
         type="email"
         inverted
-        v-model="user.email"
+        v-model="email"
         float-label="Email"
         :color="fieldColor"
         :class="fieldShadow"
@@ -56,64 +56,105 @@
       <q-input
         type="tel"
         inverted
-        v-model="user.phone_number"
+        v-model="phone_number"
+        prefix="+36"
         float-label="Telefonszám"
-        placeholder="+36301234567"
+        placeholder="301234567"
         :color="fieldColor"
         :class="fieldShadow"
         @focus="clearError('phone_number')"
       />
     </q-field>
 
-    <q-btn color="brown-4" @click="tryUpdate" class="col-4 offset-4">Adatok módosítása</q-btn>
+    <q-field
+      :error="errors.password !== undefined"
+      :error-label="errors.password !== undefined ? errors.password[0] : ''"
+      class="col-md-6 inputField"
+    >
+      <q-input
+        type="password"
+        inverted
+        v-model="password"
+        float-label="Jelszó (6-10 karakter hosszú)"
+        :color="fieldColor"
+        :class="fieldShadow"
+        @focus="clearError('password')"
+      />
+    </q-field>
+
+    <q-field
+      :error="errors.password_same !== undefined"
+      :error-label="errors.password_same !== undefined ? errors.password_same[0] : ''"
+      class="col-md-6 inputField"
+    >
+      <q-input
+        type="password"
+        inverted
+        v-model="password_confirmation"
+        float-label="Jelszó újra"
+        :color="fieldColor"
+        :class="fieldShadow"
+        @focus="clearError('password')"
+      />
+    </q-field>
+    <q-btn color="brown-4" @click="tryReg" class="col-4 offset-4">Regisztráció</q-btn>
   </div>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
-  import { showLoadingScreen, hideLoadingScreen, showPopup } from 'src/helpers'
+  import { mapActions } from 'vuex'
+  import { showLoadingScreen, hideLoadingScreen } from 'src/helpers'
 
   export default {
 
-    name: 'UserDetailsComp',
+    name: 'Registration',
 
     data () {
       return {
         errors: {},
-        user: {
-          last_name: null,
-          first_name: null,
-          email: null,
-          phone_number: null
-        },
-        password: null,
-        password_confirmation: null,
+        // last_name: null,
+        // first_name: null,
+        // email: null,
+        // password: null,
+        // password_confirmation: null,
+        // phone_number: null,
+        last_name: 'Rónaszéki',
+        first_name: 'Gergő',
+        email: 'holika69@gmail.com',
+        password: 'secret',
+        password_confirmation: 'secret',
+        phone_number: '301234567',
         fieldColor: 'brown-4',
         fieldShadow: 'shadow-4'
       }
     },
-    computed: {
-      ...mapGetters({
-        getUser: 'auth/getUser'
-      })
-    },
     methods: {
       ...mapActions({
-        updateUser: 'auth/updateUser'
+        register: 'auth/register'
       }),
-      tryUpdate: function () {
-        showLoadingScreen('A módosítás folyamatban...')
+      tryReg: function () {
+        showLoadingScreen('Regisztráció folyamatban...')
         this.errors = {}
-        this.updateUser({
+        this.register({
           payload: {
-            last_name: this.user.last_name,
-            first_name: this.user.first_name,
-            email: this.user.email,
-            phone_number: this.user.phone_number
+            last_name: this.last_name,
+            first_name: this.first_name,
+            email: this.email,
+            phone_number: '+36' + this.phone_number,
+            password: this.password,
+            password_confirmation: this.password_confirmation
           },
           context: this
-        }).then(() => {
-          showPopup('A módosítás megtörtént', 'success')
+        }).then((firstName) => {
+          this.$router.replace({
+            name: 'index',
+            params: {
+              message: {
+                text: `Isten hozott ${firstName}!`,
+                type: 'success'
+              }
+            }
+          })
           hideLoadingScreen()
         }).catch(() => {
           hideLoadingScreen()
@@ -124,9 +165,6 @@
           delete this.errors[fieldName]
         }
       }
-    },
-    mounted () {
-      this.user = this.getUser.data
     }
   }
 </script>
