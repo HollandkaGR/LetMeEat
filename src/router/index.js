@@ -43,7 +43,7 @@ const router = new VueRouter({
     {
       path: '/adataim',
       name: 'userDetails',
-      component: load('UserDetails'),
+      component: load('authed/UserDetails'),
       meta: {
         label: 'Adataim',
         icon: 'account_circle',
@@ -63,7 +63,7 @@ const router = new VueRouter({
     {
       path: '/rendeleseim',
       name: 'orders',
-      component: load('Orders'),
+      component: load('authed/Orders'),
       meta: {
         label: 'Rendelések',
         icon: 'playlist_add_check',
@@ -73,7 +73,7 @@ const router = new VueRouter({
     {
       path: '/kosaram',
       name: 'cart',
-      component: load('Cart'),
+      component: load('authed/Cart'),
       meta: {
         label: 'Kosár',
         icon: 'shopping_cart',
@@ -83,11 +83,34 @@ const router = new VueRouter({
     {
       path: '/logout',
       name: 'logout',
-      component: load('Logout'),
+      component: load('authed/Logout'),
       meta: {
         label: 'Kijelentkezés',
         icon: 'exit_to_app',
         needsAuth: true
+      }
+    },
+    {
+      path: '/ettermeim',
+      component: load('admin/MyRestaurants'),
+      children: [
+        {
+          path: '',
+          name: 'ettermeim',
+          component: load('admin/restaurants/Overview')
+        },
+        {
+          path: 'uj',
+          name: 'ettermeim.uj',
+          component: load('admin/restaurants/New')
+        }
+      ],
+      meta: {
+        toRoute: 'ettermeim',
+        label: 'Éttermeim',
+        icon: 'settings',
+        needsAuth: true,
+        adminMenu: true
       }
     },
     {

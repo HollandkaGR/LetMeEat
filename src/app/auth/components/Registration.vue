@@ -97,7 +97,7 @@
         @focus="clearError('password')"
       />
     </q-field>
-    <q-btn color="brown-4" @click="tryReg" class="col-4 offset-4">Regisztráció</q-btn>
+    <q-btn color="brown-4" @click="tryReg" push class="col-4 offset-4">Regisztráció</q-btn>
   </div>
 </template>
 
