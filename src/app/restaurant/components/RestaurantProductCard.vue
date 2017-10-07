@@ -2,9 +2,9 @@
   <div class="productCard row justify-between bg-white shadow-10">
     <div class="prodNamePrice col-12 text-dark row justify-between items-center">
         <div class="prodName col-8">
-          {{ product.name }}  
+          {{ product.name }}
         </div>
-        <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3">{{ convertCurrency(product.price) }},-</div>
+        <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3" v-html="convertCurrency(product.price)"/>
     </div>
     <div class="prodBody row col-md-12 col-lg-9">
       <div class="prodDetails">

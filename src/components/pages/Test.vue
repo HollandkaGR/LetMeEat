@@ -1,40 +1,135 @@
 <template>
-  <div>
-    <div class="form-group" v-bind:class="{ 'form-group--error': $v.password.$error }">
-      <label class="form__label">Password</label>
-      <input class="form__input" v-model.trim="password" @input="$v.password.$touch()">
-    </div><span class="form-group__message" v-if="!$v.password.required">Password is required.</span><span class="form-group__message" v-if="!$v.password.minLength">Password must have at least {{ $v.password.$params.minLength.min }} letters.</span>
-    <div class="form-group" v-bind:class="{ 'form-group--error': $v.repeatPassword.$error }">
-      <label class="form__label">Repeat password</label>
-      <input class="form__input" v-model.trim="repeatPassword" @input="$v.repeatPassword.$touch()">
-    </div><span class="form-group__message" v-if="!$v.repeatPassword.sameAsPassword">Passwords must be identical.</span>
-    <pre>
-      password: {{ $v.password }}
-      repeatPassword: {{ $v.repeatPassword }}
-    </pre>
+  <div class="row justify-between items-center">
+    <q-field
+      color="brown-4"
+      :error="streetNotFound"
+      :error-label="errorMsg"
+      :helper="charsLeft"
+      class="col relative-position"
+    >
+      <q-input
+        color="amber"
+        v-model="searchingFor"
+        placeholder="Írd be legalább az első 3 karaktert a közterület névből"
+        @change="searchChanged"
+        :disable="streetSelected"
+      >
+        <q-autocomplete
+          @search="search"
+          :debounce="1000"
+          @selected="selected"
+        />
+      </q-input>
+      <q-btn v-if="streetSelected" @click="resetSearching" small round push color="red-6" class="clearBtn">
+        <q-icon name="clear" color="light"></q-icon>
+      </q-btn>
+    </q-field>
   </div>
 </template>
 
 <script>
-  import { validationMixin } from 'vuelidate'
-  import { required, sameAs, minLength } from 'vuelidate/lib/validators'
+  import axios from 'axios'
+  import { isEmpty } from 'lodash'
+  import {
+    QAutocomplete,
+    QSearch,
+    QInput,
+    filter
+  } from 'quasar'
+
+  function remapPredictions (preds) {
+    return preds.map(pred => {
+      return {
+        label: pred.structured_formatting.main_text,
+        value: pred.structured_formatting.main_text
+      }
+    })
+  }
 
   export default {
+    components: {
+      QAutocomplete,
+      QSearch,
+      QInput
+    },
     data () {
       return {
-        password: '',
-        repeatPassword: ''
+        searchDelay: 500,
+        minCharForSearch: 3,
+        city: 'Pécs',
+        streetNotFound: false,
+        errorMsg: '',
+        searchingFor: '',
+        streetSelected: false
       }
     },
-    mixins: [validationMixin],
-    validations: {
-      password: {
-        required,
-        minLength: minLength(6)
+    computed: {
+      charsLeft () {
+        if (this.searchLength < this.minCharForSearch) {
+          return `Még ${this.minCharForSearch - this.searchLength} karaktert írj be!`
+        }
+        else {
+          return ''
+        }
       },
-      repeatPassword: {
-        sameAsPassword: sameAs('password')
+      searchLength () {
+        return this.searchingFor.length
+      }
+    },
+    methods: {
+      search (terms, done) {
+        if (this.searchLength >= this.minCharForSearch) {
+          setTimeout(() => {
+            axios.get('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + this.city + '%20' + this.searchingFor + '&types=address&key=AIzaSyCxlWDG-Yd1-fNs_pf_B8JIiTgwD7GQ-9c')
+              .then(response => {
+                if (!isEmpty(response.data.predictions)) {
+                  let remappedPredictions = remapPredictions(response.data.predictions)
+                  // console.log(filter(terms, {field: 'label', list: remappedPredictions}))
+                  done(filter(terms, {field: 'label', list: remappedPredictions}))
+                }
+                else {
+                  this.streetNotFound = true
+                  this.errorMsg = `Nincs "${this.searchingFor}"-vel kezdődő utcanév ${this.city} településen`
+                  done({})
+                }
+              })
+              .catch(error => {
+                console.log(error)
+                done({})
+              })
+          }, this.searchDelay)
+        }
+        else {
+          done({})
+        }
+      },
+      selected (item) {
+        this.streetSelected = true
+        // Beállítás a címhez
+        console.log(item.value)
+      },
+      resetSearching () {
+        this.searchingFor = ''
+        this.searchChanged()
+      },
+      searchChanged () {
+        this.streetSelected = false
+        this.streetNotFound = false
+        this.errorMsg = ''
       }
     }
   }
 </script>
+
+<style lang="stylus" scoped>
+  @import '~variables'
+
+  .clearBtn
+    position absolute
+    height: 28px;
+    width: 28px;
+    top 50%
+    right 0
+    transform translateY(-50%)
+    
+</style>

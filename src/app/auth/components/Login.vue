@@ -15,15 +15,17 @@
       placeholder="Regisztrált email cím"
       :error="errors.email !== undefined"
       :error-label="errors.email === undefined ? 'Ismeretlen hiba' : errors.email[0]"
+      class="inputField"
     >
-      <q-input v-model="email" float-label="Regisztrált email cím" inverted color="brown-4" clearable/>
+      <q-input v-model="email" float-label="Regisztrált email cím" inverted color="brown-4" clearable @focus="clearError('email')"/>
     </q-field>
     <q-field
       placeholder="Jelszó"
       :error="errors.password !== undefined"
       :error-label="errors.password === undefined ? 'Ismeretlen hiba' : errors.password[0]"
+      class="inputField"
     >
-      <q-input v-model="password" float-label="Jelszó" inverted color="brown-4" clearable type="password"/>
+      <q-input v-model="password" float-label="Jelszó" inverted color="brown-4" clearable type="password" @focus="clearError('password')"/>
     </q-field>
     <div class="item no-margin">
       <q-btn @click.prevent="login" push color="brown-4">
@@ -75,7 +77,21 @@
         }).catch(() => {
           hideLoadingScreen()
         })
+      },
+      clearError (fieldName) {
+        if (this.errors[fieldName] !== undefined) {
+          delete this.errors[fieldName]
+        }
       }
     }
   }
 </script>
+
+<style lang="stylus" scoped>
+  @import '~variables'
+  .inputField
+    & .q-input
+      padding 5px
+      border 1px solid $dark
+      border-radius 3px
+</style>

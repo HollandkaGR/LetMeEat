@@ -13,7 +13,7 @@ import localforage from 'localforage'
 
 localforage.config({
   driver: localforage.LOCALSTORAGE,
-  storeName: 'quasar'
+  storeName: 'LetMeEat'
 })
 
 import 'src/helpers/axios'
@@ -44,6 +44,7 @@ Vue.use(Quasar, {
 if (__THEME === 'mat') {
   require('quasar-extras/roboto-font')
 }
+
 import 'quasar-extras/material-icons'
 // import 'quasar-extras/ionicons'
 // import 'quasar-extras/fontawesome'

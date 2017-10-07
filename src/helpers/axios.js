@@ -4,6 +4,9 @@ import { showPopup } from 'src/helpers'
 
 // main.js-be integrálva
 
+// Define api link
+axios.defaults.baseURL = 'http://letmeeat.dev'
+
 axios.interceptors.request.use(function (config) {
   return config
 }, function (error) {

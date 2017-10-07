@@ -14,18 +14,26 @@
       <q-toolbar slot="header" color="light">
         <q-search inverted v-model="productSearch" color="brown-4" placeholder="Írj be legalább 3 karaktert!" float-label="Tudod mit keresel?"></q-search>
       </q-toolbar>
-
+      
       <div class="layout-padding">
         <div class="restName text-brown-8 thin-paragraph shadow-3 bg-brown-2 text-center">
           {{ etterem.name }} kínálata
         </div>
+        <div class="relative-position row justify-end">
+          <q-btn v-if="!openAll" @click="openAllCat" small class="bg-green-4" style="min-width:160px;">
+            Összes kinyit
+          </q-btn>
+          <q-btn v-else @click="openAllCat" small class="bg-red-4" style="min-width:160px;">
+            Összes becsuk
+          </q-btn>
+        </div>
         <!-- Ha nincs keresés 3 karakter hosszan, megjelenítjük a kategóriákat -->
-        <div v-if="!etterem.isOpen" class="text-center bg-red-10 text-white strong restIsClosed">
+        <div v-if="!etterem.isOpen" class="text-center bg-red-10 text-white strong restIsClosed" style="margin:8px 0 0;">
           NYITÁS: {{etterem.open}}
         </div>
         <div v-if="productSearch.length < 3">
           <q-list separator v-for="kategoria in etterem.categories" :key="kategoria" class="br-5 no-padding categoryList">
-            <collapsible :kategoria="kategoria"></collapsible>
+            <collapsible :kategoria="kategoria" :openColl="openAll"></collapsible>
           </q-list>
         </div>
         <!-- Ha keresünk megnézzük, hogy van-e találat. Ha nincs, üzenetet jelenítünk meg. -->
@@ -65,7 +73,8 @@
     data: function () {
       return {
         productSearch: '',
-        filteredProducts: []
+        filteredProducts: [],
+        openAll: false
       }
     },
     props: [ 'modalOpened', 'etterem' ],
@@ -77,6 +86,7 @@
     watch: {
       isModalOpened: function (value) {
         if (value) {
+          this.openAll = false
           this.$refs.orderModal.open()
         }
         else {
@@ -113,6 +123,9 @@
         if (this.isModalOpened) {
           this.modalToggle()
         }
+      },
+      openAllCat () {
+        this.openAll = !this.openAll
       }
     }
   }
@@ -137,7 +150,7 @@
     font-size 25px
 
   .categoryList
-    margin 10px 0
+    margin 8px 0
 
   .br-5
     br(5px)

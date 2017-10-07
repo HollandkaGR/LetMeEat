@@ -10,7 +10,7 @@
         <q-item-tile label>{{item.product.name}}</q-item-tile>
         <q-item-tile sublabel lines="2">
           {{ item.quantity }} adag<br>
-          Egységár: {{ convertCurrency(item.product.price) }},-
+          Egységár: <span v-html="convertCurrency(item.product.price)" />
         </q-item-tile>
       </q-item-main>
 
@@ -29,7 +29,7 @@
         </q-btn>
 
         <div class="productTotal fit text-center bg-brown-4 strong text-white shadow-3">
-          {{ convertCurrency(item.product.price * item.quantity) }},-
+          <span v-html="convertCurrency(item.product.price * item.quantity)" />
         </div>
       </div>
     </q-item>

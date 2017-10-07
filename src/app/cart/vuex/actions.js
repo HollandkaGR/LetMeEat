@@ -103,12 +103,6 @@ export const setOrderDesc = ({commit, state}, {restId, orderDesc}) => {
   return commit('setOrderDesc', {cart})
 }
 
-export const setOrderAddress = ({ commit }, address) => {
-  console.log(address)
-  // cart[restId].orderDesc = orderDesc
-  // return commit('setOrderDesc', {cart})
-}
-
 export const clearCartAction = ({commit}) => {
   commit('clearCartMutation')
 }

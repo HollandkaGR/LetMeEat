@@ -24,5 +24,5 @@ export const setOrderDesc = (state, { cart }) => {
 }
 
 export const clearCartMutation = (state) => {
-  state.cart = []
+  state.cart = Object.assign({})
 }
