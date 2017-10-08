@@ -88,6 +88,7 @@
             icon="exit_to_app"
             slot="title"
             label="Kijelentkezés"
+            exact
             @click="tryLogout"
           />
 

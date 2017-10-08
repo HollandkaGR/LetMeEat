@@ -20,11 +20,8 @@
   export default {
 
     name: 'MyRestaurants',
-
-    data () {
-      return {
-
-      }
+    mounted: function () {
+      this.$router.replace({ name: 'ettermeim.index' })
     }
   }
 </script>

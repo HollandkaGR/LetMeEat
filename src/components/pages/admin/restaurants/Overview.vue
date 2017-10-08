@@ -4,13 +4,20 @@
       <q-btn small class="bg-green-6 text-light strong" @click="newRest">Új étterem</q-btn>
     </div>
     <q-list inset-separator>
-      <overview-item></overview-item>
+      <overview-item
+        v-for="restaurant in getMyRestaurants"
+        :key="restaurant.id"
+        :restaurant="restaurant"
+        @editRestaurant="editRestaurant"
+        @deleteRestaurant="deleteRestaurant"
+      />
     </q-list>
   </div>
 </template>
 
 <script>
-  import OverviewItem from 'src/app/restaurant/components/admin/OverviewItem'
+  import OverviewItem from 'src/app/admin/components/restaurants/OverviewItem'
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
     components: {
@@ -18,12 +25,36 @@
     },
     data () {
       return {
+        restaurantToEdit: null
       }
     },
+    computed: {
+      ...mapGetters({
+        getMyRestaurants: 'admin/getMyRestaurants',
+        getRestaurant: 'admin/getRestaurant'
+      })
+    },
     methods: {
+      ...mapActions({
+        fetchMyRestaurants: 'admin/fetchMyRestaurants'
+      }),
       newRest: function () {
         this.$router.push({ name: 'ettermeim.uj' })
+      },
+      editRestaurant: function (id) {
+        // actionsnél húzzuk be a restaurantot, a kategóriákkal és minden mással együtt
+        this.restaurantToEdit = this.getRestaurant(id)
+        console.log(this.restaurantToEdit)
+      },
+      deleteRestaurant: function (id) {
+        console.log('delete: ' + id)
       }
+    },
+    mounted () {
+      this.fetchMyRestaurants()
+        .then(() => {
+
+        })
     }
   }
 </script>

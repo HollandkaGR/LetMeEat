@@ -16,18 +16,25 @@ const router = new VueRouter({
       component: load('Index'),
       meta: {
         label: 'Főoldal',
-        icon: 'home'
+        icon: 'home',
+        guest: true,
+        needsAuth: false,
+        showIfAuthed: true,
+        adminMenu: false
       },
       props: {default: true, logoutSuccess: false}
     },
     {
-      path: '/regisztracio',
-      name: 'registration',
-      component: load('Registration'),
+      path: '/ettermek',
+      name: 'restaurants',
+      component: load('Home'),
       meta: {
-        label: 'Regisztráció',
-        icon: 'account_circle',
-        guest: true
+        label: 'Éttermek',
+        icon: 'search',
+        guest: true,
+        needsAuth: false,
+        showIfAuthed: true,
+        adminMenu: false
       }
     },
     {
@@ -37,7 +44,23 @@ const router = new VueRouter({
       meta: {
         label: 'Bejelentkezés',
         icon: 'account_circle',
-        guest: true
+        guest: true,
+        needsAuth: false,
+        showIfAuthed: false,
+        adminMenu: false
+      }
+    },
+    {
+      path: '/regisztracio',
+      name: 'registration',
+      component: load('Registration'),
+      meta: {
+        label: 'Regisztráció',
+        icon: 'add',
+        guest: true,
+        needsAuth: false,
+        showIfAuthed: false,
+        adminMenu: false
       }
     },
     {
@@ -47,17 +70,10 @@ const router = new VueRouter({
       meta: {
         label: 'Adataim',
         icon: 'account_circle',
-        needsAuth: true
-      }
-    },
-    {
-      path: '/ettermek',
-      name: 'restaurants',
-      component: load('Home'),
-      meta: {
-        label: 'Éttermek',
-        icon: 'search',
-        guest: true
+        guest: false,
+        needsAuth: true,
+        showIfAuthed: true,
+        adminMenu: true
       }
     },
     {
@@ -67,7 +83,10 @@ const router = new VueRouter({
       meta: {
         label: 'Rendelések',
         icon: 'playlist_add_check',
-        needsAuth: true
+        guest: false,
+        needsAuth: true,
+        showIfAuthed: true,
+        adminMenu: false
       }
     },
     {
@@ -77,17 +96,10 @@ const router = new VueRouter({
       meta: {
         label: 'Kosár',
         icon: 'shopping_cart',
-        needsAuth: true
-      }
-    },
-    {
-      path: '/logout',
-      name: 'logout',
-      component: load('authed/Logout'),
-      meta: {
-        label: 'Kijelentkezés',
-        icon: 'exit_to_app',
-        needsAuth: true
+        guest: false,
+        needsAuth: true,
+        showIfAuthed: true,
+        adminMenu: false
       }
     },
     {
@@ -96,7 +108,7 @@ const router = new VueRouter({
       children: [
         {
           path: '',
-          name: 'ettermeim',
+          name: 'ettermeim.index',
           component: load('admin/restaurants/Overview')
         },
         {
@@ -106,10 +118,26 @@ const router = new VueRouter({
         }
       ],
       meta: {
-        toRoute: 'ettermeim',
+        toRoute: 'ettermeim.index',
         label: 'Éttermeim',
         icon: 'settings',
+        guest: false,
         needsAuth: true,
+        showIfAuthed: true,
+        adminMenu: true
+      }
+    },
+    {
+      path: '/rendelesek',
+      component: load('admin/Orders'),
+      name: 'ownerOrders',
+      meta: {
+        toRoute: 'rendelesek',
+        label: 'Rendelések',
+        icon: 'equalizer',
+        guest: false,
+        needsAuth: true,
+        showIfAuthed: true,
         adminMenu: true
       }
     },
