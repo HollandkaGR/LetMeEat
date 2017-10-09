@@ -13,3 +13,13 @@ export const fetchMyRestaurants = ({ commit }) => {
       return Promise.reject(new Error(error))
     })
 }
+
+export const fetchPossibleCities = ({ commit }) => {
+  return axios.get('restaurant/cities')
+    .then(response => {
+      return Promise.resolve(response.data)
+    })
+    .catch(error => {
+      return Promise.reject(new Error(error))
+    })
+}

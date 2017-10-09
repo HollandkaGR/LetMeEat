@@ -62,3 +62,19 @@ export const sampleFromArray = (array, numberOfSample = 1) => {
   }
   console.log(returnArray)
 }
+
+export const week = () => {
+  return [
+    'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat', 'Vasárnap'
+  ]
+}
+
+// Ha át akarunk alakítani egy kapott adathalmazt a q-select számára
+export const convertDataToSelect = (data, labelName, valueName) => {
+  return data.map(item => {
+    return {
+      label: item[labelName],
+      value: item[valueName]
+    }
+  })
+}
