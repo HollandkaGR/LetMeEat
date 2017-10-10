@@ -33,7 +33,7 @@
     <h6 class="inputField">
       Nyitvatartás
       <div class="row justify-around items-stretch no-margin">
-        <open-hours v-for="(day, key) in weekDays" :key="key" :day="day" :id="key"></open-hours>
+        <open-hours v-for="(day, key) in weekDays" :key="key" :day="day" :id="key" @setHours="setHours"></open-hours>
       </div>
     </h6>
   </div>
@@ -56,7 +56,7 @@
         restaurant: {
           name: null,
           city: null,
-          open_hours: []
+          open_hours: {}
         },
         weekDays: [],
         possibleCities: [],
@@ -72,6 +72,12 @@
       clearError (fieldName) {
         if (this.errors[fieldName] !== undefined) {
           delete this.errors[fieldName]
+        }
+      },
+      setHours (params) {
+        this.restaurant.open_hours[params.id] = {
+          from: params.from,
+          to: params.to
         }
       }
     },
