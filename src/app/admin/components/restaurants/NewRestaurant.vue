@@ -32,8 +32,8 @@
     </q-field>
     <h6 class="inputField">
       Nyitvatartás
-      <div class="row justify-around items-start">
-        <open-hours v-for="(day, key, index) in weekDays" :key="index" :day="day" :index="index"></open-hours>
+      <div class="row justify-around items-stretch no-margin">
+        <open-hours v-for="(day, key) in weekDays" :key="key" :day="day" :id="key"></open-hours>
       </div>
     </h6>
   </div>
