@@ -23,3 +23,14 @@ export const fetchPossibleCities = ({ commit }) => {
       return Promise.reject(new Error(error))
     })
 }
+
+export const saveRestaurant = ({commit}, payload) => {
+  return axios.post('restaurant/new', payload.data)
+    .then(response => {
+      return Promise.resolve(response.data)
+    })
+    .catch(error => {
+      payload.context.errors = error.response.data
+      return Promise.reject(new Error(error))
+    })
+}

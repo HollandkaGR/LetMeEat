@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h5>Új étterem</h5>
     <new-restaurant></new-restaurant>
   </div>
 </template>

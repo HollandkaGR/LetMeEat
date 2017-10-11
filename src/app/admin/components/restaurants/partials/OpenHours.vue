@@ -1,6 +1,6 @@
 <template>
-  <div class="dayWrapper col-xl-3 col-lg-4 col-md-6 col-xs-12">
-    <div class="row justify-around" :class="isOpenToday ? 'bg-green-2' : 'bg-light'">
+  <div class="dayWrapper col-xl-3 col-lg-4 col-md-6 col-xs-12 animate-scale">
+    <div class="row justify-around" :class="isOpenToday ? 'bg-green-2 shadow-3' : 'bg-light'">
       <div>{{ day }}</div>
       <div class="col row justify-end">
        <q-toggle
@@ -13,7 +13,7 @@
          unchecked-icon="sentiment very dissatisfied"
        />
      </div>
-     <div class="col-auto">
+     <div class="col-12">
       <q-datetime-range 
         v-model="nyitvatartas"
         :disable="!isOpenToday"
@@ -26,8 +26,7 @@
         clear-label="Töröl"
         :color="isOpenToday ? 'green-8' : 'light'"
         type="time"
-        class="datePicker"
-        css="proba"
+        class="setOpenHours"
         @change="updateHours"
       />
       <div style="min-height:20px;">
@@ -42,13 +41,19 @@
 </template>
 
 <script>
+  import moment from 'moment'
+
   export default {
     name: 'OpenHours',
-    props: ['day', 'id'],
+    props: ['day', 'id', 'values'],
     data () {
       return {
         isOpenToday: false,
         nyitvatartas: {
+          from: '',
+          to: ''
+        },
+        toResponse: {
           from: '',
           to: ''
         }
@@ -59,7 +64,7 @@
         if (!this.isOpenToday) {
           this.nyitvatartas.from = ''
           this.nyitvatartas.to = ''
-          this.updateHours()
+          this.updateHours(this.nyitvatartas)
         }
       }
     },
@@ -77,25 +82,56 @@
       setOpenHours () {
         this.$emit('setHours', {
           id: this.id,
-          from: this.nyitvatartas.from,
-          to: this.nyitvatartas.from
+          isOpenToday: this.isOpenToday,
+          from: this.toResponse.from,
+          to: this.toResponse.to
         })
       },
       updateHours (newVal) {
-        console.log(newVal.to.getHours())
+        Object.keys(newVal).forEach(prop => {
+          // console.log(prop + ': ' + moment(newVal[prop]).isValid())
+          if (moment(newVal[prop]).isValid()) {
+            this.toResponse[prop] = ('0' + moment(newVal[prop]).hours()).slice(-2) + ':' + ('0' + moment(newVal[prop]).minutes()).slice(-2)
+          }
+          else if (prop === 'from') {
+            this.toResponse[prop] = '00:00'
+          }
+          else {
+            this.toResponse[prop] = '23:59'
+          }
+        })
+        this.setOpenHours()
       }
     },
     mounted () {
-      this.setOpenHours()
+      if (this.values) {
+        let today = new Date()
+        this.isOpenToday = this.values.isOpenToday
+        this.nyitvatartas.from = today.setHours(this.values.from.split(':')[0], this.values.from.split(':')[1])
+        this.nyitvatartas.to = today.setHours(this.values.to.split(':')[0], this.values.to.split(':')[1])
+      }
+      this.updateHours(this.nyitvatartas)
     }
   }
 </script>
 
+<style lang="stylus">
+  .setOpenHours
+    & .q-input-target
+      display block!important
+      text-align center
+    & i
+      position absolute
+      right: 0
+</style>
+
 <style lang="stylus" scoped>
+  @import '~variables'
+
   .dayWrapper
     padding 10px
     & > div
-      border 1px solid black
+      border 1px solid $brown-4
       border-radius 5px
       padding 10px
 </style>

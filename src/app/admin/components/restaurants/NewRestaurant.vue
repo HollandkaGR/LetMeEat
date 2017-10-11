@@ -1,41 +1,61 @@
 <template>
-  <div class="row justify-between formWrapper">
-    <q-field
-      :error="errors.name !== undefined"
-      :error-label="errors.name !== undefined ? errors.name[0] : ''"
-      class="col-md-6 inputField"
-    >
-      <q-input
-        type="text"
-        inverted
-        v-model="restaurant.name"
-        float-label="Az étterem neve"
-        :color="fieldColor"
-        :class="fieldShadow"
-        @focus="clearError('name')"
-      />
-    </q-field>
+  <div>
+    <div class="row justify-between items-center">
+      <h5>Új étterem</h5>
+      <div class="actionbuttons">
+        <q-btn color="red-4" push @click="$router.replace({name: 'ettermeim.index'})">Mégse</q-btn>
+        <q-btn color="green-4" push @click="saveThisRestaurant">Mentés</q-btn>
+      </div>
+    </div>
+    <div class="row justify-between formWrapper">
+      <q-field
+        :error="errors.name !== undefined"
+        :error-label="errors.name !== undefined ? errors.name[0] : ''"
+        class="col-md-6 inputField"
+      >
+        <q-input
+          type="text"
+          inverted
+          v-model="restaurant.name"
+          float-label="Az étterem neve"
+          :color="fieldColor"
+          :class="fieldShadow"
+          @focus="clearError('name')"
+        />
+      </q-field>
 
-    <q-field
-      :error="errors.city !== undefined"
-      :error-label="errors.city !== undefined ? errors.city[0] : ''"
-      class="col-md-6 inputField"
-    >
-      <q-select
-        float-label="Város kiválasztása"
-        v-model="restaurant.city"
-        inverted
-        :color="fieldColor"
-        :class="fieldShadow"
-        :options="possibleCities"
-      />
-    </q-field>
-    <h6 class="inputField">
-      Nyitvatartás
-      <div class="row justify-around items-stretch no-margin">
+      <q-field
+        :error="errors.city !== undefined"
+        :error-label="errors.city !== undefined ? errors.city[0] : ''"
+        class="col-md-6 inputField"
+      >
+        <q-select
+          float-label="Város kiválasztása"
+          v-model="restaurant.city"
+          inverted
+          :color="fieldColor"
+          :class="fieldShadow"
+          :options="possibleCities"
+        />
+      </q-field>
+      <div class="separator"/>
+      <h6 class="inputField full-width">
+        Nyitvatartás
+        <span class="allSameWrapper">
+          <q-toggle
+            v-model="allDaySame"
+            label="Minden nap"
+            color="green-4"
+          />
+        </span>
+      </h6>
+      <div v-if="allDaySame" class="no-margin">
+        <open-hours day="Minden nap" id="0" @setHours="setAllDayTo"></open-hours>
+      </div>
+      <div v-else class="row justify-around items-stretch no-margin">
         <open-hours v-for="(day, key) in weekDays" :key="key" :day="day" :id="key" @setHours="setHours"></open-hours>
       </div>
-    </h6>
+    </div>
   </div>
 </template>
 
@@ -58,6 +78,7 @@
           city: null,
           open_hours: {}
         },
+        allDaySame: false,
         weekDays: [],
         possibleCities: [],
         // Field options
@@ -67,7 +88,8 @@
     },
     methods: {
       ...mapActions({
-        fetchPossibleCities: 'admin/fetchPossibleCities'
+        fetchPossibleCities: 'admin/fetchPossibleCities',
+        saveRestaurant: 'admin/saveRestaurant'
       }),
       clearError (fieldName) {
         if (this.errors[fieldName] !== undefined) {
@@ -76,9 +98,26 @@
       },
       setHours (params) {
         this.restaurant.open_hours[params.id] = {
+          isOpenToday: params.isOpenToday,
           from: params.from,
           to: params.to
         }
+      },
+      setAllDayTo (params) {
+        for (var i = 0; i < 7; i++) {
+          this.restaurant.open_hours[i] = {
+            isOpenToday: params.isOpenToday,
+            from: params.from,
+            to: params.to
+          }
+        }
+      },
+      saveThisRestaurant () {
+        console.log('mentés')
+        this.saveRestaurant({
+          data: this.restaurant,
+          context: this
+        })
       }
     },
     mounted () {
@@ -97,10 +136,21 @@
 <style lang="stylus" scoped>
   @import '~variables'
   
+  .separator
+    margin 10px 10px
+    height 1px
+    width 100%
+    background $grey
+  
   .inputField
     padding 5px 10px
     & .q-input, .q-select
       padding 5px
       border 1px solid $dark
       border-radius 3px
+      
+  .allSameWrapper
+    margin-left 10px
+    padding-left 10px
+    border-left 2px solid $grey
 </style>
