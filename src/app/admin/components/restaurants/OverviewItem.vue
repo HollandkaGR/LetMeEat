@@ -3,7 +3,7 @@
     <q-item-main>
       <q-item-tile label>{{ restaurant.name }}</q-item-tile>
       <q-item-tile sublabel>
-        <div color="">{{ restaurant.city }}</div>
+        <div color="">{{ restaurant.city.name }}</div>
         <q-btn color="">Nyitva</q-btn>
       </q-item-tile>
     </q-item-main>

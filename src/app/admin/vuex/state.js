@@ -1,3 +1,4 @@
 export default {
-  myRestaurants: []
+  myRestaurants: [],
+  selectedRestaurant: []
 }

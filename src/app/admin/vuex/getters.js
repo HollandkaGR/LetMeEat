@@ -8,3 +8,8 @@ export const getRestaurant = (state) => (id) => {
     return restaurant.id === id
   })
 }
+
+// Az id-t már a return statementnek adjuk
+export const getSelectedRestaurant = (state) => {
+  return state.selectedRestaurant
+}

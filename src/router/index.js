@@ -115,6 +115,12 @@ const router = new VueRouter({
           path: 'uj',
           name: 'ettermeim.uj',
           component: load('admin/restaurants/New')
+        },
+        {
+          path: 'modosit',
+          name: 'ettermeim.update',
+          component: load('admin/restaurants/Update'),
+          props: {default: true}
         }
       ],
       meta: {

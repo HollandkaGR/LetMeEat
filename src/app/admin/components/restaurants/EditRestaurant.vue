@@ -1,5 +1,12 @@
 <template>
   <div class="row justify-between formWrapper">
+    <div class="row justify-between items-center col-12">
+      <h5>{{ restaurant.name }} módosítása</h5>
+      <div class="actionbuttons">
+        <q-btn color="red-4" push @click="$router.replace({name: 'ettermeim.index'})">Mégse</q-btn>
+        <q-btn color="green-4" push @click="saveThisRestaurant">Mentés</q-btn>
+      </div>
+    </div>
     <q-field
       :error="errors.name !== undefined"
       :error-label="errors.name !== undefined ? errors.name[0] : ''"
@@ -17,13 +24,14 @@
     </q-field>
 
     <q-field
+      v-if ="restaurant.city !== undefined"
       :error="errors.city !== undefined"
       :error-label="errors.city !== undefined ? errors.city[0] : ''"
       class="col-md-6 inputField"
     >
       <q-select
         float-label="Város kiválasztása"
-        v-model="restaurant.city"
+        v-model="restaurant.city.id"
         inverted
         :color="fieldColor"
         :class="fieldShadow"
@@ -50,7 +58,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
   import { week, convertDataToSelect } from 'src/helpers'
   import OpenHours from './partials/OpenHours'
 
@@ -63,12 +71,8 @@
     data () {
       return {
         errors: {},
-        restaurant: {
-          name: null,
-          city: null,
-          open_hours: {}
-        },
         allDaySame: false,
+        restaurant: {},
         weekDays: [],
         possibleCities: [],
         // Field options
@@ -76,9 +80,15 @@
         fieldShadow: 'shadow-4'
       }
     },
+    computed: {
+      ...mapGetters({
+        getSelectedRestaurant: 'admin/getSelectedRestaurant'
+      })
+    },
     methods: {
       ...mapActions({
-        fetchPossibleCities: 'admin/fetchPossibleCities'
+        fetchPossibleCities: 'admin/fetchPossibleCities',
+        updateRestaurant: 'admin/updateRestaurant'
       }),
       clearError (fieldName) {
         if (this.errors[fieldName] !== undefined) {
@@ -100,10 +110,24 @@
             to: params.to
           }
         }
+      },
+      saveThisRestaurant () {
+        this.updateRestaurant({
+          data: this.restaurant,
+          context: this
+        })
+          .then(() => {
+            this.$router.replace({ name: 'ettermeim.index' })
+          })
       }
     },
     mounted () {
       this.weekDays = week()
+      this.restaurant = this.getSelectedRestaurant
+
+      // A város megjelenítése késhet, mert request, ezért beadjuk a jelenlegi várost az opciók közé, a háttérben pedig frissül
+      this.possibleCities = convertDataToSelect([this.getSelectedRestaurant.city], 'name', 'id')
+
       this.fetchPossibleCities()
         .then(response => {
           this.possibleCities = convertDataToSelect(response, 'name', 'id')

@@ -34,3 +34,18 @@ export const saveRestaurant = ({commit}, payload) => {
       return Promise.reject(new Error(error))
     })
 }
+
+export const updateRestaurant = ({commit}, payload) => {
+  return axios.post('restaurant/update', payload.data)
+    .then(() => {
+      return Promise.resolve()
+    })
+    .catch(error => {
+      payload.context.errors = error.response.data
+      return Promise.reject(new Error(error))
+    })
+}
+
+export const setSelectedRestaurant = ({ commit }, restaurant) => {
+  commit('setSelectedRestaurant', restaurant)
+}

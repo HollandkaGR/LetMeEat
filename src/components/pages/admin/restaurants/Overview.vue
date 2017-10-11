@@ -36,15 +36,18 @@
     },
     methods: {
       ...mapActions({
-        fetchMyRestaurants: 'admin/fetchMyRestaurants'
+        fetchMyRestaurants: 'admin/fetchMyRestaurants',
+        setSelectedRestaurant: 'admin/setSelectedRestaurant'
       }),
       newRest: function () {
         this.$router.push({ name: 'ettermeim.uj' })
       },
       editRestaurant: function (id) {
         // actionsnél húzzuk be a restaurantot, a kategóriákkal és minden mással együtt
-        this.restaurantToEdit = this.getRestaurant(id)
-        console.log(this.restaurantToEdit)
+        this.setSelectedRestaurant(this.getRestaurant(id))
+          .then(() => {
+            this.$router.push({ name: 'ettermeim.update' })
+          })
       },
       deleteRestaurant: function (id) {
         console.log('delete: ' + id)

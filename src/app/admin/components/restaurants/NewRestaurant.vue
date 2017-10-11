@@ -113,11 +113,13 @@
         }
       },
       saveThisRestaurant () {
-        console.log('mentés')
         this.saveRestaurant({
           data: this.restaurant,
           context: this
         })
+          .then(() => {
+            this.$router.replace({ name: 'ettermeim.index' })
+          })
       }
     },
     mounted () {
