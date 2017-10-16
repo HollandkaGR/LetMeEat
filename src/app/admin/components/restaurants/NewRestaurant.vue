@@ -25,17 +25,18 @@
       </q-field>
 
       <q-field
-        :error="errors.city !== undefined"
-        :error-label="errors.city !== undefined ? errors.city[0] : ''"
+        :error="errors['city.id'] !== undefined"
+        :error-label="errors['city.id'] !== undefined ? errors['city.id'][0] : ''"
         class="col-md-6 inputField"
       >
         <q-select
           float-label="Város kiválasztása"
-          v-model="restaurant.city"
+          v-model="restaurant.city.id"
           inverted
           :color="fieldColor"
           :class="fieldShadow"
           :options="possibleCities"
+          @focus="clearError('city.id')"
         />
       </q-field>
       <div class="separator"/>
@@ -75,7 +76,9 @@
         errors: {},
         restaurant: {
           name: null,
-          city: null,
+          city: {
+            id: null
+          },
           open_hours: {}
         },
         allDaySame: false,

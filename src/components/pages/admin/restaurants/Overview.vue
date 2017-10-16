@@ -3,7 +3,7 @@
     <div class="row justify-end" style="margin: 10px 0">
       <q-btn small class="bg-green-6 text-light strong" @click="newRest">Új étterem</q-btn>
     </div>
-    <q-list inset-separator>
+    <q-list v-if="getMyRestaurants.length > 0" inset-separator>
       <overview-item
         v-for="restaurant in getMyRestaurants"
         :key="restaurant.id"
@@ -12,6 +12,7 @@
         @deleteRestaurant="deleteRestaurant"
       />
     </q-list>
+    <h5 v-else>Még nincs étterme, vigyen fel újat!</h5>
   </div>
 </template>
 
