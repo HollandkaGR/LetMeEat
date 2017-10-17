@@ -40,21 +40,23 @@
         />
       </q-field>
       <div class="separator"/>
-      <h6 class="inputField full-width">
-        Nyitvatartás
-        <span class="allSameWrapper">
-          <q-toggle
-            v-model="allDaySame"
-            label="Minden nap"
-            color="green-4"
-          />
-        </span>
-      </h6>
-      <div v-if="allDaySame" class="no-margin">
-        <open-hours day="Minden nap" id="0" @setHours="setAllDayTo"></open-hours>
-      </div>
-      <div v-else class="row justify-around items-stretch no-margin">
-        <open-hours v-for="(day, key) in weekDays" :key="key" :day="day" :id="key" @setHours="setHours"></open-hours>
+      <div class="col-12">
+        <h6 class="inputField">
+          Nyitvatartás
+          <span class="allSameWrapper">
+            <q-toggle
+              v-model="allDaySame"
+              label="Minden nap"
+              color="green-4"
+            />
+          </span>
+        </h6>
+        <div v-if="allDaySame" class="no-margin pull-left">
+          <open-hours day="Minden nap" id="0" @setHours="setAllDayTo"></open-hours>
+        </div>
+        <div v-else class="row justify-around items-stretch no-margin">
+          <open-hours v-for="(day, key) in weekDays" :key="key" :day="day" :id="key" @setHours="setHours"></open-hours>
+        </div>
       </div>
     </div>
   </div>
@@ -117,7 +119,6 @@
       },
       saveThisRestaurant () {
         this.saveRestaurant({
-          data: this.restaurant,
           context: this
         })
           .then(() => {

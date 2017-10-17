@@ -16,7 +16,7 @@ localforage.config({
   storeName: 'LetMeEat'
 })
 
-import 'src/helpers/axios'
+import 'src/helpers/axiosConfig'
 
 // Uncomment the following lines if you need IE11/Edge support
 // require(`quasar/dist/quasar.ie`)

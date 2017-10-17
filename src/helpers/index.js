@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash'
 import { Loading, QSpinnerFacebook } from 'quasar'
-import { Popup } from './toaster'
+import { Popup } from './toasterConfig'
 
 export const setHttpToken = token => {
   if (window.axios == null) {

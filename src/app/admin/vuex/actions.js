@@ -24,10 +24,11 @@ export const fetchPossibleCities = ({ commit }) => {
     })
 }
 
-export const saveRestaurant = ({commit}, payload) => {
-  return axios.post('restaurant/new', payload.data)
+export const saveRestaurant = ({dispatch, state}, payload) => {
+  return axios.post('restaurant/new', state.selectedRestaurant)
     .then(response => {
-      return Promise.resolve(response.data)
+      dispatch('setSelectedRestaurant', response.data)
+      return Promise.resolve()
     })
     .catch(error => {
       payload.context.errors = error.response.data
@@ -35,15 +36,20 @@ export const saveRestaurant = ({commit}, payload) => {
     })
 }
 
-export const updateRestaurant = ({commit}, payload) => {
-  return axios.post('restaurant/update', payload.data)
-    .then(() => {
+export const updateRestaurant = ({dispatch, state}, payload) => {
+  return axios.post('restaurant/update', state.selectedRestaurant)
+    .then((response) => {
+      dispatch('setSelectedRestaurant', response.data)
       return Promise.resolve()
     })
     .catch(error => {
       payload.context.errors = error.response.data
       return Promise.reject(new Error(error))
     })
+}
+
+export const resetSelectedRestaurant = ({ commit }) => {
+  commit('resetSelectedRestaurant')
 }
 
 export const setSelectedRestaurant = ({ commit }, restaurant) => {

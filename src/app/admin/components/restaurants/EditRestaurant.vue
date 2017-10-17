@@ -40,34 +40,8 @@
     </q-field>
     <div class="separator"/>
     <div class="sectionWrapper col-12">
-      <q-list class="no-padding restOptions">
-        <q-list-header class="text-brown-6 strong">Beállítások</q-list-header>
-          <q-item v-if ="restaurant.isActive !== undefined" multiline tag="label" class="col row items-center">
-            <q-item-main class="col">
-              <q-item-tile label>Aktív</q-item-tile>
-              <q-item-tile sublabel lines="4">Ha ez a beállítás ki van kapcsolva, az étterem nem lesz látható a vendégek számára</q-item-tile>
-            </q-item-main>
-            <q-item-side right class="col-1">
-              <q-toggle color="green-4" v-model="restaurant.isActive" />
-            </q-item-side>
-          </q-item>
-          <q-item v-if ="restaurant.description !== undefined" multiline tag="label" class="col row items-start">
-            <q-item-main class="col">
-              <q-item-tile label>Bemutatkozás</q-item-tile>
-              <q-item-tile sublabel lines="2">Az étterem rövid leírása, ami megjelenik a vendégek számára, ha bekapcsoljuk</q-item-tile>
-              <q-field
-                v-if="restaurant.showMessage" 
-                :count="1024"
-                class="animate-scale"
-              >
-                <q-input v-model="restaurant.description" type="textarea" color="brown-8" max-length="1024" :min-rows="1" :max-height="300"></q-input>
-              </q-field>
-            </q-item-main>
-            <q-item-side right class="col-1">
-              <q-toggle color="green-4" v-model="restaurant.showMessage" />
-            </q-item-side>
-          </q-item>
-      </q-list>
+      <rest-options></rest-options>
+      
     </div>
     <div class="separator"/>
     <h6 class="sectionWrapper">
@@ -91,14 +65,15 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import { week, convertDataToSelect } from 'src/helpers'
+  import { week, convertDataToSelect, showPopup } from 'helpers'
   import OpenHours from './partials/OpenHours'
+  import RestOptions from './partials/RestOptions'
 
   export default {
 
     name: 'EditRestaurant',
     components: {
-      OpenHours
+      OpenHours, RestOptions
     },
     data () {
       return {
@@ -149,7 +124,7 @@
           context: this
         })
           .then(() => {
-            this.$router.replace({ name: 'ettermeim.index' })
+            showPopup('A mentés sikerült', 'success')
           })
       }
     },
@@ -187,7 +162,7 @@
     border-left 2px solid $grey
     
   .separator
-    margin 10px auto
+    margin 20px auto
     height 2px
     width 60%
     background $grey

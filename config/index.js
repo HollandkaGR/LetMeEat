@@ -5,6 +5,7 @@ module.exports = {
   aliases: {
     quasar: path.resolve(__dirname, '../node_modules/quasar-framework/'),
     stores: path.resolve(__dirname, '../src/app'),
+    helpers: path.resolve(__dirname, '../src/helpers'),
     src: path.resolve(__dirname, '../src'),
     assets: path.resolve(__dirname, '../src/assets'),
     '@': path.resolve(__dirname, '../src/components'),
