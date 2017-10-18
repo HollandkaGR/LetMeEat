@@ -44,7 +44,8 @@
       
     </div>
     <div class="separator"/>
-    <h6 class="sectionWrapper">
+    <div class="sectionWrapper row">
+    <h6 class="row col-12">
       Nyitvatartás
       <span class="allSameWrapper">
         <q-toggle
@@ -53,13 +54,14 @@
           color="green-4"
         />
       </span>
-      <div v-if="allDaySame" class="">
+      </h6>
+      <div v-if="allDaySame">
         <open-hours day="Minden nap" id="0" @setHours="setAllDayTo"></open-hours>
       </div>
       <div v-else class="row justify-around items-stretch no-margin">
         <open-hours v-for="(day, key) in weekDays" :key="key" :day="day" :id="key" :values="restaurant.open_hours[key]" @setHours="setHours"></open-hours>
       </div>
-    </h6>
+    </div>
   </div>
 </template>
 
@@ -162,6 +164,7 @@
     border-left 2px solid $grey
     
   .separator
+    display block!important
     margin 20px auto
     height 2px
     width 60%

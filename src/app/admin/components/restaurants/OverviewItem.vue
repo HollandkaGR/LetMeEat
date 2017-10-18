@@ -8,26 +8,26 @@
       <div class="row items-center restaurantDetails">
         <div class="restaurantDetail">
           <span class="text-black strong">Státusz:</span>
-          <q-chip v-if="restaurant.isActive" color="green-4" square class="shadow-1 representStatus">Aktív</q-chip>
-          <q-chip v-else color="red-4" square class="shadow-1 representStatus">Inaktív</q-chip>
+          <q-chip v-if="restaurant.isActive" color="green-4" square class="shadow-1 representStatus text-dark strong">Aktív</q-chip>
+          <q-chip v-else color="red-4" square class="shadow-1 representStatus text-dark strong">Inaktív</q-chip>
         </div>
         <div class="restaurantDetail">
-          <q-btn>
+          <q-chip ref="target" square class="bg-red-10 representStatus text-dark strong" :class="{ 'bg-green-4': someDayOpens }">
             Nyitvatartás
-            <q-tooltip class="bg-brown-2">
-                <table class="q-table text-black">
-                  <tbody>
-                    <tr v-for="(day, key) in restaurant.open_hours" :key="key">
-                      <td>{{ weekDays[key] }}</td>
-                      <td class="text-center">
-                        <span v-if="day.isOpenToday">{{ day.from }} - {{ day.to }}</span>
-                        <span v-else>ZÁRVA</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-            </q-tooltip>
-          </q-btn>
+            <q-popover ref="openHoursPopup" anchor="top middle" self="bottom middle" class="bg-dark round-borders">
+              <table class="q-table text-white">
+                <tbody>
+                  <tr v-for="(day, key) in restaurant.open_hours" :key="key">
+                    <td>{{ weekDays[key] }}</td>
+                    <td class="text-center">
+                      <span v-if="day.isOpenToday" class="text-green-4 strong">{{ day.from }} - {{ day.to }}</span>
+                      <span v-else class="text-red-4 strong">ZÁRVA</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </q-popover>
+          </q-chip>
         </div>
         <div class="restaurantDetail col">
           <span class="text-black strong">Üzenet:</span>
@@ -60,6 +60,13 @@
     data () {
       return {
         weekDays: []
+      }
+    },
+    computed: {
+      someDayOpens () {
+        return this.restaurant.open_hours.some(day => {
+          return day.isOpenToday
+        })
       }
     },
     methods: {

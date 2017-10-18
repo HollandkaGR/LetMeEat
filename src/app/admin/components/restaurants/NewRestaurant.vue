@@ -94,7 +94,8 @@
     methods: {
       ...mapActions({
         fetchPossibleCities: 'admin/fetchPossibleCities',
-        saveRestaurant: 'admin/saveRestaurant'
+        saveRestaurant: 'admin/saveRestaurant',
+        setSelectedRestaurant: 'admin/setSelectedRestaurant'
       }),
       clearError (fieldName) {
         if (this.errors[fieldName] !== undefined) {
@@ -118,11 +119,14 @@
         }
       },
       saveThisRestaurant () {
-        this.saveRestaurant({
-          context: this
-        })
+        this.setSelectedRestaurant(this.restaurant)
           .then(() => {
-            this.$router.replace({ name: 'ettermeim.index' })
+            this.saveRestaurant({
+              context: this
+            })
+              .then(() => {
+                this.$router.replace({ name: 'ettermeim.index' })
+              })
           })
       }
     },

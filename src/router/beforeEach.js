@@ -1,7 +1,6 @@
-import store from '../store'
 import localforage from 'localforage'
 import { hasIn } from 'lodash'
-import { isAdminMenu, areWeAdmin } from './customRouteChecks'
+import { checkAuthenticated, isAdminMenu, areWeAdmin } from './customRouteChecks'
 
 export const beforeEach = (to, from, next) => {
   if (to.matched.some(m => m.meta.needsAuth)) {
@@ -54,7 +53,7 @@ export const beforeEach = (to, from, next) => {
   else if (hasIn(to.meta, 'guest') && to.meta.guest) {
     if (to.name === 'login' || to.name === 'registration') {
       // console.log('Login jönne')
-      checkAuthenticated(to, next)
+      checkAuthenticated()
         .then(() => {
           // console.log('De már be vagyunk jelentkezve')
           next({name: 'index'})
@@ -72,23 +71,4 @@ export const beforeEach = (to, from, next) => {
   else {
     next()
   }
-}
-
-function checkAuthenticated () {
-  return store.dispatch('auth/checkTokenExists')
-    .then(() => {
-      return store.dispatch('auth/fetchUser')
-        .then(() => {
-          return Promise.resolve()
-        })
-        .catch((error) => {
-          return Promise.reject(error)
-        })
-    })
-    .then(() => {
-      return Promise.resolve()
-    })
-    .catch((error) => {
-      return Promise.reject(error)
-    })
 }

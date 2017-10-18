@@ -39,11 +39,21 @@ export const saveRestaurant = ({dispatch, state}, payload) => {
 export const updateRestaurant = ({dispatch, state}, payload) => {
   return axios.post('restaurant/update', state.selectedRestaurant)
     .then((response) => {
-      dispatch('setSelectedRestaurant', response.data)
+      dispatch('setSelectedRestaurant', response.data.data)
       return Promise.resolve()
     })
     .catch(error => {
       payload.context.errors = error.response.data
+      return Promise.reject(new Error(error))
+    })
+}
+
+export const deleteRestaurant = ({ dispatch }, restId) => {
+  return axios.post('restaurant/delete', restId)
+    .then(() => {
+      return Promise.resolve()
+    })
+    .catch(error => {
       return Promise.reject(new Error(error))
     })
 }
@@ -54,4 +64,5 @@ export const resetSelectedRestaurant = ({ commit }) => {
 
 export const setSelectedRestaurant = ({ commit }, restaurant) => {
   commit('setSelectedRestaurant', restaurant)
+  return Promise.resolve()
 }

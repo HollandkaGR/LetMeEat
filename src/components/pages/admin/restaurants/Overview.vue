@@ -9,7 +9,7 @@
         :key="restaurant.id"
         :restaurant="restaurant"
         @editRestaurant="editRestaurant"
-        @deleteRestaurant="deleteRestaurant"
+        @deleteRestaurant="deleteThisRestaurant"
       />
     </q-list>
     <h5 v-else>Még nincs étterme, vigyen fel újat!</h5>
@@ -38,7 +38,8 @@
     methods: {
       ...mapActions({
         fetchMyRestaurants: 'admin/fetchMyRestaurants',
-        setSelectedRestaurant: 'admin/setSelectedRestaurant'
+        setSelectedRestaurant: 'admin/setSelectedRestaurant',
+        deleteRestaurant: 'admin/deleteRestaurant'
       }),
       newRest: function () {
         this.$router.push({ name: 'ettermeim.uj' })
@@ -50,8 +51,8 @@
             this.$router.push({ name: 'ettermeim.update' })
           })
       },
-      deleteRestaurant: function (id) {
-        console.log('delete: ' + id)
+      deleteThisRestaurant: function (id) {
+        this.deleteRestaurant({id})
       }
     },
     mounted () {
