@@ -41,7 +41,6 @@
     <div class="separator"/>
     <div class="sectionWrapper col-12">
       <rest-options></rest-options>
-      
     </div>
     <div class="separator"/>
     <div class="sectionWrapper row">
@@ -62,6 +61,10 @@
         <open-hours v-for="(day, key) in weekDays" :key="key" :day="day" :id="key" :values="restaurant.open_hours[key]" @setHours="setHours"></open-hours>
       </div>
     </div>
+    <div class="separator"/>
+    <div class="sectionWrapper col-12">
+      <categories :restId="restaurant.id"></categories>
+    </div>
   </div>
 </template>
 
@@ -70,12 +73,13 @@
   import { week, convertDataToSelect, showPopup } from 'helpers'
   import OpenHours from './partials/OpenHours'
   import RestOptions from './partials/RestOptions'
+  import Categories from './partials/Categories'
 
   export default {
 
     name: 'EditRestaurant',
     components: {
-      OpenHours, RestOptions
+      OpenHours, RestOptions, Categories
     },
     data () {
       return {

@@ -9,3 +9,7 @@ export const setSelectedRestaurant = (state, restaurant) => {
 export const resetSelectedRestaurant = (state) => {
   state.selectedRestaurant = {}
 }
+
+export const setCategories = (state, categories) => {
+  state.selectedRestaurant.categories = categories
+}

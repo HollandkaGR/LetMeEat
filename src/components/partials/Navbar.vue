@@ -1,5 +1,5 @@
 <template>
-  <q-toolbar slot="header" :color="userIsOwner ? 'black' : 'brown-2'" class="row justify-between fixed-top">
+  <q-toolbar slot="header" :color="userIsOwner ? 'black' : 'brown-2'" class="row justify-between fixed-top mainNav">
     <!-- Adminoknak -->
     <q-toolbar-title v-if="userIsOwner" class="gt-sm bg-black text-light adminSubtitle">
       Let Me Eat
@@ -104,6 +104,9 @@
 </script>
 
 <style lang="stylus" scoped>
+  .mainNav
+    z-index 1000
+
   .adminSubtitle .q-toolbar-subtitle
     opacity 1
     font-size 16px

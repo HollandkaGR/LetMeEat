@@ -66,3 +66,26 @@ export const setSelectedRestaurant = ({ commit }, restaurant) => {
   commit('setSelectedRestaurant', restaurant)
   return Promise.resolve()
 }
+
+export const fetchCategories = ({ commit }, payload) => {
+  console.log(payload)
+  return axios.get('restaurant/categories/' + payload.restId)
+    .then(response => {
+      commit('setCategories', response.data)
+      return Promise.resolve()
+    })
+    .catch(error => {
+      return Promise.reject(new Error(error))
+    })
+}
+
+export const newCategory = ({ commit }, payload) => {
+  return axios.get('restaurant/categories/new', payload)
+    .then(response => {
+      commit('setCategories', response.data)
+      return Promise.resolve()
+    })
+    .catch(error => {
+      return Promise.reject(new Error(error))
+    })
+}
