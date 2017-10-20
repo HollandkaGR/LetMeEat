@@ -68,7 +68,6 @@ export const setSelectedRestaurant = ({ commit }, restaurant) => {
 }
 
 export const fetchCategories = ({ commit }, payload) => {
-  console.log(payload)
   return axios.get('restaurant/categories/' + payload.restId)
     .then(response => {
       commit('setCategories', response.data)
@@ -80,9 +79,10 @@ export const fetchCategories = ({ commit }, payload) => {
 }
 
 export const newCategory = ({ commit }, payload) => {
-  return axios.get('restaurant/categories/new', payload)
+  console.log(payload)
+  return axios.post('restaurant/categories/new', payload)
     .then(response => {
-      commit('setCategories', response.data)
+      commit('addCategory', response.data)
       return Promise.resolve()
     })
     .catch(error => {

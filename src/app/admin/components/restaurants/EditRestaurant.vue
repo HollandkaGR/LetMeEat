@@ -63,7 +63,7 @@
     </div>
     <div class="separator"/>
     <div class="sectionWrapper col-12">
-      <categories :restId="restaurant.id"></categories>
+      <categories></categories>
     </div>
   </div>
 </template>

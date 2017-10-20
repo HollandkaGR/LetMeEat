@@ -13,3 +13,10 @@ export const resetSelectedRestaurant = (state) => {
 export const setCategories = (state, categories) => {
   state.selectedRestaurant.categories = categories
 }
+
+export const addCategory = (state, category) => {
+  if (typeof state.selectedRestaurant.categories === 'undefined') {
+    state.selectedRestaurant.categories = []
+  }
+  state.selectedRestaurant.categories.push(category)
+}
