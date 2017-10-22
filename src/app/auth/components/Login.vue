@@ -1,16 +1,5 @@
 <template>
   <div class="relative-position">
-    <q-alert
-      v-if="errors.root"
-      position="bottom-center"
-      color="red"
-      icon="cloud"
-      enter="slideInUp"
-      leave="bounceOutDown"
-      appear
-    >
-      {{ errors.root }}
-    </q-alert>
     <q-field
       placeholder="Regisztrált email cím"
       :error="errors.email !== undefined"
@@ -58,6 +47,13 @@
       ...mapGetters({
         user: 'auth/getUser'
       })
+    },
+    watch: {
+      errors: (newValue) => {
+        if (newValue.root) {
+          showPopup(newValue.root, 'failed')
+        }
+      }
     },
     methods: {
       ...mapActions({

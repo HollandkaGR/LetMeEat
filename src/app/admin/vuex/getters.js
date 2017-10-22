@@ -1,3 +1,5 @@
+import { orderBy } from 'lodash'
+
 export const getMyRestaurants = (state) => {
   return state.myRestaurants
 }
@@ -18,6 +20,5 @@ export const getSelectedRestId = (state) => {
 }
 
 export const getCategories = (state) => {
-  let categories = state.selectedRestaurant.categories
-  return typeof categories !== 'undefined' ? categories : null
+  return orderBy(state.selectedRestaurant.categories, 'name')
 }

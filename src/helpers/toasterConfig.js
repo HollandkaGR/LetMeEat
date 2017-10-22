@@ -24,6 +24,7 @@ export class Popup {
         this.options.bgColor = '#388e3c'
         this.options.color = 'white'
         this.options.button.color = 'white'
+        this.options.timeout = 1500
         break
 
       case 'warning':
@@ -31,6 +32,14 @@ export class Popup {
         this.options.bgColor = '#f4511e'
         this.options.color = 'white'
         this.options.button.color = 'white'
+        break
+
+      case 'failed':
+        this.options.icon = 'feedback'
+        this.options.bgColor = '#f4511e'
+        this.options.color = 'white'
+        this.options.button.color = 'white'
+        this.options.timeout = 1000
         break
     }
 

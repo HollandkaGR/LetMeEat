@@ -31,19 +31,19 @@ export const saveRestaurant = ({dispatch, state}, payload) => {
       return Promise.resolve()
     })
     .catch(error => {
-      payload.context.errors = error.response.data
+      payload.context.errors = error.response.data.errors
       return Promise.reject(new Error(error))
     })
 }
 
 export const updateRestaurant = ({dispatch, state}, payload) => {
-  return axios.post('restaurant/update', state.selectedRestaurant)
+  return axios.patch('restaurant/update', state.selectedRestaurant)
     .then((response) => {
       dispatch('setSelectedRestaurant', response.data.data)
       return Promise.resolve()
     })
     .catch(error => {
-      payload.context.errors = error.response.data
+      payload.context.errors = error.response.data.errors
       return Promise.reject(new Error(error))
     })
 }
@@ -79,13 +79,14 @@ export const fetchCategories = ({ commit }, payload) => {
 }
 
 export const newCategory = ({ commit }, payload) => {
-  console.log(payload)
-  return axios.post('restaurant/categories/new', payload)
+  // console.log(payload)
+  return axios.post('restaurant/categories/new', payload.data)
     .then(response => {
-      commit('addCategory', response.data)
+      commit('addCategory', response.data.data)
       return Promise.resolve()
     })
     .catch(error => {
+      payload.context.errors = error.response.data.errors
       return Promise.reject(new Error(error))
     })
 }

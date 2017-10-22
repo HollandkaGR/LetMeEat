@@ -127,6 +127,9 @@
               .then(() => {
                 this.$router.replace({ name: 'ettermeim.index' })
               })
+              .catch(() => {
+
+              })
           })
       }
     },

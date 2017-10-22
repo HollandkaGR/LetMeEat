@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export const setMyRestaurants = (state, restaurants) => {
   state.myRestaurants = restaurants
 }
@@ -11,7 +13,8 @@ export const resetSelectedRestaurant = (state) => {
 }
 
 export const setCategories = (state, categories) => {
-  state.selectedRestaurant.categories = categories
+  Vue.set(state.selectedRestaurant, 'categories', categories)
+  // state.selectedRestaurant.categories = categories
 }
 
 export const addCategory = (state, category) => {
