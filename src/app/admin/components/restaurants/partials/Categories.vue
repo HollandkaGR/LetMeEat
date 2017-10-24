@@ -42,64 +42,16 @@
 
     <!-- Új kategória -->
     <q-modal
-      ref="newCatModal"
+      ref="catModal"
       :content-css="{width: '400px', padding: '10px'}"
-      @close="newCatModalClosed"
     >
-      <div>
-        <q-field
-          :error="errors.name !== undefined"
-          :error-label="errors.name !== undefined ? errors.name[0] : ''"
-          class="col-md-6 inputField"
-        >
-          <q-input
-            ref="newCatModalInput"
-            type="text"
-            v-model="newCatName"
-            float-label="Az új kategória neve"
-            color="brown-4"
-            @focus="clearError('name')"
-            @keyup.enter="saveNewCat"
-            autofocus
-          />
-        </q-field>
-      </div>
-      <div class="row justify-between">
-        <q-btn color="red-4" flat @click="$refs.newCatModal.close()">Mégse</q-btn>
-        <q-btn color="green-4" push @click="saveNewCat">Felvétel</q-btn>
-      </div>
+      <category-modal
+        :modalRef="$refs.catModal"
+        :options="catOptions"
+      />
     </q-modal>
 
-    <!-- Kategória szerkesztés -->
-    <q-modal
-      ref="editCatModal"
-      :content-css="{padding: '20px'}"
-      @close="newCatModalClosed"
-    >
-      <div>
-        <q-field
-        :error="errors.name !== undefined"
-        :error-label="errors.name !== undefined ? errors.name[0] : ''"
-        class="col-md-6 inputField"
-        >
-          <q-input
-            ref="editCatModalInput"
-            type="text"
-            v-model="newCatName"
-            float-label="A kategória új neve"
-            color="brown-6"
-            @focus="clearError('name')"
-            autofocus
-          />
-        </q-field>
-      </div>
-      <div class="row justify-between">
-        <q-btn color="red-4" flat @click="$refs.editCatModal.close()">Mégse</q-btn>
-        <q-btn color="green-4" push @click="updateCat">Módosít</q-btn>
-      </div>
-    </q-modal>
-
-    <!-- Új termék modal -->
+    <!-- Termék modal -->
     <q-modal
       ref="prodModal"
       :content-css="{width: '400px', padding: '10px'}"
@@ -115,18 +67,19 @@
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import { Dialog } from 'quasar'
-  import Category from './Category'
   import Product from './Product'
+  import CategoryModal from './CategoryModal'
   import ProductModal from './ProductModal'
 
   export default {
     name: 'Categories',
-    components: { Category, Product, ProductModal },
+    components: { CategoryModal, Product, ProductModal },
     data () {
       return {
-        errors: [],
-        newCatName: null,
-        editedCat: null,
+        catOptions: {
+          category: null,
+          newCat: false
+        },
         prodOptions: {
           catId: null,
           product: null,
@@ -144,50 +97,23 @@
     methods: {
       ...mapActions({
         fetchCategories: 'admin/fetchCategories',
-        newCategory: 'admin/newCategory',
-        updateCategory: 'admin/updateCategory',
         deleteCategory: 'admin/deleteCategory'
       }),
       openNewCatModal: function () {
-        this.$refs.newCatModal.open(() => {
-          this.$refs.newCatModalInput.focus()
-        })
-      },
-      newCatModalClosed: function () {
-        this.newCatName = null
-        this.errors = []
-      },
-      saveNewCat: function () {
-        this.newCategory({
-          data: {
-            restId: this.getSelectedRestId,
-            name: this.newCatName
-          },
-          context: this
-        })
-          .then(() => {
-            this.$refs.newCatModal.close()
-          })
-      },
-      updateCat () {
-        this.updateCategory({
-          data: {
-            restId: this.getSelectedRestId,
-            catId: this.editedCat,
-            name: this.newCatName
-          },
-          context: this
-        })
-          .then(() => {
-            this.$refs.editCatModal.close()
-          })
+        let newOptions = {
+          category: null,
+          newCat: true
+        }
+        this.catOptions = newOptions
+        this.$refs.catModal.open()
       },
       editCategory (catId) {
-        this.newCatName = this.getCategory(catId).name
-        this.editedCat = catId
-        this.$refs.editCatModal.open(() => {
-          this.$refs.editCatModalInput.select()
-        })
+        let newOptions = {
+          category: this.getCategory(catId),
+          newCat: false
+        }
+        this.catOptions = newOptions
+        this.$refs.catModal.open()
       },
       removeCategory (id) {
         Dialog.create({
@@ -202,7 +128,6 @@
             {
               label: 'Törlés',
               handler: () => {
-                console.log(id)
                 this.deleteCategory({
                   data: {
                     catId: id

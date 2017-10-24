@@ -37,7 +37,7 @@
         <q-input
           type="number"
           v-model="price"
-          float-label="A termék ára"
+          float-label="A termék ára (Ft)"
           color="brown-4"
           @focus="clearError('price')"
         />
@@ -46,7 +46,7 @@
     <div class="row justify-between">
       <q-btn color="red-4" flat @click="modalRef.close()">Mégse</q-btn>
       <q-btn v-if="options.newProd" color="green-4" push @click="saveNewProduct">Felvétel</q-btn>
-      <q-btn v-else color="green-4" push @click="updateProduct">Módosítás</q-btn>
+      <q-btn v-else color="green-4" push @click="updateSelectedProduct">Módosítás</q-btn>
     </div>
   </div>
 </template>
@@ -60,6 +60,7 @@
     data () {
       return {
         errors: [],
+        prodId: null,
         name: null,
         description: null,
         price: null
@@ -67,19 +68,19 @@
     },
     watch: {
       options (newVal) {
+        this.clearValues()
         if (newVal.product) {
+          this.prodId = newVal.product.id
           this.name = newVal.product.name
           this.description = newVal.product.description
           this.price = newVal.product.price
-        }
-        else {
-          this.clearValues()
         }
       }
     },
     methods: {
       ...mapActions({
-        newProduct: 'admin/newProduct'
+        newProduct: 'admin/newProduct',
+        updateProduct: 'admin/updateProduct'
       }),
       saveNewProduct () {
         this.newProduct({
@@ -97,14 +98,29 @@
             })
           })
       },
-      updateProduct () {
-        console.log('Módosítás')
+      updateSelectedProduct () {
+        this.updateProduct({
+          data: {
+            prodId: this.prodId,
+            name: this.name,
+            description: this.description,
+            price: this.price,
+            catId: this.options.catId
+          },
+          context: this
+        })
+          .then(() => {
+            this.modalRef.close(() => {
+              this.clearValues()
+            })
+          })
       },
       clearValues () {
+        this.errors = []
+        this.prodId = null
         this.name = null
         this.description = null
         this.price = null
-        this.errors = []
       },
       clearError (fieldName) {
         if (this.errors[fieldName] !== undefined) {

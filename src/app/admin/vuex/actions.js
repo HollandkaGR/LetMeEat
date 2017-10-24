@@ -128,3 +128,16 @@ export const newProduct = ({ commit }, payload) => {
       return Promise.reject(new Error(error))
     })
 }
+
+export const updateProduct = ({ commit }, payload) => {
+  return axios.post('restaurant/product/update', payload.data)
+    .then(response => {
+      commit('modifyProduct', response.data.data)
+      return Promise.resolve()
+    })
+    .catch(error => {
+      console.log(error)
+      payload.context.errors = error.response.data.errors
+      return Promise.reject(new Error(error))
+    })
+}

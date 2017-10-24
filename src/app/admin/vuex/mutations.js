@@ -55,3 +55,18 @@ export const addProduct = (state, product) => {
     }
   })
 }
+
+export const modifyProduct = (state, product) => {
+  let categories = state.selectedRestaurant.categories
+  categories.forEach((category, catIndex) => {
+    if (category.id === product.category_id) {
+      let products = categories[catIndex].products
+      products.forEach((prod, prodIndex) => {
+        if (prod.id === product.id) {
+          products[prodIndex] = product
+          Vue.set(state.selectedRestaurant.categories[catIndex], 'products', products)
+        }
+      })
+    }
+  })
+}

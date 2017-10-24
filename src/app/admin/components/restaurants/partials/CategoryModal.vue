@@ -1,0 +1,101 @@
+<template>
+  <div>
+    <div>
+      <h5 v-if="options.newCat">Új kategória</h5>
+      <h5 v-else>A kategória módosítása</h5>
+      <q-field
+        :error="errors.name !== undefined"
+        :error-label="errors.name !== undefined ? errors.name[0] : ''"
+        class="col-md-6 inputField"
+      >
+        <q-input
+          ref="newCatModalInput"
+          type="text"
+          v-model="name"
+          float-label="Az kategória neve"
+          color="brown-4"
+          @focus="clearError('name')"
+          @keyup.enter="saveNewCat"
+          autofocus
+        />
+      </q-field>
+    </div>
+    <div class="row justify-between">
+      <q-btn color="red-4" flat @click="modalRef.close()">Mégse</q-btn>
+      <q-btn v-if="options.newCat" color="green-4" push @click="saveNewCat">Felvétel</q-btn>
+      <q-btn v-else color="green-4" push @click="updateCat">Módosít</q-btn>
+    </div>
+  </div>
+</template>
+
+<script>
+  import { mapGetters, mapActions } from 'vuex'
+
+  export default {
+    name: 'CategoryModal',
+
+    props: ['modalRef', 'options'],
+    data () {
+      return {
+        errors: [],
+        name: null
+      }
+    },
+    computed: {
+      ...mapGetters({
+        getSelectedRestId: 'admin/getSelectedRestId'
+      })
+    },
+    watch: {
+      options (newVal) {
+        this.clearValues()
+        if (newVal.category) {
+          this.name = newVal.category.name
+        }
+      }
+    },
+    methods: {
+      ...mapActions({
+        newCategory: 'admin/newCategory',
+        updateCategory: 'admin/updateCategory'
+      }),
+      saveNewCat: function () {
+        this.newCategory({
+          data: {
+            restId: this.getSelectedRestId,
+            name: this.name
+          },
+          context: this
+        })
+          .then(() => {
+            this.modalRef.close()
+          })
+      },
+      updateCat () {
+        this.updateCategory({
+          data: {
+            restId: this.getSelectedRestId,
+            catId: this.options.category.id,
+            name: this.name
+          },
+          context: this
+        })
+          .then(() => {
+            this.modalRef.close()
+          })
+      },
+      clearValues () {
+        this.errors = []
+        this.name = null
+      },
+      clearError (fieldName) {
+        if (this.errors[fieldName] !== undefined) {
+          delete this.errors[fieldName]
+        }
+      }
+    }
+  }
+</script>
+
+<style lang="stylus" scoped>
+</style>
