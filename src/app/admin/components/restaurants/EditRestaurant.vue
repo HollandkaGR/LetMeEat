@@ -44,15 +44,15 @@
     </div>
     <div class="separator"/>
     <div class="sectionWrapper row">
-    <h6 class="row col-12">
-      Nyitvatartás
-      <span class="allSameWrapper">
-        <q-toggle
-          v-model="allDaySame"
-          label="Minden nap"
-          color="green-4"
-        />
-      </span>
+      <h6 class="row col-12">
+        Nyitvatartás
+        <span class="allSameWrapper">
+          <q-toggle
+            v-model="allDaySame"
+            label="Minden nap"
+            color="green-4"
+          />
+        </span>
       </h6>
       <div v-if="allDaySame">
         <open-hours day="Minden nap" id="0" @setHours="setAllDayTo"></open-hours>
@@ -171,7 +171,7 @@
     display block!important
     margin 20px auto
     height 2px
-    width 60%
+    width 100%
     background $grey
     
   .restOptions

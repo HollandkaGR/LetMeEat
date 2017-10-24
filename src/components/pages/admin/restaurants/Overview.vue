@@ -19,6 +19,7 @@
 <script>
   import OverviewItem from 'src/app/admin/components/restaurants/OverviewItem'
   import { mapGetters, mapActions } from 'vuex'
+  import { Dialog } from 'quasar'
 
   export default {
     components: {
@@ -52,7 +53,25 @@
           })
       },
       deleteThisRestaurant: function (id) {
-        this.deleteRestaurant({id})
+        Dialog.create({
+          title: 'Biztos?',
+          message: 'Ha törlöd az éttermet, a kategóriák és a termékek is elvesznek!<br/>Ha inaktívra állítod az éttermet, a vendégek nem fogják látni!',
+          buttons: [
+            {
+              label: 'Mégse',
+              handler () {},
+              color: 'red-8'
+            },
+            {
+              label: 'Törlés',
+              handler: () => {
+                this.deleteRestaurant({id})
+              },
+              color: 'green-4',
+              push: true
+            }
+          ]
+        })
       }
     },
     mounted () {

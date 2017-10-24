@@ -22,3 +22,10 @@ export const getSelectedRestId = (state) => {
 export const getCategories = (state) => {
   return orderBy(state.selectedRestaurant.categories, 'name')
 }
+
+// Az id-t már a return statementnek adjuk
+export const getCategory = (state) => (id) => {
+  return state.selectedRestaurant.categories.find(category => {
+    return category.id === id
+  })
+}

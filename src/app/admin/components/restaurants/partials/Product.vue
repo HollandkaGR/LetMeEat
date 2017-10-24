@@ -1,5 +1,5 @@
 <template>
-  <q-item>
+  <q-item class="bg-green-1">
     <q-item-main>
       <div class="row justify-between items-center">
         <div class="col text-dark">
@@ -13,8 +13,13 @@
         <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3" v-html="convertCurrency(product.price)"></div>
       </div>
     </q-item-main>
-    <q-item-side right>
-      <q-item-tile icon="chat_bubble" color="green" />
+    <q-item-side class="row">
+      <q-btn small flat color="green-8" class="no-padding" @click="editProduct">
+        <q-icon name="mode_edit" size="24px"/>
+      </q-btn>
+      <q-btn small flat color="red-8" class="no-padding" @click="removeCategory(category.id)">
+        <q-icon name="delete_forever" size="24px"/>
+      </q-btn>
     </q-item-side>
   </q-item>
 </template>
@@ -33,6 +38,9 @@
       }
     },
     methods: {
+      editProduct () {
+        this.$emit('editProduct', this.product)
+      },
       convertCurrency: function (value) {
         return currencyFormat(value)
       }

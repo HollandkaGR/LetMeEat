@@ -48,9 +48,10 @@ export const updateRestaurant = ({dispatch, state}, payload) => {
     })
 }
 
-export const deleteRestaurant = ({ dispatch }, restId) => {
-  return axios.post('restaurant/delete', restId)
+export const deleteRestaurant = ({ commit }, restaurant) => {
+  return axios.post('restaurant/delete', restaurant)
     .then(() => {
+      commit('deleteRestaurant', restaurant.id)
       return Promise.resolve()
     })
     .catch(error => {
@@ -86,6 +87,43 @@ export const newCategory = ({ commit }, payload) => {
       return Promise.resolve()
     })
     .catch(error => {
+      payload.context.errors = error.response.data.errors
+      return Promise.reject(new Error(error))
+    })
+}
+
+export const updateCategory = ({ commit }, payload) => {
+  return axios.patch('restaurant/categories/update', payload.data)
+    .then(response => {
+      commit('modifyCategory', response.data.data)
+      return Promise.resolve()
+    })
+    .catch(error => {
+      payload.context.errors = error.response.data.errors
+      return Promise.reject(new Error(error))
+    })
+}
+
+export const deleteCategory = ({ commit }, payload) => {
+  return axios.post('restaurant/categories/delete', payload.data)
+    .then(response => {
+      commit('removeCategory', payload.data.catId)
+      return Promise.resolve()
+    })
+    .catch((error) => {
+      console.log(error)
+      return Promise.reject(new Error('Hiba a törlés során'))
+    })
+}
+
+export const newProduct = ({ commit }, payload) => {
+  return axios.post('restaurant/product/new', payload.data)
+    .then(response => {
+      commit('addProduct', response.data.data)
+      return Promise.resolve()
+    })
+    .catch(error => {
+      console.log(error)
       payload.context.errors = error.response.data.errors
       return Promise.reject(new Error(error))
     })
