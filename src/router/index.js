@@ -81,7 +81,7 @@ const router = new VueRouter({
       name: 'orders',
       component: load('authed/Orders'),
       meta: {
-        label: 'Rendelések',
+        label: 'Rendeléseim',
         icon: 'playlist_add_check',
         guest: false,
         needsAuth: true,
@@ -107,7 +107,7 @@ const router = new VueRouter({
       component: load('admin/MyRestaurants'),
       children: [
         {
-          path: '',
+          path: '/',
           name: 'ettermeim.index',
           component: load('admin/restaurants/Overview')
         },

@@ -101,7 +101,8 @@
     methods: {
       ...mapActions({
         fetchPossibleCities: 'admin/fetchPossibleCities',
-        updateRestaurant: 'admin/updateRestaurant'
+        updateRestaurant: 'admin/updateRestaurant',
+        isSelectedRestaurant: 'admin/isSelectedRestaurant'
       }),
       clearError (fieldName) {
         if (this.errors[fieldName] !== undefined) {
@@ -136,7 +137,8 @@
     },
     mounted () {
       this.weekDays = week()
-      this.restaurant = this.getSelectedRestaurant
+      this.isSelectedRestaurant()
+        .then(this.restaurant = this.getSelectedRestaurant)
 
       // A város megjelenítése késhet, mert request, ezért beadjuk a jelenlegi várost az opciók közé, a háttérben pedig frissül
       this.possibleCities = convertDataToSelect([this.getSelectedRestaurant.city], 'name', 'id')

@@ -1,12 +1,19 @@
 import Vue from 'vue'
 import { isEmpty } from 'lodash'
+import { SessionStorage } from 'quasar'
+import { sessionVars } from 'helpers/config'
 
 export const setMyRestaurants = (state, restaurants) => {
   state.myRestaurants = restaurants
 }
 
+export const storeSelectedRestaurant = (state) => {
+  SessionStorage.set(sessionVars.selectedRest, state.selectedRestaurant)
+}
+
 export const setSelectedRestaurant = (state, restaurant) => {
   state.selectedRestaurant = restaurant
+  SessionStorage.set(sessionVars.selectedRest, restaurant)
 }
 
 export const deleteRestaurant = (state, restId) => {
@@ -19,7 +26,7 @@ export const resetSelectedRestaurant = (state) => {
 
 export const setCategories = (state, categories) => {
   Vue.set(state.selectedRestaurant, 'categories', categories)
-  // state.selectedRestaurant.categories = categories
+  SessionStorage.set(sessionVars.selectedRest, state.selectedRestaurant)
 }
 
 export const addCategory = (state, category) => {
@@ -63,8 +70,9 @@ export const modifyProduct = (state, product) => {
       let products = categories[catIndex].products
       products.forEach((prod, prodIndex) => {
         if (prod.id === product.id) {
-          products[prodIndex] = product
-          Vue.set(state.selectedRestaurant.categories[catIndex], 'products', products)
+          products[prodIndex].name = product.name
+          products[prodIndex].description = product.description
+          products[prodIndex].price = product.price
         }
       })
     }

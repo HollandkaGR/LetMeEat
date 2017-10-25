@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { SessionStorage } from 'quasar'
+import { sessionVars } from 'helpers/config'
 
 export const register = ({ dispatch }, { payload, context }) => {
 }
@@ -61,6 +63,14 @@ export const deleteRestaurant = ({ commit }, restaurant) => {
 
 export const resetSelectedRestaurant = ({ commit }) => {
   commit('resetSelectedRestaurant')
+  SessionStorage.remove('selectedRest')
+}
+
+export const isSelectedRestaurant = ({dispatch}) => {
+  if (SessionStorage.has(sessionVars.selectedRest)) {
+    dispatch('setSelectedRestaurant', SessionStorage.get.item(sessionVars.selectedRest))
+  }
+  return Promise.resolve()
 }
 
 export const setSelectedRestaurant = ({ commit }, restaurant) => {
@@ -72,6 +82,7 @@ export const fetchCategories = ({ commit }, payload) => {
   return axios.get('restaurant/categories/' + payload.restId)
     .then(response => {
       commit('setCategories', response.data)
+      commit('storeSelectedRestaurant')
       return Promise.resolve()
     })
     .catch(error => {

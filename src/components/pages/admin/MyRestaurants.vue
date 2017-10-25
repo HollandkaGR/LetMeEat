@@ -18,11 +18,7 @@
   import 'quasar-extras/animate/fadeOut.css'
 
   export default {
-
-    name: 'MyRestaurants',
-    mounted: function () {
-      this.$router.replace({ name: 'ettermeim.index' })
-    }
+    name: 'MyRestaurants'
   }
 </script>
 

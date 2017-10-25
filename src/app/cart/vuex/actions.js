@@ -13,11 +13,6 @@ export const fetchCart = ({ commit }) => {
     let cart = SessionStorage.get.item('cart')
     commit('setCart', cart)
   }
-
-  // return axios.get('/cart').then((response) => {
-  //   commit('setCart', response.data)
-  //   return Promise.resolve()
-  // })
 }
 
 export const addProductToCart = ({ commit, state }, {restaurant, product, quantity}) => {

@@ -9,7 +9,6 @@ export const beforeEach = (to, from, next) => {
       .then(() => {
         // console.log('Authentication successful')
         if (isAdminMenu(to)) {
-          // console.log('Admin menu')
           if (areWeAdmin()) {
             // console.log('Adminok vagyunk')
             next()
