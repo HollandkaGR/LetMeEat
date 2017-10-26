@@ -1,14 +1,9 @@
 import Vue from 'vue'
-import { isEmpty } from 'lodash'
 import { SessionStorage } from 'quasar'
 import { sessionVars } from 'helpers/config'
 
 export const setMyRestaurants = (state, restaurants) => {
   state.myRestaurants = restaurants
-}
-
-export const storeSelectedRestaurant = (state) => {
-  SessionStorage.set(sessionVars.selectedRest, state.selectedRestaurant)
 }
 
 export const setSelectedRestaurant = (state, restaurant) => {
@@ -20,61 +15,61 @@ export const deleteRestaurant = (state, restId) => {
   state.myRestaurants = state.myRestaurants.filter(rest => rest.id !== restId)
 }
 
-export const resetSelectedRestaurant = (state) => {
+export const unsetVars = (state) => {
   state.selectedRestaurant = {}
+  SessionStorage.remove(sessionVars.selectedRest)
+  state.selectedCategories = {}
+  SessionStorage.remove(sessionVars.selectedCat)
 }
 
 export const setCategories = (state, categories) => {
-  Vue.set(state.selectedRestaurant, 'categories', categories)
-  SessionStorage.set(sessionVars.selectedRest, state.selectedRestaurant)
+  let remappedCats = {}
+  categories.map(category => {
+    remappedCats[category.id] = category
+  })
+  Vue.set(state, 'selectedCategories', remappedCats)
+  SessionStorage.set(sessionVars.selectedCat, state.selectedCategories)
+}
+
+export const setCategoriesFromSession = (state, categories) => {
+  Vue.set(state, 'selectedCategories', categories)
 }
 
 export const addCategory = (state, category) => {
   category.products = []
-  if (typeof state.selectedRestaurant.categories === 'undefined') {
-    state.selectedRestaurant.categories = []
-  }
-  state.selectedRestaurant.categories.push(category)
+  Vue.set(state.selectedCategories, category.id, category)
+  SessionStorage.set(sessionVars.selectedCat, state.selectedCategories)
 }
 
 export const modifyCategory = (state, category) => {
-  let categories = state.selectedRestaurant.categories
-  categories.forEach((element, index) => {
-    if (element.id === category.id) {
-      categories[index].name = category.name
-    }
-  })
+  state.selectedCategories[category.id] = Object.assign(state.selectedCategories[category.id], category)
+  SessionStorage.set(sessionVars.selectedCat, state.selectedCategories)
 }
 
-export const removeCategory = (state, categoryToDelete) => {
-  state.selectedRestaurant.categories = state.selectedRestaurant.categories.filter(function (category) {
-    return category.id !== categoryToDelete
-  })
+export const removeCategory = (state, categoryId) => {
+  let newCats = state.selectedCategories
+  delete newCats[categoryId]
+  state.selectedCategories = Object.assign({}, newCats)
+  SessionStorage.set(sessionVars.selectedCat, state.selectedCategories)
 }
 
 export const addProduct = (state, product) => {
-  state.selectedRestaurant.categories.find(category => {
-    if (category.id === product.category_id) {
-      if (isEmpty(category.products)) {
-        category.products = []
-      }
-      category.products.push(product)
-    }
-  })
+  state.selectedCategories[product.category_id].products.push(product)
+  SessionStorage.set(sessionVars.selectedCat, state.selectedCategories)
 }
 
 export const modifyProduct = (state, product) => {
-  let categories = state.selectedRestaurant.categories
-  categories.forEach((category, catIndex) => {
-    if (category.id === product.category_id) {
-      let products = categories[catIndex].products
-      products.forEach((prod, prodIndex) => {
-        if (prod.id === product.id) {
-          products[prodIndex].name = product.name
-          products[prodIndex].description = product.description
-          products[prodIndex].price = product.price
-        }
-      })
+  let products = state.selectedCategories[product.category_id].products
+  products.forEach((prod, prodIndex) => {
+    if (prod.id === product.id) {
+      Vue.set(products, prodIndex, product)
     }
   })
+  SessionStorage.set(sessionVars.selectedCat, state.selectedCategories)
+}
+
+export const removeProduct = (state, { prodId, catId }) => {
+  let prods = state.selectedCategories[catId].products
+  state.selectedCategories[catId].products = Object.assign({}, prods.filter(prod => prod.id !== prodId))
+  SessionStorage.set(sessionVars.selectedCat, state.selectedCategories)
 }

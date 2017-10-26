@@ -16,7 +16,6 @@
           color="brown-4"
           @focus="clearError('name')"
           @keyup.enter="saveNewCat"
-          autofocus
         />
       </q-field>
     </div>
@@ -34,7 +33,7 @@
   export default {
     name: 'CategoryModal',
 
-    props: ['modalRef', 'options'],
+    props: ['modalRef', 'options', 'isOpen'],
     data () {
       return {
         errors: [],
@@ -47,6 +46,11 @@
       })
     },
     watch: {
+      isOpen (newVal) {
+        if (newVal) {
+          this.$refs.newCatModalInput.select()
+        }
+      },
       options (newVal) {
         this.clearValues()
         if (newVal.category) {

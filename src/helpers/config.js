@@ -1,4 +1,5 @@
 export const sessionVars = {
   cart: 'cart',
-  selectedRest: 'selectedRestaurant'
+  selectedRest: 'selectedRestaurant',
+  selectedCat: 'currentCategories'
 }

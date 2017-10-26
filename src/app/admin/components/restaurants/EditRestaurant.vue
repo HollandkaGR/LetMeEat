@@ -3,7 +3,7 @@
     <div class="row justify-between items-center col-12">
       <h5>{{ restaurant.name }} módosítása</h5>
       <div class="actionbuttons">
-        <q-btn color="red-4" push @click="$router.replace({name: 'ettermeim.index'})">Vissza</q-btn>
+        <q-btn color="red-4" push @click="backToOverview">Vissza</q-btn>
         <q-btn color="green-4" push @click="saveThisRestaurant">Mentés</q-btn>
       </div>
     </div>
@@ -102,7 +102,8 @@
       ...mapActions({
         fetchPossibleCities: 'admin/fetchPossibleCities',
         updateRestaurant: 'admin/updateRestaurant',
-        isSelectedRestaurant: 'admin/isSelectedRestaurant'
+        isSelectedRestaurant: 'admin/isSelectedRestaurant',
+        unsetVars: 'admin/unsetVars'
       }),
       clearError (fieldName) {
         if (this.errors[fieldName] !== undefined) {
@@ -133,6 +134,10 @@
           .then(() => {
             showPopup('A mentés sikerült', 'success')
           })
+      },
+      backToOverview () {
+        this.$router.replace({name: 'ettermeim.index'})
+        this.unsetVars()
       }
     },
     mounted () {

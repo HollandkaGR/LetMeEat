@@ -1,5 +1,5 @@
 <template>
-  <q-item class="bg-green-1">
+  <q-item class="bg-green-1" style="padding-right:10px;">
     <q-item-main>
       <div class="row justify-between items-center">
         <div class="col text-dark">
@@ -13,11 +13,11 @@
         <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3" v-html="convertCurrency(product.price)"></div>
       </div>
     </q-item-main>
-    <q-item-side class="row">
-      <q-btn small flat color="green-8" class="no-padding" @click="editProduct">
+    <q-item-side class="row justify-between">
+      <q-btn small outline color="black" class="no-padding" @click="editProduct" style="margin-right:4px;">
         <q-icon name="mode_edit" size="24px"/>
       </q-btn>
-      <q-btn small flat color="red-8" class="no-padding" @click="removeCategory(category.id)">
+      <q-btn small outline color="red-6" class="no-padding" @click="deleteProduct">
         <q-icon name="delete_forever" size="24px"/>
       </q-btn>
     </q-item-side>
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+
   import { currencyFormat } from 'helpers'
 
   export default {
@@ -38,8 +40,17 @@
       }
     },
     methods: {
+      ...mapActions({
+        removeProduct: 'admin/removeProduct'
+      }),
       editProduct () {
         this.$emit('editProduct', this.product)
+      },
+      deleteProduct () {
+        this.removeProduct({
+          prodId: this.product.id,
+          catId: this.product.category_id
+        })
       },
       convertCurrency: function (value) {
         return currencyFormat(value)

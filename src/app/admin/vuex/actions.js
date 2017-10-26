@@ -50,10 +50,10 @@ export const updateRestaurant = ({dispatch, state}, payload) => {
     })
 }
 
-export const deleteRestaurant = ({ commit }, restaurant) => {
-  return axios.post('restaurant/delete', restaurant)
+export const deleteRestaurant = ({ commit }, restId) => {
+  return axios.delete('restaurant/delete/' + restId)
     .then(() => {
-      commit('deleteRestaurant', restaurant.id)
+      commit('deleteRestaurant', restId)
       return Promise.resolve()
     })
     .catch(error => {
@@ -61,9 +61,9 @@ export const deleteRestaurant = ({ commit }, restaurant) => {
     })
 }
 
-export const resetSelectedRestaurant = ({ commit }) => {
-  commit('resetSelectedRestaurant')
-  SessionStorage.remove('selectedRest')
+export const unsetVars = ({ commit }) => {
+  commit('unsetVars')
+  return Promise.resolve()
 }
 
 export const isSelectedRestaurant = ({dispatch}) => {
@@ -82,12 +82,18 @@ export const fetchCategories = ({ commit }, payload) => {
   return axios.get('restaurant/categories/' + payload.restId)
     .then(response => {
       commit('setCategories', response.data)
-      commit('storeSelectedRestaurant')
       return Promise.resolve()
     })
     .catch(error => {
       return Promise.reject(new Error(error))
     })
+}
+
+export const isSelectedCategories = ({commit}) => {
+  if (SessionStorage.has(sessionVars.selectedCat)) {
+    commit('setCategoriesFromSession', SessionStorage.get.item(sessionVars.selectedCat))
+  }
+  return Promise.resolve()
 }
 
 export const newCategory = ({ commit }, payload) => {
@@ -116,9 +122,9 @@ export const updateCategory = ({ commit }, payload) => {
 }
 
 export const deleteCategory = ({ commit }, payload) => {
-  return axios.post('restaurant/categories/delete', payload.data)
+  return axios.delete('restaurant/categories/delete/' + payload.catId)
     .then(response => {
-      commit('removeCategory', payload.data.catId)
+      commit('removeCategory', payload.catId)
       return Promise.resolve()
     })
     .catch((error) => {
@@ -141,7 +147,7 @@ export const newProduct = ({ commit }, payload) => {
 }
 
 export const updateProduct = ({ commit }, payload) => {
-  return axios.post('restaurant/product/update', payload.data)
+  return axios.patch('restaurant/product/update', payload.data)
     .then(response => {
       commit('modifyProduct', response.data.data)
       return Promise.resolve()
@@ -149,6 +155,18 @@ export const updateProduct = ({ commit }, payload) => {
     .catch(error => {
       console.log(error)
       payload.context.errors = error.response.data.errors
+      return Promise.reject(new Error(error))
+    })
+}
+
+export const removeProduct = ({ commit }, payload) => {
+  return axios.delete('restaurant/product/delete/' + payload.prodId)
+    .then(response => {
+      commit('removeProduct', payload)
+      return Promise.resolve()
+    })
+    .catch(error => {
+      console.log(error)
       return Promise.reject(new Error(error))
     })
 }

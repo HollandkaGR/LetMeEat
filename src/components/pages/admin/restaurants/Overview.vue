@@ -65,7 +65,7 @@
             {
               label: 'Törlés',
               handler: () => {
-                this.deleteRestaurant({id})
+                this.deleteRestaurant(id)
               },
               color: 'green-4',
               push: true

@@ -15,21 +15,22 @@
       v-else
       v-for="category in getCategories"
       :key="category.id"
+      inset-separator
       class="no-padding categoryWrapper shadow-2 no-border"
       animate-scale
     >
-      <q-list-header class="bg-brown-4 text-white catName row justify-between catHeader">
+      <q-list-header class="bg-brown-2 text-black catName row justify-between catHeader">
         <div>
           {{ category.name }}
         </div>
         <div class="actionIcons">
-          <q-btn small flat color="black" class="no-padding" @click="addProduct(category.id)">
+          <q-btn small outline color="green-8" class="no-padding" @click="addProduct(category.id)">
             <q-icon name="add" size="24px"/>
           </q-btn>
-          <q-btn small flat color="black" class="no-padding" @click="editCategory(category.id)">
+          <q-btn small outline color="black" class="no-padding" @click="editCategory(category.id)">
             <q-icon name="mode_edit" size="24px"/>
           </q-btn>
-          <q-btn small flat color="black" class="no-padding" @click="removeCategory(category.id)">
+          <q-btn small outline color="red-6" class="no-padding" @click="removeCategory(category.id)">
             <q-icon name="delete_forever" size="24px"/>
           </q-btn>
         </div>
@@ -44,10 +45,13 @@
     <q-modal
       ref="catModal"
       :content-css="{width: '400px', padding: '10px'}"
+      @open="catModalOpened"
+      @close="catModalClosed"
     >
       <category-modal
         :modalRef="$refs.catModal"
         :options="catOptions"
+        :isOpen="catModalIsOpen"
       />
     </q-modal>
 
@@ -76,6 +80,7 @@
     components: { CategoryModal, Product, ProductModal },
     data () {
       return {
+        catModalIsOpen: false,
         catOptions: {
           category: null,
           newCat: false
@@ -97,8 +102,15 @@
     methods: {
       ...mapActions({
         fetchCategories: 'admin/fetchCategories',
-        deleteCategory: 'admin/deleteCategory'
+        deleteCategory: 'admin/deleteCategory',
+        isSelectedCategories: 'admin/isSelectedCategories'
       }),
+      catModalOpened () {
+        this.catModalIsOpen = true
+      },
+      catModalClosed () {
+        this.catModalIsOpen = false
+      },
       openNewCatModal: function () {
         let newOptions = {
           category: null,
@@ -129,10 +141,7 @@
               label: 'Törlés',
               handler: () => {
                 this.deleteCategory({
-                  data: {
-                    catId: id
-                  },
-                  context: this
+                  catId: id
                 })
                   .catch(error => {
                     console.log(error)
@@ -169,10 +178,13 @@
       }
     },
     mounted: function () {
-      this.fetchCategories({
-        restId: this.getSelectedRestId
-      })
+      this.isSelectedCategories()
         .then(() => {
+          this.fetchCategories({
+            restId: this.getSelectedRestId
+          })
+            .then(() => {
+            })
         })
     }
   }
