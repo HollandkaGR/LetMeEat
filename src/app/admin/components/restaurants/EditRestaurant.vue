@@ -41,6 +41,9 @@
     <div class="separator"/>
     <div class="sectionWrapper col-12">
       <rest-options></rest-options>
+      <div class="row justify-center">
+        <uploader class="col-md-12 col-lg-6"></uploader>
+      </div>
     </div>
     <div class="separator"/>
     <div class="sectionWrapper row">
@@ -74,12 +77,13 @@
   import OpenHours from './partials/OpenHours'
   import RestOptions from './partials/RestOptions'
   import Categories from './partials/Categories'
+  import Uploader from './partials/Uploader'
 
   export default {
 
     name: 'EditRestaurant',
     components: {
-      OpenHours, RestOptions, Categories
+      OpenHours, RestOptions, Categories, Uploader
     },
     data () {
       return {

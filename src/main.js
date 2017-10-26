@@ -56,6 +56,6 @@ Quasar.start(() => {
     el: '#q-app',
     router,
     store,
-    render: h => h(require('src/components/layouts/TestBaseLayout'))
+    render: h => h(require('src/components/layouts/BaseLayout'))
   })
 })

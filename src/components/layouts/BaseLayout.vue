@@ -3,171 +3,14 @@
     <q-layout
     ref="layout"
     view="lHr Lpr lFr"
-    :left-class="{'bg-light': true}"
     >
-      <q-toolbar slot="header" color="brown-2" class="row justify-between fixed-top">
-        <q-btn
-        v-if="userIsOwner"
-        flat
-        @click="$refs.layout.toggleLeft()"
-        color="black"
-        >
-          <q-icon name="menu"/>
-        </q-btn>
-        <q-toolbar-title class="gt-sm text-brown-8">
-          Let Me Eat
-          <div slot="subtitle" class="strong">Az éhség nagy úr</div>
-        </q-toolbar-title>
-        <!-- Qtabot használunk -->
-
-        <!-- Desktop menü -->
-        <q-tabs slot="navigation" inverted color="brown-8" class="gt-sm">
-          <q-route-tab
-            icon="home"
-            label="Főoldal"
-            :to="{ name: 'index' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-route-tab
-            icon="search"
-            label="Éttermek"
-            :to="{ name: 'restaurants' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-route-tab
-            v-if="!user.authenticated"
-            icon="account_circle"
-            label="Bejelentkezés"
-            :to="{ name: 'login' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-route-tab
-            v-if="!user.authenticated"
-            icon="add"
-            label="Regisztráció"
-            :to="{ name: 'registration' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-route-tab
-            v-if="user.authenticated"
-            icon="playlist_add_check"
-            label="Rendeléseim"
-            :to="{ name: 'orders' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-route-tab
-            v-if="user.authenticated"
-            icon="shopping_cart"
-            label="Kosár"
-            :to="{ name: 'cart' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-route-tab
-            v-if="user.authenticated"
-            icon="account_circle"
-            label="Adataim"
-            :to="{ name: 'userDetails' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-tab
-            v-if="user.authenticated"
-            icon="exit_to_app"
-            slot="title"
-            label="Kijelentkezés"
-            exact
-            @click="tryLogout"
-          />
-
-        </q-tabs>
-        
-        <!-- MOBILMENÜ -->
-        <q-tabs inverted color="white" class="lt-md mobileMenu col">
-          <q-route-tab
-            icon="home"
-            :to="{ name: 'index' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-route-tab
-            icon="search"
-            :to="{ name: 'restaurants' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-route-tab
-            v-if="!user.authenticated"
-            icon="account_circle"
-            :to="{ name: 'login' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-route-tab
-            v-if="!user.authenticated"
-            icon="add"
-            :to="{ name: 'registration' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-route-tab
-            v-if="user.authenticated"
-            icon="playlist_add_check"
-            :to="{ name: 'orders' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-route-tab
-            v-if="user.authenticated"
-            icon="shopping_cart"
-            :to="{ name: 'cart' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-route-tab
-            v-if="user.authenticated"
-            icon="account_circle"
-            :to="{ name: 'userDetails' }"
-            exact
-            slot="title"
-          >
-          </q-route-tab>
-          <q-tab
-            v-if="user.authenticated"
-            icon="exit_to_app"
-            slot="title"
-            @click="tryLogout"
-          />
-        </q-tabs>
-      </q-toolbar>
-
-      <div v-if="userIsOwner" slot="left">
-        <left-drawer></left-drawer>
-      </div>
+      <navbar></navbar>
       <transition
-              name="transitions"
-              enter-active-class="animated fadeIn"
-              leave-active-class="animated fadeOut"
-              mode="out-in"
-              duration="200"
+        name="transitions"
+        enter-active-class="animated fadeIn"
+        leave-active-class="animated fadeOut"
+        mode="out-in"
+        duration="200"
       >
         <router-view class="layout-padding baseMargin"/>
       </transition>
@@ -176,50 +19,16 @@
 </template>
 
 <script>
-  import NavItem from './../partials/DesktopMenuItem'
-
-  import {
-    QLayout,
-    QTabs,
-    QTab,
-    QTabPane,
-    QRouteTab,
-    QToolbar,
-    QToolbarTitle,
-    QBtn,
-    QIcon,
-    QList,
-    QListHeader,
-    QItem,
-    QItemSide,
-    QItemMain,
-    QSideLink
-  } from 'quasar'
   import { mapGetters, mapActions } from 'vuex'
-  import LeftDrawer from './../partials/LeftDrawer'
+  import Navbar from './../partials/Navbar'
+
   import 'quasar-extras/animate/fadeIn.css'
   import 'quasar-extras/animate/fadeOut.css'
   
   export default {
     name: 'index',
     components: {
-      QLayout,
-      QTabs,
-      QTab,
-      QTabPane,
-      QRouteTab,
-      QToolbar,
-      QToolbarTitle,
-      QBtn,
-      QIcon,
-      QList,
-      QListHeader,
-      QItem,
-      QItemSide,
-      QItemMain,
-      QSideLink,
-      LeftDrawer,
-      NavItem
+      Navbar
     },
     data: function () {
       return {
