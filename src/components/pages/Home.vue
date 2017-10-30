@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="row justify-between items-center">
-      <h2 class="no-margin col">ÉTTERMEINK</h2>
+      <h2 class="no-margin col lmeTitle text-brown-4">ÉTTERMEINK</h2>
       <q-search 
         v-model="etteremSearch" 
         color="brown-4" 
         placeholder="Keressen rá!" 
-        float-label="Ha tudja az étterem nevét..." 
+        float-label="Ha tudja az étterem nevét..."
         class="col-lg-6"
       >
       <q-autocomplete

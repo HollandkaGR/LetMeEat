@@ -1,8 +1,8 @@
 <template>
   <div id="q-app">
     <q-layout
-    ref="layout"
-    view="lHr Lpr lFr"
+      ref="layout"
+      view="lHr Lpr lFr"
     >
       <navbar></navbar>
       <transition
@@ -12,7 +12,7 @@
         mode="out-in"
         duration="200"
       >
-        <router-view class="layout-padding baseMargin"/>
+        <router-view class="baseMargin"/>
       </transition>
     </q-layout>
   </div>
@@ -62,6 +62,10 @@
 <style lang="stylus">
   @import '~variables'
   
+  .lmeTitle
+    text-shadow 1px 0px 0px #000000, -1px 0px 0px #000000, 0px 1px 0px #000000, 0px -1px 0px #000000
+    letter-spacing 2px
+
   .price
     opacity .8
     & > .currencyFormat
@@ -73,11 +77,12 @@
     border-top 2px solid $dark
     margin-top 15px!important
     height 40px
-    
 </style>
 
 
 <style lang="stylus" scoped>
   .baseMargin
-    margin-top 80px
+    margin-top 100px
+    max-width 1200px
+    padding 0 1rem
 </style>

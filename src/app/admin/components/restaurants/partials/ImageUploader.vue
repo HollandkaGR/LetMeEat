@@ -12,7 +12,7 @@
       :url="url"
       :params="params"
       :headers="headers"
-      img-format="png"
+      img-format="jpg"
       noCircle
       class="restIndexUploader"
     >
