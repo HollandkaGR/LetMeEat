@@ -70,6 +70,6 @@ export const modifyProduct = (state, product) => {
 
 export const removeProduct = (state, { prodId, catId }) => {
   let prods = state.selectedCategories[catId].products
-  state.selectedCategories[catId].products = Object.assign({}, prods.filter(prod => prod.id !== prodId))
+  state.selectedCategories[catId].products = prods.filter(prod => prod.id !== prodId)
   SessionStorage.set(sessionVars.selectedCat, state.selectedCategories)
 }

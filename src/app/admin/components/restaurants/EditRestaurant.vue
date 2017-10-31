@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-between formWrapper">
     <div class="row justify-between items-center col-12">
-      <h5>{{ restaurant.name }} módosítása</h5>
+      <h5>{{ getSelectedRestaurant.name }} módosítása</h5>
       <div class="actionbuttons">
         <q-btn color="red-4" push @click="backToOverview">Vissza</q-btn>
         <q-btn color="green-4" push @click="saveThisRestaurant">Mentés</q-btn>
@@ -15,7 +15,7 @@
       <q-input
         type="text"
         inverted
-        v-model="restaurant.name"
+        v-model="getSelectedRestaurant.name"
         float-label="Az étterem neve"
         :color="fieldColor"
         :class="fieldShadow"
@@ -24,14 +24,14 @@
     </q-field>
 
     <q-field
-      v-if ="restaurant.city !== undefined"
+      v-if ="getSelectedRestaurant.city !== undefined"
       :error="errors.city !== undefined"
       :error-label="errors.city !== undefined ? errors.city[0] : ''"
       class="col-md-6 sectionWrapper"
     >
       <q-select
         float-label="Város kiválasztása"
-        v-model="restaurant.city.id"
+        v-model="getSelectedRestaurant.city.id"
         inverted
         :color="fieldColor"
         :class="fieldShadow"
@@ -61,7 +61,7 @@
         <open-hours day="Minden nap" id="0" @setHours="setAllDayTo"></open-hours>
       </div>
       <div v-else class="row justify-around items-stretch no-margin">
-        <open-hours v-for="(day, key) in weekDays" :key="key" :day="day" :id="key" :values="restaurant.open_hours[key]" @setHours="setHours"></open-hours>
+        <open-hours v-for="(day, key) in weekDays" :key="key" :day="day" :id="key" :values="getSelectedRestaurant.open_hours[key]" @setHours="setHours"></open-hours>
       </div>
     </div>
     <div class="separator"/>
@@ -107,8 +107,7 @@
       ...mapActions({
         fetchPossibleCities: 'admin/fetchPossibleCities',
         updateRestaurant: 'admin/updateRestaurant',
-        isSelectedRestaurant: 'admin/isSelectedRestaurant',
-        unsetVars: 'admin/unsetVars'
+        isSelectedRestaurant: 'admin/isSelectedRestaurant'
       }),
       clearError (fieldName) {
         if (this.errors[fieldName] !== undefined) {
@@ -116,7 +115,7 @@
         }
       },
       setHours (params) {
-        this.restaurant.open_hours[params.id] = {
+        this.getSelectedRestaurant.open_hours[params.id] = {
           isOpenToday: params.isOpenToday,
           from: params.from,
           to: params.to
@@ -124,7 +123,7 @@
       },
       setAllDayTo (params) {
         for (var i = 0; i < 7; i++) {
-          this.restaurant.open_hours[i] = {
+          this.getSelectedRestaurant.open_hours[i] = {
             isOpenToday: params.isOpenToday,
             from: params.from,
             to: params.to
@@ -133,22 +132,19 @@
       },
       saveThisRestaurant () {
         this.updateRestaurant({
-          data: this.restaurant,
+          data: this.getSelectedRestaurant,
           context: this
         })
-          .then(() => {
+          .then((savedRest) => {
             showPopup('A mentés sikerült', 'success')
           })
       },
       backToOverview () {
         this.$router.replace({name: 'ettermeim.index'})
-        this.unsetVars()
       }
     },
     mounted () {
       this.weekDays = week()
-      this.isSelectedRestaurant()
-        .then(this.restaurant = this.getSelectedRestaurant)
 
       // A város megjelenítése késhet, mert request, ezért beadjuk a jelenlegi várost az opciók közé, a háttérben pedig frissül
       this.possibleCities = convertDataToSelect([this.getSelectedRestaurant.city], 'name', 'id')

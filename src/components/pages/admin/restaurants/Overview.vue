@@ -27,7 +27,6 @@
     },
     data () {
       return {
-        restaurantToEdit: null
       }
     },
     computed: {
@@ -40,7 +39,8 @@
       ...mapActions({
         fetchMyRestaurants: 'admin/fetchMyRestaurants',
         setSelectedRestaurant: 'admin/setSelectedRestaurant',
-        deleteRestaurant: 'admin/deleteRestaurant'
+        deleteRestaurant: 'admin/deleteRestaurant',
+        unsetVars: 'admin/unsetVars'
       }),
       newRest: function () {
         this.$router.push({ name: 'ettermeim.uj' })
@@ -75,6 +75,7 @@
       }
     },
     mounted () {
+      this.unsetVars()
       this.fetchMyRestaurants()
         .then(() => {
 

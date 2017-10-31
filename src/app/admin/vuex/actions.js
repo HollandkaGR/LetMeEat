@@ -39,10 +39,10 @@ export const saveRestaurant = ({dispatch, state}, payload) => {
 }
 
 export const updateRestaurant = ({dispatch, state}, payload) => {
-  return axios.patch('restaurant/update', state.selectedRestaurant)
+  return axios.patch('restaurant/update', payload.data)
     .then((response) => {
       dispatch('setSelectedRestaurant', response.data.data)
-      return Promise.resolve()
+      return Promise.resolve(response.data.data)
     })
     .catch(error => {
       payload.context.errors = error.response.data.errors

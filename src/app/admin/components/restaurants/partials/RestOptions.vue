@@ -26,6 +26,15 @@
         <q-toggle color="green-4" v-model="getSelectedRestaurant.showMessage" />
       </q-item-side>
     </q-item>
+    <q-item multiline tag="label" class="col row items-center">
+      <q-item-main class="col">
+        <q-item-tile label>A várható kiszállítási idő (percben)</q-item-tile>
+        <q-item-tile sublabel lines="4">Az érték meg fog jelenni a vendégek számára, érdemes mindig a valós időnek megfelelően módosítani</q-item-tile>
+      </q-item-main>
+      <q-item-side right class="col-1">
+        <q-input inverted type="number" color="green-4" v-model="getSelectedRestaurant.deliveryTime" />
+      </q-item-side>
+    </q-item>
   </q-list>
 </template>
 
@@ -35,26 +44,10 @@
   export default {
 
     name: 'RestOptions',
-
-    data () {
-      return {
-        restaurant: {}
-      }
-    },
     computed: {
       ...mapGetters({
         getSelectedRestaurant: 'admin/getSelectedRestaurant'
       })
-    },
-    methods: {
-      saveThisRestaurant () {
-        this.updateRestaurant({
-          data: this.restaurant,
-          context: this
-        })
-          .then(() => {
-          })
-      }
     }
   }
 </script>
