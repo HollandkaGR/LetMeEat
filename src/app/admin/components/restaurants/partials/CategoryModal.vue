@@ -15,7 +15,7 @@
           float-label="Az kategória neve"
           color="brown-4"
           @focus="clearError('name')"
-          @keyup.enter="saveNewCat"
+          @keyup.enter="commitModal"
         />
       </q-field>
     </div>
@@ -88,9 +88,19 @@
             this.modalRef.close()
           })
       },
+      commitModal () {
+        if (this.options.newCat) {
+          this.saveNewCat()
+        }
+        else {
+          this.updateCat()
+        }
+      },
       clearValues () {
         this.errors = []
         this.name = null
+        this.inAction = false
+        this.salePercent = null
       },
       clearError (fieldName) {
         if (this.errors[fieldName] !== undefined) {

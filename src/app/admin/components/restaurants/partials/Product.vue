@@ -5,12 +5,16 @@
         <div class="col text-dark">
           <div>
             {{ product.name }}
+            <span v-if="product.inAction" class="bg-red text-white" style="padding:3px;">Akciós - {{ product.salePercent }}%</span>
           </div>
           <div class="prodDesc">
             {{ product.description }}
           </div>
         </div>
-        <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3" v-html="convertCurrency(product.price)"></div>
+        <div>
+          <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3" v-html="convertCurrency(product.price)"></div>
+          <div v-if="product.inAction" class="prodPrice bg-red text-white strong shadow-3" v-html="convertCurrency(product.price * (100 - product.salePercent) / 100)" style="margin-top:5px;"></div>
+        </div>
       </div>
     </q-item-main>
     <q-item-side class="row justify-between">

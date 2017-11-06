@@ -82,7 +82,9 @@
 
 <style lang="stylus" scoped>
   .baseMargin
-    margin-top 100px
-    max-width 1200px
     padding 0 1rem
+    padding-top 100px
+    max-width 1200px
+    margin-left auto
+    margin-right auto
 </style>

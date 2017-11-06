@@ -50,6 +50,13 @@ export const updateRestaurant = ({dispatch, state}, payload) => {
     })
 }
 
+export const removeIndexImage = ({ dispatch }, payload) => {
+  return axios.post('restaurant/image/delete', payload)
+    .then((response) => {
+      dispatch('setSelectedRestaurant', response.data.data)
+    })
+}
+
 export const deleteRestaurant = ({ commit }, restId) => {
   return axios.delete('restaurant/delete/' + restId)
     .then(() => {

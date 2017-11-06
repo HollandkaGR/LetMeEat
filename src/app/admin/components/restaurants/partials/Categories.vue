@@ -59,10 +59,13 @@
     <q-modal
       ref="prodModal"
       :content-css="{width: '400px', padding: '10px'}"
+      @open="prodModalOpened"
+      @close="prodModalClosed"
     >
       <product-modal
         :modalRef="$refs.prodModal"
         :options="prodOptions"
+        :isOpen="prodModalIsOpen"
       />
     </q-modal>
   </div>
@@ -81,6 +84,7 @@
     data () {
       return {
         catModalIsOpen: false,
+        prodModalIsOpen: false,
         catOptions: {
           category: null,
           newCat: false
@@ -152,6 +156,12 @@
             }
           ]
         })
+      },
+      prodModalOpened () {
+        this.prodModalIsOpen = true
+      },
+      prodModalClosed () {
+        this.prodModalIsOpen = false
       },
       addProduct (catId) {
         let newOptions = {

@@ -77,9 +77,6 @@
     mounted () {
       this.unsetVars()
       this.fetchMyRestaurants()
-        .then(() => {
-
-        })
     }
   }
 </script>

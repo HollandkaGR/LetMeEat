@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding-bottom:100px;">
     <edit-restaurant></edit-restaurant>
   </div>
 </template>

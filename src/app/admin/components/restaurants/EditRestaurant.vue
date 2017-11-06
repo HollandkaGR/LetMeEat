@@ -41,9 +41,6 @@
     <div class="separator"/>
     <div class="sectionWrapper col-12">
       <rest-options></rest-options>
-      <div class="row justify-center">
-        <image-uploader class="col-md-12 col-lg-6"></image-uploader>
-      </div>
     </div>
     <div class="separator"/>
     <div class="sectionWrapper row">
@@ -77,20 +74,17 @@
   import OpenHours from './partials/OpenHours'
   import RestOptions from './partials/RestOptions'
   import Categories from './partials/Categories'
-  // import Uploader from './partials/Uploader'
-  import ImageUploader from './partials/ImageUploader'
 
   export default {
 
     name: 'EditRestaurant',
     components: {
-      OpenHours, RestOptions, Categories, ImageUploader
+      OpenHours, RestOptions, Categories
     },
     data () {
       return {
         errors: {},
         allDaySame: false,
-        restaurant: {},
         weekDays: [],
         possibleCities: [],
         // Field options
@@ -145,7 +139,7 @@
     },
     mounted () {
       this.weekDays = week()
-
+      this.isSelectedRestaurant()
       // A város megjelenítése késhet, mert request, ezért beadjuk a jelenlegi várost az opciók közé, a háttérben pedig frissül
       this.possibleCities = convertDataToSelect([this.getSelectedRestaurant.city], 'name', 'id')
 
@@ -162,7 +156,7 @@
 
 <style lang="stylus" scoped>
   @import '~variables'
-  
+
   .sectionWrapper
     padding 5px 10px
     & .q-input, .q-select
