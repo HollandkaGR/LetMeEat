@@ -11,7 +11,7 @@
         <q-input
           ref="newProdModalInput"
           type="text"
-          v-model="name"
+          v-model="product.name"
           float-label="A termék neve"
           color="brown-4"
           @focus="clearError('name')"
@@ -24,7 +24,7 @@
       >
         <q-input
           type="text"
-          v-model="description"
+          v-model="product.description"
           float-label="A termék leírása"
           color="brown-4"
           @focus="clearError('description')"
@@ -37,7 +37,7 @@
       >
         <q-input
           type="number"
-          v-model="price"
+          v-model="product.price"
           float-label="A termék ára (Ft)"
           color="brown-4"
           @focus="clearError('price')"
@@ -45,19 +45,19 @@
       </q-field>
     </div>
     <div class="row justify-between" style="margin:15px 0;padding:5px;">
-      <q-toggle color="green-4" v-model="inAction" label="Akció" left-label/>
+      <q-toggle color="green-4" v-model="product.inAction" label="Akció" left-label/>
       <q-field
         :error="errors.salePercent !== undefined"
         :error-label="errors.salePercent !== undefined ? errors.salePercent[0] : ''"
         class="inputField no-margin"
       >
         <q-input
-          :disable="!inAction"
-          v-model="salePercent"
+          :disable="!product.inAction"
+          v-model="product.salePercent"
           inverted
           type="number"
           color="red-4"
-          :min="1"
+          :min="0"
           :max="100"
           suffix="%"
           @focus="clearError('salePercent')"
@@ -76,6 +76,7 @@
 
 <script>
   import { mapActions } from 'vuex'
+  import AdminProduct from 'src/classes/Product'
   export default {
 
     name: 'ProductModal',
@@ -83,12 +84,12 @@
     data () {
       return {
         errors: [],
-        prodId: null,
-        name: null,
-        description: null,
-        price: null,
-        inAction: false,
-        salePercent: 0
+        product: new AdminProduct()
+      }
+    },
+    computed: {
+      computedSalePercent: function () {
+        return this.product.salePercent.length === 0 ? 0 : this.product.salePercent
       }
     },
     watch: {
@@ -100,12 +101,10 @@
       options (newVal) {
         this.clearValues()
         if (newVal.product) {
-          this.prodId = newVal.product.id
-          this.name = newVal.product.name
-          this.description = newVal.product.description
-          this.price = newVal.product.price
-          this.inAction = newVal.product.inAction
-          this.salePercent = newVal.product.salePercent
+          this.product = Object.assign(Object.create(new AdminProduct()), newVal.product)
+        }
+        else {
+          this.product = new AdminProduct()
         }
       }
     },
@@ -115,15 +114,12 @@
         updateProduct: 'admin/updateProduct'
       }),
       saveNewProduct () {
+        this.product.salePercent = this.computedSalePercent
+        let data = this.product.toJson()
+        data.catId = this.options.catId
+
         this.newProduct({
-          data: {
-            name: this.name,
-            description: this.description,
-            price: this.price,
-            catId: this.options.catId,
-            inAction: this.inAction,
-            salePercent: this.salePercent
-          },
+          data,
           context: this
         })
           .then(() => {
@@ -133,16 +129,12 @@
           })
       },
       updateSelectedProduct () {
+        this.product.salePercent = this.computedSalePercent
+        let data = this.product.toJson()
+        data.catId = this.options.catId
+
         this.updateProduct({
-          data: {
-            prodId: this.prodId,
-            name: this.name,
-            description: this.description,
-            price: this.price,
-            catId: this.options.catId,
-            inAction: this.inAction,
-            salePercent: this.salePercent
-          },
+          data,
           context: this
         })
           .then(() => {
@@ -161,12 +153,7 @@
       },
       clearValues () {
         this.errors = []
-        this.prodId = null
-        this.name = null
-        this.description = null
-        this.price = null
-        this.inAction = false
-        this.salePercent = 0
+        this.product = new AdminProduct()
       },
       clearError (fieldName) {
         if (this.errors[fieldName] !== undefined) {

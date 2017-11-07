@@ -166,8 +166,7 @@
       addProduct (catId) {
         let newOptions = {
           catId: catId,
-          newProd: true,
-          product: null
+          newProd: true
         }
         this.prodOptions = newOptions
         this.$refs.prodModal.open()

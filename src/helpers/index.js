@@ -35,6 +35,10 @@ export const currencyFormat = value => {
   return '<span class="price">' + new Intl.NumberFormat('de-DE').format(value).replace('.', ' ') + '<span class="currencyFormat"> Ft</span></span>'
 }
 
+export const salePrice = (prodPrice, percent) => {
+  return Math.round(prodPrice * (100 - percent) / 100)
+}
+
 export const productCounter = () => {
   let resultArray = []
   for (var i = 1; i <= 5; i++) {

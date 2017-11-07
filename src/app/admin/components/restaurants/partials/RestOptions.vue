@@ -38,7 +38,7 @@
     <q-item multiline class="col row items-center">
       <q-item-main class="col">
         <q-item-tile label>A minimális rendelés összege</q-item-tile>
-        <q-item-tile sublabel lines="4">Ezen érték alatti rendelést nem lehet leadni az étterem felé (az esetleges akciókval csökkentett áron számolva)</q-item-tile>
+        <q-item-tile sublabel lines="4">Ezen érték alatti rendelést nem lehet leadni az étterem felé (az esetleges akciókkal csökkentett áron számolva)</q-item-tile>
       </q-item-main>
       <q-item-side right class="col-md-1 col-sm-2">
         <q-input inverted type="number" color="brown-4" v-model="getSelectedRestaurant.minimumOrder" class="no-margin"/>
@@ -47,7 +47,7 @@
     <q-item class="col row items-center">
       <q-item-main class="col">
         <q-item-tile label>Indexkép</q-item-tile>
-        <q-item-tile sublabel lines="4">Ez a kép jelenik meg az étterem indexképeként. Ha nincs beállítva semmi, az oldal alapértelmezett képe jelenik meg!
+        <q-item-tile sublabel lines="4">Ez a kép jelenik meg az étterem indexképeként. Ha nincs beállítva semmi, az oldal alapértelmezett képe jelenik meg!<br>
         <span class="strong text-red-4">Minimum felbontás: 640x360, ajánlott képarány 16:9!</span>
         </q-item-tile>
         <image-uploader></image-uploader>

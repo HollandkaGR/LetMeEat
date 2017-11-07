@@ -5,15 +5,15 @@
         <div class="col text-dark">
           <div>
             {{ product.name }}
-            <span v-if="product.inAction" class="bg-red text-white" style="padding:3px;">Akciós - {{ product.salePercent }}%</span>
+            <span v-if="product.inAction" class="bg-red text-white round-borders" style="padding:3px;">Akciós - {{ product.salePercent }}%</span>
           </div>
           <div class="prodDesc">
             {{ product.description }}
           </div>
         </div>
         <div>
-          <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3" v-html="convertCurrency(product.price)"></div>
-          <div v-if="product.inAction" class="prodPrice bg-red text-white strong shadow-3" v-html="convertCurrency(product.price * (100 - product.salePercent) / 100)" style="margin-top:5px;"></div>
+          <div class="prodPrice bg-brown-2 text-dark text-bold shadow-3 text-center" :class="{ forSale: product.inAction }" v-html="convertCurrency(product.price)"></div>
+          <div v-if="product.inAction" class="prodPrice bg-red text-white strong shadow-3 round-borders text-center" v-html="convertCurrency(forsalePrice(product.price, product.salePercent))" style="margin-top:5px;"></div>
         </div>
       </div>
     </q-item-main>
@@ -31,7 +31,7 @@
 <script>
   import { mapActions } from 'vuex'
 
-  import { currencyFormat } from 'helpers'
+  import { currencyFormat, salePrice } from 'helpers'
 
   export default {
 
@@ -58,6 +58,9 @@
       },
       convertCurrency: function (value) {
         return currencyFormat(value)
+      },
+      forsalePrice: function (price, percent) {
+        return salePrice(price, percent)
       }
     }
   }

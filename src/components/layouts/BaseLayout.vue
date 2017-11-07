@@ -71,6 +71,27 @@
     & > .currencyFormat
       font-size .6em
       
+  .forSale 
+    position: relative
+    &:before
+      position: absolute
+      content: ""
+      left: -8px
+      top: 50%
+      right: -8px
+      border-top: 3px solid
+      border-color: $red
+      transform:rotate(-20deg)
+    &:after
+      position: absolute
+      content: ""
+      left: -8px
+      top: 50%
+      right: -8px
+      border-top: 3px solid
+      border-color: $red
+      transform:rotate(20deg)
+
   .totalDisplay
     background $brown-2
     border-bottom 2px solid $dark
@@ -78,7 +99,6 @@
     margin-top 15px!important
     height 40px
 </style>
-
 
 <style lang="stylus" scoped>
   .baseMargin
