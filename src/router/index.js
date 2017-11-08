@@ -27,7 +27,7 @@ const router = new VueRouter({
     {
       path: '/ettermek',
       name: 'restaurants',
-      component: load('Home'),
+      component: load('Restaurants'),
       meta: {
         label: 'Éttermek',
         icon: 'search',

@@ -76,7 +76,8 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import AdminProduct from 'src/classes/Product'
+  import { AdminProduct } from 'src/classes/Product'
+
   export default {
 
     name: 'ProductModal',
@@ -102,9 +103,6 @@
         this.clearValues()
         if (newVal.product) {
           this.product = Object.assign(Object.create(new AdminProduct()), newVal.product)
-        }
-        else {
-          this.product = new AdminProduct()
         }
       }
     },

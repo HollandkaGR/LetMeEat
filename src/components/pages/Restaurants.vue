@@ -18,32 +18,15 @@
   <div class="scroll">
     <cards :searchingFor="etteremSearch"></cards>
   </div>
+  <restaurantOrderModal></restaurantOrderModal>
 </div>
 </template>
 
 <script>
   import Cards from '../../app/restaurant/components/RestaurantCards'
+  import RestaurantOrderModal from 'src/app/restaurant/components/RestaurantOrderModal'
   import { mapGetters } from 'vuex'
-  import {
-    QAutocomplete,
-    QCard,
-    QCardTitle,
-    QCardMedia,
-    QCardActions,
-    QCardSeparator,
-    QCardMain,
-    QList,
-    QItem,
-    QItemMain,
-    QItemSide,
-    QItemTile,
-    QRating,
-    QSearch,
-    QTransition,
-    QBtn,
-    QIcon
-  } from 'quasar'
-
+  
   function parseEttermek (ettermek) {
     return ettermek.map(etterem => {
       return {
@@ -56,24 +39,7 @@
 
   export default {
     components: {
-      Cards,
-      QCard,
-      QAutocomplete,
-      QCardTitle,
-      QCardMedia,
-      QCardActions,
-      QCardSeparator,
-      QCardMain,
-      QList,
-      QItem,
-      QItemMain,
-      QItemSide,
-      QItemTile,
-      QRating,
-      QSearch,
-      QTransition,
-      QBtn,
-      QIcon
+      Cards, RestaurantOrderModal
     },
     data: function () {
       return {

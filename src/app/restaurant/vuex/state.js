@@ -1,5 +1,6 @@
 export default {
   ettermek: [],
   selectedEtterem: {},
-  modalOpened: false
+  orderModalRef: null,
+  timestamp: null
 }

@@ -1,62 +1,64 @@
 <template>
-  <q-modal ref="orderModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}" @close="modalClosed" noBackdropDismiss>
-    <q-modal-layout>
-      <q-toolbar slot="header" color="dark">
-        <q-btn flat @click="closeModal">
-          <q-icon name="keyboard_arrow_left" />
-        </q-btn>
-        <q-toolbar-title>
-          {{ etterem.name }}
-        </q-toolbar-title>
-        <mini-cart></mini-cart>
-      </q-toolbar>
+  <div>
+    <q-modal ref="orderModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}" @close="modalClosed" noBackdropDismiss>
+      <q-modal-layout>
+        <q-toolbar slot="header" color="dark">
+          <q-btn flat @click="closeModal">
+            <q-icon name="keyboard_arrow_left" />
+          </q-btn>
+          <q-toolbar-title>
+            {{ getSelectedEtterem.name }}
+          </q-toolbar-title>
+          <mini-cart></mini-cart>
+        </q-toolbar>
 
-      <q-toolbar slot="header" color="light">
-        <q-search inverted v-model="productSearch" color="brown-4" placeholder="Írj be legalább 3 karaktert!" float-label="Tudod mit keresel?"></q-search>
-      </q-toolbar>
-      
-      <div class="layout-padding">
-        <div class="restName text-brown-8 thin-paragraph shadow-3 bg-brown-2 text-center">
-          {{ etterem.name }} kínálata
-        </div>
-        <div class="relative-position row justify-end">
-          <q-btn v-if="!openAll" @click="openAllCat" small class="bg-green-4" style="min-width:160px;">
-            Összes kinyit
-          </q-btn>
-          <q-btn v-else @click="openAllCat" small class="bg-red-4" style="min-width:160px;">
-            Összes becsuk
-          </q-btn>
-        </div>
-        <!-- Ha nincs keresés 3 karakter hosszan, megjelenítjük a kategóriákat -->
-        <div v-if="!etterem.isOpen" class="text-center bg-red-10 text-white strong restIsClosed" style="margin:8px 0 0;">
-          NYITÁS: {{etterem.open}}
-        </div>
-        <div v-if="productSearch.length < 3">
-          <q-list separator v-for="kategoria in etterem.categories" :key="kategoria" class="br-5 no-padding categoryList">
-            <collapsible :kategoria="kategoria" :openColl="openAll"></collapsible>
-          </q-list>
-        </div>
-        <!-- Ha keresünk megnézzük, hogy van-e találat. Ha nincs, üzenetet jelenítünk meg. -->
-        <div v-else>
-          <q-list v-if="filteredProducts.length > 0" class="no-border">
-            <product v-for="product in filteredProducts" v-bind="{ product }" :key="product"></product>
-          </q-list>
-          <div v-else>
-            A keresés "{{ productSearch }}" nem hoz eredményt!
+        <q-toolbar slot="header" color="light">
+          <q-search inverted v-model="productSearch" color="brown-4" placeholder="Írj be legalább 3 karaktert!" float-label="Tudod mit keresel?"></q-search>
+        </q-toolbar>
+        
+        <div class="layout-padding">
+          <div class="restName text-brown-8 thin-paragraph shadow-3 bg-brown-2 text-center">
+            {{ getSelectedEtterem.name }} kínálata
           </div>
+          <div class="relative-position row justify-end">
+            <q-btn v-if="!openAll" @click="openAllCat" small class="bg-green-4" style="min-width:160px;">
+              Összes kinyit
+            </q-btn>
+            <q-btn v-else @click="openAllCat" small class="bg-red-4" style="min-width:160px;">
+              Összes becsuk
+            </q-btn>
+          </div>
+          <!-- Ha nincs keresés 3 karakter hosszan, megjelenítjük a kategóriákat -->
+          <div v-if="!getSelectedEtterem.isOpen" class="text-center bg-red-10 text-white strong restIsClosed" style="margin:8px 0 0;">
+            NYITÁS: {{getSelectedEtterem.isOpen}}
+          </div>
+          <div v-if="productSearch.length < 3">
+            <q-list separator v-for="kategoria in getSelectedEtterem.categories" :key="kategoria" class="br-5 no-padding categoryList">
+              <collapsible :kategoria="kategoria" :openColl="openAll"></collapsible>
+            </q-list>
+          </div>
+          <!-- Ha keresünk megnézzük, hogy van-e találat. Ha nincs, üzenetet jelenítünk meg. -->
+          <div v-else>
+            <q-list v-if="filteredProducts.length > 0" class="no-border">
+              <product v-for="product in filteredProducts" v-bind="{ product }" :key="product"></product>
+            </q-list>
+            <div v-else>
+              A keresés "{{ productSearch }}" nem hoz eredményt!
+            </div>
+          </div>
+          
         </div>
         
-      </div>
-      
-      <q-toolbar slot="footer" color="dark">
-        <q-btn flat @click="closeModal">
-          <q-icon name="keyboard_arrow_left" />
-          Vissza az éttermekhez
-        </q-btn>
-      </q-toolbar>
+        <q-toolbar slot="footer" color="dark">
+          <q-btn flat @click="closeModal">
+            <q-icon name="keyboard_arrow_left" />
+            Vissza az éttermekhez
+          </q-btn>
+        </q-toolbar>
 
-    </q-modal-layout>
-  </q-modal>
+      </q-modal-layout>
+    </q-modal>
+  </div>
 </template>
 
 <script>
@@ -77,10 +79,9 @@
         openAll: false
       }
     },
-    props: [ 'modalOpened', 'etterem' ],
     computed: {
       ...mapGetters({
-        isModalOpened: 'restaurant/isModalOpened'
+        getSelectedEtterem: 'restaurant/getSelectedEtterem'
       })
     },
     watch: {
@@ -107,7 +108,7 @@
     },
     methods: {
       ...mapActions({
-        modalToggle: 'restaurant/modalToggle',
+        setOrderModalRef: 'restaurant/setOrderModalRef',
         setSelectedEtterem: 'restaurant/setSelectedEtterem'
       }),
       closeModal: function () {
@@ -127,6 +128,9 @@
       openAllCat () {
         this.openAll = !this.openAll
       }
+    },
+    mounted () {
+      this.setOrderModalRef(this.$refs.orderModal)
     }
   }
 </script>

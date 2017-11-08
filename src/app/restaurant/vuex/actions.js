@@ -1,21 +1,17 @@
 import axios from 'axios'
-import restaurant from 'src/helpers/restaurant.json'
 
-export const fetchEttermek = ({dispatch}) => {
-  // return axios.get('/api/ettermek').then(response => {
-  //   commit('setEttermek', response.data.data)
-  // }).catch((errors) => {
-  //   return Promise.reject(new Error('Csatlakozási hiba'))
-  // })
+export const setOrderModalRef = ({commit}, modalRef) => {
+  commit('setOrderModalRef', modalRef)
+}
 
-  // let delay = (time) => (result) => new Promise(resolve => setTimeout(() => resolve(result), time))
-  dispatch('setEttermek', restaurant)
-    .then(() => {
-      return Promise.resolve()
-    })
-    .catch(() => {
-      console.log('actions/fetchEttermek hiba')
-    })
+export const fetchEttermek = ({dispatch, commit}) => {
+  return axios.get('/api/ettermek').then(response => {
+    dispatch('setEttermek', response.data.data)
+    commit('setTimestamp', response.data.timestamp)
+    return Promise.resolve()
+  }).catch((errors) => {
+    return Promise.reject(new Error('Csatlakozási hiba'))
+  })
 }
 
 export const setEttermek = ({commit}, payload) => {
@@ -48,8 +44,4 @@ export const fetchProducts = ({commit}, payload) => {
   }).catch((errors) => {
     return Promise.reject(new Error('Csatlakozási hiba'))
   })
-}
-
-export const modalToggle = ({commit}) => {
-  commit('modalToggle')
 }

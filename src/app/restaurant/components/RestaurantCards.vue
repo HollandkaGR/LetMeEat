@@ -1,12 +1,12 @@
 <template>
   <div >
     <q-transition
-    appear
-    group
-    enter="fadeIn"
-    leave="fadeOut"
-    class="row wrap no-gutter"
-    duration="250"
+      appear
+      group
+      enter="fadeIn"
+      leave="fadeOut"
+      class="row wrap no-gutter"
+      duration="250"
     >
       <div v-for="etterem in filteredEttermek" :key="etterem.id" class="col-sm-12 col-lg-6 col-xl-4 row" style="padding:15px;">
         <q-card class="col-12 column justify-between shadow-15 no-margin">
@@ -34,7 +34,7 @@
           <div class="row justify-between bg-dark text-bold text-black p10">
             <div class="col-12 text-center uppercase text-light openText">Nyitvatartás</div>
             <q-btn big class="col-md-12 col-lg-6 text-bold inset-shadow bg-white p10" v-bind:class="{ 'bg-red-7': !etterem.isOpen }">
-              {{etterem.open}} - {{etterem.close}}
+              {{ etterem.open_hours[weekday].from }} - {{ etterem.open_hours[weekday].to }}
             </q-btn>
             <q-btn
             flat
@@ -49,15 +49,14 @@
         </q-card>
       </div>
     </q-transition>
-    <restaurantOrderModal v-bind="{ 'etterem' : selectedRestaurant }"></restaurantOrderModal>
+    
   </div>
 </template>
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import RestaurantOrderModal from './RestaurantOrderModal'
   import { showLoadingScreen } from 'src/helpers'
-  import { Loading, Dialog } from 'quasar'
+  import { Loading, Dialog as Popup } from 'quasar'
   import 'quasar-extras/animate/fadeIn.css'
   import 'quasar-extras/animate/fadeOut.css'
   
@@ -65,23 +64,23 @@
 
   export default {
     components: {
-      RestaurantOrderModal,
       Loading,
-      Dialog
+      Popup
     },
     props: ['searchingFor'],
     data: function () {
       return {
         ettermek: [],
         filteredEttermek: [],
-        errors: []
+        errors: [],
+        weekday: null
       }
     },
     computed: {
       ...mapGetters({
         getEttermek: 'restaurant/getEttermek',
-        selectedRestaurant: 'restaurant/getSelectedEtterem',
-        isModalOpened: 'restaurant/isModalOpened'
+        getServerTimestamp: 'restaurant/getServerTimestamp',
+        orderModalRef: 'restaurant/orderModalRef'
       })
     },
     watch: {
@@ -93,14 +92,8 @@
       ...mapActions({
         fetchEttermek: 'restaurant/fetchEttermek',
         resetEttermek: 'restaurant/resetEttermek',
-        setSelectedEtterem: 'restaurant/setSelectedEtterem',
-        modalToggle: 'restaurant/modalToggle'
+        setSelectedEtterem: 'restaurant/setSelectedEtterem'
       }),
-      resetModal () {
-        if (this.isModalOpened) {
-          this.modalToggle()
-        }
-      },
       checkSearching () {
         if (this.searchingFor.trim().length > 2) {
           let filteredEttermek = this.ettermek.filter(etterem => {
@@ -115,7 +108,7 @@
         }
       },
       createConfirm () {
-        Dialog.create({
+        Popup.create({
           title: 'Az étterem zárva!',
           message: 'Az étterem jelenleg nincs nyitva, így csak a kínálatot tudod megtekinteni, <strong>rendelésre nincs lehetőség</strong>!',
           buttons: [
@@ -130,7 +123,7 @@
               color: 'positive',
               outline: true,
               handler: () => {
-                this.modalToggle()
+                this.orderModalRef.open()
               }
             }
           ]
@@ -142,7 +135,7 @@
           this.createConfirm()
         }
         else {
-          this.modalToggle()
+          this.orderModalRef.open()
         }
       },
       getStar (value) {
@@ -156,14 +149,14 @@
           }
         })
       },
-      isOpen (open, close) {
+      isOpen (from, to) {
         let format = 'HH:mm'
         let now = moment()
-        return now.isBetween(moment(open, format), moment(close, format))
+        return now.isBetween(moment(from, format), moment(to, format))
       },
       checkIsOpen () {
         this.filteredEttermek.forEach(etterem => {
-          etterem.isOpen = this.isOpen(etterem.open, etterem.close)
+          etterem.isOpen = this.isOpen(etterem.open_hours[this.weekday].from, etterem.open_hours[this.weekday].to)
         })
       }
     },
@@ -175,6 +168,7 @@
       this.fetchEttermek().then(() => {
         this.ettermek = this.getEttermek
         this.checkSearching()
+        this.weekday = moment.unix(this.getServerTimestamp).weekday() - 1
         this.checkIsOpen()
         setInterval(function () {
           this.checkIsOpen()
@@ -184,7 +178,6 @@
         this.errors.push(error.message)
         Loading.hide()
       })
-      this.resetModal()
     }
   }
 </script>

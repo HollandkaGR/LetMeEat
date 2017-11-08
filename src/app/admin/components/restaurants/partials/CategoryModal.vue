@@ -11,7 +11,7 @@
         <q-input
           ref="newCatModalInput"
           type="text"
-          v-model="name"
+          v-model="category.name"
           float-label="Az kategória neve"
           color="brown-4"
           @focus="clearError('name')"
@@ -29,6 +29,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
+  import { AdminCategory } from 'src/classes/Category'
 
   export default {
     name: 'CategoryModal',
@@ -37,7 +38,7 @@
     data () {
       return {
         errors: [],
-        name: null
+        category: new AdminCategory()
       }
     },
     computed: {
@@ -54,7 +55,7 @@
       options (newVal) {
         this.clearValues()
         if (newVal.category) {
-          this.name = newVal.category.name
+          this.category = Object.assign(Object.create(new AdminCategory()), newVal.category)
         }
       }
     },
@@ -64,11 +65,10 @@
         updateCategory: 'admin/updateCategory'
       }),
       saveNewCat: function () {
+        let data = this.category.toJson()
+        data.restId = this.getSelectedRestId
         this.newCategory({
-          data: {
-            restId: this.getSelectedRestId,
-            name: this.name
-          },
+          data,
           context: this
         })
           .then(() => {
@@ -76,12 +76,11 @@
           })
       },
       updateCat () {
+        let data = this.category.toJson()
+        data.restId = this.getSelectedRestId
+
         this.updateCategory({
-          data: {
-            restId: this.getSelectedRestId,
-            catId: this.options.category.id,
-            name: this.name
-          },
+          data,
           context: this
         })
           .then(() => {
@@ -98,9 +97,7 @@
       },
       clearValues () {
         this.errors = []
-        this.name = null
-        this.inAction = false
-        this.salePercent = null
+        this.category = new AdminCategory()
       },
       clearError (fieldName) {
         if (this.errors[fieldName] !== undefined) {

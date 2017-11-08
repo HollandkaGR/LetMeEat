@@ -1,4 +1,4 @@
-export default class AdminProduct {
+export class AdminProduct {
   constructor () {
     this.id = null
     this.name = null

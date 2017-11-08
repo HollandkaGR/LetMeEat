@@ -1,3 +1,7 @@
+export const setOrderModalRef = (state, modalRef) => {
+  state.orderModalRef = modalRef
+}
+
 export const setEttermek = (state, ettermek) => {
   state.ettermek = ettermek
 }
@@ -10,6 +14,6 @@ export const setSelectedEtterem = (state, etterem) => {
   state.selectedEtterem = etterem
 }
 
-export const modalToggle = (state) => {
-  state.modalOpened = !state.modalOpened
+export const setTimestamp = (state, timestamp) => {
+  state.timestamp = timestamp
 }

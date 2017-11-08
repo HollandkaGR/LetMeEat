@@ -12,8 +12,8 @@
     </q-item>
     <q-item v-if ="getSelectedRestaurant.description !== undefined" multiline tag="label" class="col row items-center">
       <q-item-main class="col">
-        <q-item-tile label>Bemutatkozás</q-item-tile>
-        <q-item-tile sublabel lines="2">Az étterem rövid leírása, ami megjelenik a vendégek számára, ha bekapcsoljuk</q-item-tile>
+        <q-item-tile label>Üzenet</q-item-tile>
+        <q-item-tile sublabel lines="2">Tájékoztatás, leírás, információ, ami megjelenik a vendégek számára, ha bekapcsoljuk</q-item-tile>
         <q-field
           v-if="getSelectedRestaurant.showMessage" 
           :count="1024"
