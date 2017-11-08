@@ -34,7 +34,7 @@
           <div class="row justify-between bg-dark text-bold text-black p10">
             <div class="col-12 text-center uppercase text-light openText">Nyitvatartás</div>
             <q-btn big class="col-md-12 col-lg-6 text-bold inset-shadow bg-white p10" v-bind:class="{ 'bg-red-7': !etterem.isOpen }">
-              {{ etterem.open_hours[weekday].from }} - {{ etterem.open_hours[weekday].to }}
+              {{ etterem.open_hours[getCurrentDay].from }} - {{ etterem.open_hours[getCurrentDay].to }}
             </q-btn>
             <q-btn
             flat
@@ -59,9 +59,9 @@
   import { Loading, Dialog as Popup } from 'quasar'
   import 'quasar-extras/animate/fadeIn.css'
   import 'quasar-extras/animate/fadeOut.css'
-  
-  import moment from 'moment'
 
+  import { restaurantIsOpen } from 'helpers'
+  
   export default {
     components: {
       Loading,
@@ -73,14 +73,15 @@
         ettermek: [],
         filteredEttermek: [],
         errors: [],
-        weekday: null
+        openChecker: null
       }
     },
     computed: {
       ...mapGetters({
         getEttermek: 'restaurant/getEttermek',
+        orderModalRef: 'restaurant/getOrderModalRef',
         getServerTimestamp: 'restaurant/getServerTimestamp',
-        orderModalRef: 'restaurant/orderModalRef'
+        getCurrentDay: 'restaurant/getCurrentDay'
       })
     },
     watch: {
@@ -92,7 +93,8 @@
       ...mapActions({
         fetchEttermek: 'restaurant/fetchEttermek',
         resetEttermek: 'restaurant/resetEttermek',
-        setSelectedEtterem: 'restaurant/setSelectedEtterem'
+        setSelectedEtterem: 'restaurant/setSelectedEtterem',
+        setTimestamp: 'restaurant/setTimestamp'
       }),
       checkSearching () {
         if (this.searchingFor.trim().length > 2) {
@@ -149,14 +151,9 @@
           }
         })
       },
-      isOpen (from, to) {
-        let format = 'HH:mm'
-        let now = moment()
-        return now.isBetween(moment(from, format), moment(to, format))
-      },
       checkIsOpen () {
         this.filteredEttermek.forEach(etterem => {
-          etterem.isOpen = this.isOpen(etterem.open_hours[this.weekday].from, etterem.open_hours[this.weekday].to)
+          etterem.isOpen = restaurantIsOpen(this.getCurrentDay, etterem.open_hours)
         })
       }
     },
@@ -168,9 +165,9 @@
       this.fetchEttermek().then(() => {
         this.ettermek = this.getEttermek
         this.checkSearching()
-        this.weekday = moment.unix(this.getServerTimestamp).weekday() - 1
         this.checkIsOpen()
-        setInterval(function () {
+        this.openChecker = setInterval(function () {
+          this.setTimestamp(this.getServerTimestamp + 10)
           this.checkIsOpen()
         }.bind(this), 10000)
         Loading.hide()
@@ -178,6 +175,10 @@
         this.errors.push(error.message)
         Loading.hide()
       })
+    },
+    beforeDestroy () {
+      console.log('törlés')
+      clearInterval(this.openChecker)
     }
   }
 </script>

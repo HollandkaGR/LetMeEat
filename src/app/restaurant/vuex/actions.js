@@ -4,10 +4,14 @@ export const setOrderModalRef = ({commit}, modalRef) => {
   commit('setOrderModalRef', modalRef)
 }
 
-export const fetchEttermek = ({dispatch, commit}) => {
+export const setTimestamp = ({commit}, newTimestamp) => {
+  commit('setTimestamp', newTimestamp)
+}
+
+export const fetchEttermek = ({dispatch}) => {
   return axios.get('/api/ettermek').then(response => {
     dispatch('setEttermek', response.data.data)
-    commit('setTimestamp', response.data.timestamp)
+    dispatch('setTimestamp', response.data.timestamp)
     return Promise.resolve()
   }).catch((errors) => {
     return Promise.reject(new Error('Csatlakozási hiba'))
@@ -40,7 +44,7 @@ export const searchForEtterem = ({commit, state}, searchString) => {
 
 export const fetchProducts = ({commit}, payload) => {
   return axios.get('/api/products/' + payload.restId).then(response => {
-    return Promise.resolve(response.data)
+    return Promise.resolve(response.data.data)
   }).catch((errors) => {
     return Promise.reject(new Error('Csatlakozási hiba'))
   })

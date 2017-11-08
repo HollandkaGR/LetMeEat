@@ -1,6 +1,7 @@
 import { isEmpty } from 'lodash'
 import { Loading, QSpinnerFacebook } from 'quasar'
 import { Popup } from './toasterConfig'
+import moment from 'moment'
 
 export const setHttpToken = token => {
   if (window.axios == null) {
@@ -65,6 +66,12 @@ export const sampleFromArray = (array, numberOfSample = 1) => {
     array.splice(index, 1)
   }
   console.log(returnArray)
+}
+
+export const restaurantIsOpen = (weekDay, openHours) => {
+  let format = 'HH:mm'
+  let now = moment()
+  return now.isBetween(moment(openHours[weekDay].from, format), moment(openHours[weekDay].to, format))
 }
 
 export const week = () => {

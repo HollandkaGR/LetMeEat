@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-modal ref="orderModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}" @close="modalClosed" noBackdropDismiss>
+    <q-modal ref="orderModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}" @open="modalOpened" @close="modalClosed" noBackdropDismiss>
       <q-modal-layout>
         <q-toolbar slot="header" color="dark">
           <q-btn flat @click="closeModal">
@@ -18,9 +18,12 @@
         
         <div class="layout-padding">
           <div class="restName text-brown-8 thin-paragraph shadow-3 bg-brown-2 text-center">
-            {{ getSelectedEtterem.name }} kínálata
+            {{ getSelectedEtterem.name }}
           </div>
-          <div class="relative-position row justify-end">
+          <div v-if="getSelectedEtterem.showMessage" style="margin-bottom: 5px;text-align:justify;">
+            {{ getSelectedEtterem.description }}
+          </div>
+          <div v-if="!inSearch" class="relative-position row justify-end">
             <q-btn v-if="!openAll" @click="openAllCat" small class="bg-green-4" style="min-width:160px;">
               Összes kinyit
             </q-btn>
@@ -76,45 +79,54 @@
       return {
         productSearch: '',
         filteredProducts: [],
+        inSearch: false,
         openAll: false
       }
     },
     computed: {
       ...mapGetters({
-        getSelectedEtterem: 'restaurant/getSelectedEtterem'
+        getSelectedEtterem: 'restaurant/getSelectedEtterem',
+        orderModal: 'restaurant/getOrderModalRef'
       })
     },
     watch: {
-      isModalOpened: function (value) {
-        if (value) {
-          this.openAll = false
-          this.$refs.orderModal.open()
-        }
-        else {
-          this.$refs.orderModal.close()
-        }
-      },
       productSearch: function (value) {
         if (value.trim().length > 2) {
+          this.inSearch = true
           let self = this
-          this.filteredProducts = this.etterem.categories.reduce(function (a, b) {
+          this.filteredProducts = this.getSelectedEtterem.categories.reduce(function (a, b) {
             return a.products.concat(b.products)
           })
             .filter(function (obj) {
               return obj.name.toUpperCase().includes(self.productSearch.toUpperCase())
             })
         }
+        else {
+          this.inSearch = false
+        }
       }
     },
     methods: {
       ...mapActions({
         setOrderModalRef: 'restaurant/setOrderModalRef',
-        setSelectedEtterem: 'restaurant/setSelectedEtterem'
+        setSelectedEtterem: 'restaurant/setSelectedEtterem',
+        fetchProducts: 'restaurant/fetchProducts'
       }),
       closeModal: function () {
         this.productSearch = ''
         this.filteredProducts = []
-        this.modalToggle()
+        this.orderModal.close()
+      },
+      modalOpened: function () {
+        this.openAll = false
+        if (this.getSelectedEtterem) {
+          this.fetchProducts({
+            restId: this.getSelectedEtterem.id
+          })
+            .then(categories => {
+              this.getSelectedEtterem.categories = categories
+            })
+        }
       },
       modalClosed: function () {
         this.setSelectedEtterem({})
